@@ -4,86 +4,85 @@ This file gives the next coding agent the current project status and recommended
 
 ## Current Status
 
-The repository has been created as a minimal GitHub Copilot Agent / vibe-coding setup.
+**Phase 2 abgeschlossen** — Vollständiger DOM-Skeleton in `index.html`. Bereit für Phase 3.
 
-No game implementation has started yet.
-
-The project is currently ready for the first VS Code Copilot Agent planning run.
-
-The detailed game specification already exists in:
-
-- `docs/game-spec.md`
+**Session 2026-05-28 (Prompt-Optimierung)** — `docs/game-spec.md` ist in `implement-next-task.prompt.md` und `review-work.prompt.md` jetzt bedingt (wird nicht mehr bei jedem Aufruf pflichtmäßig gelesen). Keine Implementierungsänderungen.
 
 ## Completed So Far
 
-- Repository created
-- Minimal Markdown scaffold created
-- `.github/copilot-instructions.md` added
-- `AGENTS.md` added
-- `PLAN.md` added
-- `TASKS.md` added
-- `HANDOVER.md` added
-- `ARCHITECTURE.md` added
-- `DECISIONS.md` added
-- `KNOWN_ISSUES.md` added
-- `AGENT_LOG.md` added
-- `docs/game-spec.md` added
+- Repository und vollständiges Markdown-Scaffold erstellt
+- Vollständige Spielspezifikation in `docs/game-spec.md`
+- Implementierungsplan erstellt und von User bestätigt
+- `ARCHITECTURE.md`, `DECISIONS.md`, `TASKS.md` mit Planungsentscheidungen aktualisiert
+- **Phase 1:** `index.html`, `style.css`, `script.js` und alle Platzhalter-Assets erstellt
+- **Phase 2:** Vollständiger DOM-Skeleton in `index.html`, `.hidden` CSS-Regel
+- **Workflow-Optimierung:** `docs/game-spec.md`-Lesepflicht in `implement-next-task` und `review-work` auf bedingt geändert
 
-## Current Project Direction
+## Files Changed (letzte Session)
 
-Build a simple, fully local browser-based point-and-click mini game.
+Geändert:
 
-The finished game must run by opening `index.html` directly in a modern browser.
+- `.github/prompts/implement-next-task.prompt.md` — `docs/game-spec.md` von Pflichtlektüre auf bedingt umgestellt
+- `.github/prompts/review-work.prompt.md` — `docs/game-spec.md` von Pflichtlektüre auf bedingt umgestellt
 
-The project must stay portable and must not require installation, internet access, a build step, a local server, package managers, backend services, databases, or external APIs.
+## Manual Check Result
 
-## Important Context Files
+- Prompt-Dateien nach Änderung gelesen und verifiziert
+- Keine Spielfunktionalität betroffen
 
-Before planning or implementation, read:
+## What Was Not Tested
 
-1. `.github/copilot-instructions.md`
-2. `AGENTS.md`
-3. `PLAN.md`
-4. `TASKS.md`
-5. `ARCHITECTURE.md`
-6. `DECISIONS.md`
-7. `KNOWN_ISSUES.md`
-8. `AGENT_LOG.md`
-9. `docs/game-spec.md`
+- Spielfunktionalität (keine Implementierungsänderungen in dieser Session)
+- Phase 3 (CSS-Layout) steht noch aus
+
+## Known Issues
+
+- `ARCHITECTURE.md` nennt `.png` für Background- und Clue-Platzhalter; erstellt wurden `.svg`-Dateien. Funktioniert korrekt. Phase 2 muss `.svg`-Pfade referenzieren. `ARCHITECTURE.md` in Phase 8 anpassen.
+
+## Important Constraints
+
+- `index.html` direkt im Browser öffnen — kein lokaler Server, kein Build-Schritt
+- `docs/game-spec.md` ist die Quelle der Wahrheit für alle Spielverhalten
+- Genau 3 Screens, 1 Overlay, 3 Modals — Struktur ist fix (siehe `ARCHITECTURE.md`)
+- Nur ein Modal darf gleichzeitig offen sein
+- Der korrekte Safe-Code ist `9 1 2 6`
+- Overlay-Klick schließt nur das Menü-Modal, nicht Item- oder Safe-Modal
+
+## Key Architecture Decisions
+
+Vollständige Details in `ARCHITECTURE.md` und `DECISIONS.md`.
+
+- Einzelner `gameState`-Object für alle Laufzeit-Zustände
+- `STRINGS`-Map + `renderText()` für alle lokalisierten UI-Texte
+- `HOTSPOTS`-Array in `script.js` für alle 10 Hotspot-Positionen und Clue-Daten
+- Prozent-basierte Hotspot-Positionen (skalieren mit Browserfenstergröße)
+- `openModal()` / `closeModal()` als einzige erlaubte Modal-Steuerung
+- `reset()` setzt alles zurück außer `gameState.language`
+
+## Implementation Phases
+
+| Phase | Goal | Status |
+|-------|------|--------|
+| 1 | Foundation and file skeleton | ✓ done |
+| 2 | Static screen and modal markup | ✓ done |
+| 3 | Base layout, modal sizing, hotspot styling | ← next |
+| 4 | State model, screen flow, localization | |
+| 5 | Item hotspot and clue modal system | |
+| 6 | Safe modal and code validation | |
+| 7 | Menu modal and full reset | |
+| 8 | End-to-end browser verification and docs update | |
 
 ## Next Recommended Step
 
-Ask the VS Code Copilot Agent to create a step-by-step implementation plan based on the full project context and `docs/game-spec.md`.
+**Phase 3 — Base layout, modal sizing, hotspot styling**
 
-The agent should:
+Der Agent soll:
 
-- plan only
-- identify the final file structure
-- identify assumptions, risks, and edge cases
-- update Markdown workflow files if clear rules, decisions, or architecture choices are established
-- keep such updates concise
-- avoid duplicating `docs/game-spec.md`
-- wait for user approval before implementation
-
-## Do Not Start Yet
-
-Do not start implementation until:
-
-- the agent has reviewed `docs/game-spec.md`
-- the agent has created an implementation plan
-- the user has reviewed and approved the plan
-
-## Notes for the Next Agent
-
-The future implementation should stay simple:
-
-- HTML
-- CSS
-- vanilla JavaScript
-- local assets only
-
-No frameworks, dependencies, build tools, package managers, backend code, databases, or external APIs should be added unless explicitly approved by the user.
+1. `TASKS.md` Phase-3-Checkliste lesen
+2. `ARCHITECTURE.md` für Modal-Größen-Tier und Hotspot-Positionierungsregeln lesen
+3. `style.css` erweitern: Screens füllen Viewport, Background-Images füllen Container, Hotspot-Layer über dem Bild, Hover-Indikator, Modal-Größen (groß/mittel/klein), Overlay deckt alles ab
+4. Manuellen Check durchführen: Hover über Hotspot-Bereiche, Modals über DevTools sichtbar machen und Größen prüfen
 
 ## Last Updated
 
-Ready for first VS Code Copilot Agent planning run.
+2026-05-28 — Phase 2 abgeschlossen; Phase 3 bereit

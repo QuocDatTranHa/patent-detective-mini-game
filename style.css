@@ -1,0 +1,161 @@
+/* ─── Reset ──────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Utility: hide any element; !important ensures it overrides
+   component-level display rules (flex, block, etc.) */
+.hidden {
+  display: none !important;
+}
+
+/* ─── Full-viewport base ─────────────────── */
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ─── Screens ────────────────────────────── */
+/* All three screens are fixed and fill the viewport.
+   Only the active screen is shown; others carry .hidden. */
+#screen-start,
+#screen-game,
+#screen-win {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* ─── Background images ──────────────────── */
+/* z-index: -1 places the image behind all sibling content
+   within the screen's stacking context (created by position:fixed). */
+.screen-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ─── Menu button ────────────────────────── */
+#btn-menu {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  padding: 0.4rem 0.7rem;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+/* ─── Hotspot layer ──────────────────────── */
+/* Sits above the game background, below the menu button. */
+#hotspot-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* ─── Hotspots ───────────────────────────── */
+/* Invisible by default; sized 60×60 px as default hit area.
+   Phase 5 (JS) will inject item hotspots with inline top/left
+   percentages. Phase 6 will finalize safe hotspot position. */
+.hotspot {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  background: transparent;
+}
+
+/* Hover warning indicator via pseudo-element.
+   Uses hover-warning.svg; fades in on hover. */
+.hotspot::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  background: url('assets/ui/hover-warning.svg') center / contain no-repeat;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+
+.hotspot:hover::after {
+  opacity: 1;
+}
+
+/* Safe hotspot placeholder position — finalize in Phase 6. */
+#hotspot-safe {
+  top: 60%;
+  left: 50%;
+}
+
+/* ─── Overlay ────────────────────────────── */
+/* Covers the full viewport behind any open modal.
+   Blocks all background interaction when visible. */
+#overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 100;
+  cursor: default;
+}
+
+/* ─── Modals (shared) ────────────────────── */
+/* All modals are fixed-centered. z-index: 101 places them
+   above the overlay (100). */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 101;
+  background: #fff;
+  border-radius: 8px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  overflow-y: auto;
+}
+
+/* ─── Modal: Item (large) ────────────────── */
+#modal-item {
+  width: min(90vw, 820px);
+  max-height: 88vh;
+}
+
+#modal-item img {
+  max-width: 100%;
+  max-height: 60vh;
+  object-fit: contain;
+}
+
+/* ─── Modal: Safe (medium-to-large) ─────── */
+#modal-safe {
+  width: min(80vw, 520px);
+}
+
+/* ─── Modal: Menu (small) ────────────────── */
+#modal-menu {
+  width: min(60vw, 320px);
+}

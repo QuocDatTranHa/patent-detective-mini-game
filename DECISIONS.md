@@ -57,15 +57,103 @@ Consequences:
 * do not copy the full specification into other Markdown files
 * if behavior conflicts appear, `docs/game-spec.md` wins unless the user explicitly changes it
 
+### 4. Single-file implementation (one HTML, one CSS, one JS)
+
+Status: accepted (planning phase)
+
+Decision:
+The game is implemented as three files: `index.html`, `style.css`, `script.js`, plus a shallow `assets/` folder.
+
+Reason:
+Simplest portable structure. No build step, no module bundler, no extra complexity. Sufficient for the game scope.
+
+Consequences:
+
+* all screens and modals live in one HTML file
+* all state and interaction logic lives in one JS file
+* if the files grow large in a later session, splitting can be reconsidered — but only with user approval
+
+### 5. Percentage-based hotspot positioning
+
+Status: accepted (planning phase)
+
+Decision:
+All hotspot positions (top, left) are expressed as percentages of the game scene container, not fixed pixels.
+
+Reason:
+Hotspots must stay aligned to the background image across different browser window sizes on different laptops.
+
+Consequences:
+
+* hotspot coordinates must be re-verified whenever the background image proportions change
+* final coordinates should only be locked in after the placeholder background dimensions are chosen
+
+### 6. Centralized state object (`gameState`)
+
+Status: accepted (planning phase)
+
+Decision:
+All runtime state lives in a single `gameState` object. No `localStorage`, no global variables scattered through the file.
+
+Reason:
+Makes reset logic trivial: one function resets the object and re-renders from it. Easier to debug and verify.
+
+Consequences:
+
+* `reset()` must explicitly list every field it resets
+* language is the only field `reset()` must NOT reset
+
+### 7. Centralized string map for localization
+
+Status: accepted (planning phase)
+
+Decision:
+All visible UI strings are stored in a `STRINGS` object keyed by `'de'` / `'en'`. A `renderText()` helper applies them.
+
+Reason:
+Avoids scattering German/English conditionals throughout the code. Makes language-switch and future text changes easy.
+
+Consequences:
+
+* every user-visible string must be added to `STRINGS` — not hardcoded in HTML or event handlers
+
+### 8. Local SVG assets for flag icons and hover indicator
+
+Status: accepted (planning phase)
+
+Decision:
+Use small local SVG files (`flag-de.svg`, `flag-en.svg`, `hover-warning.svg`) in `assets/ui/`.
+
+Reason:
+SVG is portable, resolution-independent, and requires no internet access. Inline SVG is also acceptable as a fallback.
+
+Consequences:
+
+* no CDN or external image URLs for UI icons
+* if SVG files are replaced by final brand assets later, the `src` attribute paths stay the same
+
+### 9. Hotspot data defined in a single config array
+
+Status: accepted (planning phase)
+
+Decision:
+All ten item hotspots are described in a `HOTSPOTS` array in `script.js`. Each entry has position, clue image path, and localized title.
+
+Reason:
+Avoids repeating hotspot logic ten times. New items can be added or repositioned without touching modal or event handler code.
+
+Consequences:
+
+* hotspot rendering and event binding must loop over `HOTSPOTS`
+* adding a hotspot later means only adding one entry to the array
+
 ## Pending Decisions
 
-These should be decided during or after the implementation plan:
+These should be confirmed during implementation:
 
-* final file structure
-* asset folder structure
-* exact hotspot configuration format
-* exact state management structure
-* manual testing workflow
+* exact hotspot percentage coordinates (depends on placeholder background dimensions)
+* exact placeholder image sizes and aspect ratios
+* whether clue modals show a title line or image-only (spec says "optional title")
 
 ## Update Rule
 

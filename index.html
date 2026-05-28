@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patent Detective</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════
+       Screen 1: Start
+  ════════════════════════════════════════ -->
+  <div id="screen-start">
+    <img src="assets/backgrounds/start-placeholder.svg" alt="" aria-hidden="true" class="screen-bg">
+    <button id="btn-start" data-text="start">Start</button>
+    <button id="btn-language">
+      <img id="flag-icon" src="assets/ui/flag-de.svg" alt="Sprache wechseln">
+    </button>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       Screen 2: Game
+  ════════════════════════════════════════ -->
+  <div id="screen-game" class="hidden">
+    <img src="assets/backgrounds/game-placeholder.svg" alt="" aria-hidden="true" class="screen-bg">
+    <div id="hotspot-layer">
+      <!-- Item hotspots (0–9) are injected here dynamically by script.js in Phase 5 -->
+      <div id="hotspot-safe" class="hotspot"></div>
+    </div>
+    <button id="btn-menu">&#9776;</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       Screen 3: Win
+  ════════════════════════════════════════ -->
+  <div id="screen-win" class="hidden">
+    <img src="assets/backgrounds/win-placeholder.svg" alt="" aria-hidden="true" class="screen-bg">
+    <p id="win-message" data-text="win">Glückwunsch!</p>
+    <button id="btn-restart-win" data-text="restart">Spiel neustarten</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       Overlay — shared; blocks all background
+       interactions while any modal is open
+  ════════════════════════════════════════ -->
+  <div id="overlay" class="hidden"></div>
+
+  <!-- ═══════════════════════════════════════
+       Modal: Item (large)
+       Closes via btn-close only (NOT overlay)
+  ════════════════════════════════════════ -->
+  <div id="modal-item" class="modal hidden">
+    <img id="modal-item-image" src="" alt="">
+    <p id="modal-item-title"></p>
+    <button class="btn-close" data-text="close">Schließen</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       Modal: Safe (medium-to-large)
+       Closes via btn-close only (NOT overlay)
+  ════════════════════════════════════════ -->
+  <div id="modal-safe" class="modal hidden">
+    <div id="safe-digits">
+      <div class="digit-group">
+        <button class="arrow-up"   data-index="0">&#9650;</button>
+        <span   class="digit-display" data-index="0">0</span>
+        <button class="arrow-down" data-index="0">&#9660;</button>
+      </div>
+      <div class="digit-group">
+        <button class="arrow-up"   data-index="1">&#9650;</button>
+        <span   class="digit-display" data-index="1">0</span>
+        <button class="arrow-down" data-index="1">&#9660;</button>
+      </div>
+      <div class="digit-group">
+        <button class="arrow-up"   data-index="2">&#9650;</button>
+        <span   class="digit-display" data-index="2">0</span>
+        <button class="arrow-down" data-index="2">&#9660;</button>
+      </div>
+      <div class="digit-group">
+        <button class="arrow-up"   data-index="3">&#9650;</button>
+        <span   class="digit-display" data-index="3">0</span>
+        <button class="arrow-down" data-index="3">&#9660;</button>
+      </div>
+    </div>
+    <p id="safe-error" class="hidden" data-text="error">Der Code ist nicht korrekt.</p>
+    <button id="btn-confirm" data-text="confirm">Bestätigen</button>
+    <button class="btn-close" data-text="close">Schließen</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       Modal: Menu (small)
+       Closes via btn-close OR overlay click
+  ════════════════════════════════════════ -->
+  <div id="modal-menu" class="modal hidden">
+    <button id="btn-restart-menu" data-text="restart">Spiel neustarten</button>
+    <button class="btn-close" data-text="close">&#10005;</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

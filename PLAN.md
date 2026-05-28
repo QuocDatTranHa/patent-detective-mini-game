@@ -64,22 +64,22 @@ Keep such updates concise and avoid duplicating `docs/game-spec.md`.
 
 ## Planned Milestones
 
-1. Review all workflow files
-2. Review the full game specification
-3. Create the implementation plan
-4. Review and approve the implementation plan
-5. Create the final game file structure
-6. Implement the base screen structure
-7. Implement game state management
-8. Implement item hotspots
-9. Implement item clue modals
-10. Implement the safe modal and code logic
-11. Implement the menu and reset logic
-12. Add or prepare local placeholder assets
-13. Perform manual browser testing
-14. Update documentation and handover files
+1. [x] Review all workflow files
+2. [x] Review the full game specification
+3. [x] Create the implementation plan
+4. [ ] Review and approve the implementation plan
+5. [ ] **Phase 1** — Create final file and folder structure (index.html, style.css, script.js, assets/)
+6. [ ] **Phase 2** — Build static screen and modal markup
+7. [ ] **Phase 3** — Add base layout, modal sizing, hotspot styling
+8. [ ] **Phase 4** — Implement state model, screen flow, localization
+9. [ ] **Phase 5** — Implement item hotspot and clue modal system
+10. [ ] **Phase 6** — Implement safe modal and code validation
+11. [ ] **Phase 7** — Implement menu modal and full reset
+12. [ ] **Phase 8** — End-to-end browser verification and documentation update
 
-## Current Constraints
+See `TASKS.md` for the detailed per-phase checklists and manual test steps.
+
+## Next Recommended Step
 
 The project must remain simple, local, and portable.
 

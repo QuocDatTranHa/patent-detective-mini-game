@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <rect width="800" height="600" fill="#1f2d3d"/>
+  <text x="400" y="280" text-anchor="middle" fill="#6e8d8d" font-size="36" font-family="sans-serif" font-weight="bold">Hinweis 02</text>
+  <text x="400" y="340" text-anchor="middle" fill="#4c6d6d" font-size="20" font-family="sans-serif">Platzhalterbild</text>
+</svg>
