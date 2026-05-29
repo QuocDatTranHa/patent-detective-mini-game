@@ -155,6 +155,37 @@ These should be confirmed during implementation:
 * exact placeholder image sizes and aspect ratios
 * whether clue modals show a title line or image-only (spec says "optional title")
 
+### 10. Hotspot top/left coordinates refer to the center of the hit area
+
+Status: accepted (Phase 5)
+
+### 11. Overlay click closes all modals (spec override)
+
+Status: accepted (user decision — 2026-05-29)
+
+Decision:
+Clicking the overlay closes any open modal, not just the menu modal.
+
+Reason:
+User explicitly requested this during browser testing. Simpler and more intuitive UX.
+
+Consequences:
+
+* the overlay click handler calls `closeModal()` unconditionally
+* `docs/game-spec.md` originally restricted overlay-close to `#modal-menu` only — that rule no longer applies
+* future review prompts should not flag this as a spec violation
+
+Decision:
+The `top` and `left` percentage values in `HOTSPOTS` (and on `#hotspot-safe`) describe the **center** of the hotspot hit area, achieved via `transform: translate(-50%, -50%)` on `.hotspot`.
+
+Reason:
+Percentage coordinates that map to a center point are more intuitive for placing hotspots on the background image than top-left corner offsets.
+
+Consequences:
+
+* all hotspot positions must be defined as the center of the desired hit area
+* `transform` must not be overridden on individual hotspots unless centering is intentionally changed
+
 ## Update Rule
 
 When a new decision is made, add a short entry with:

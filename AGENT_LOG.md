@@ -4,6 +4,111 @@ This file records completed agent work in chronological order.
 
 Keep entries concise.
 
+## User-confirmed behaviour change — 2026-05-29
+
+Status: completed
+
+Files changed:
+
+- `script.js` — overlay click handler changed from menu-only guard to unconditional `closeModal()` call
+- `DECISIONS.md` — Decision 11 added to record this as an accepted spec override
+
+Manual check: user confirmed in browser — clicking outside any modal closes it.
+
+Not tested: no additional regression testing performed.
+
+---
+
+## Phase 7 — 2026-05-29
+
+Status: completed
+
+Files changed:
+
+- `script.js` — `openModal('menu')` branch; overlay click handler (closes menu modal only); `#modal-menu .btn-close` → `closeModal()`; `reset()` (delegates cleanup to `closeModal()`, resets `safeDigits`, calls `showScreen('start')` + `renderText()`); `#btn-restart-menu` and `#btn-restart-win` → `reset()`; `#btn-menu` → `openModal('menu')`
+- `style.css` — `#safe-digits { display: flex; flex-direction: row }` (digits left-to-right); `.digit-group { display: flex; flex-direction: column }` (arrow/digit/arrow stacked); `#safe-error.hidden { display: block !important; visibility: hidden }` (reserves layout space, prevents modal height shift)
+- `TASKS.md` — Phase 7 tasks checked off
+
+Manual check: user confirmed in browser — safe modal arrows/confirm/close work; wrong-code error displays correctly with stable modal height; menu button and menu modal buttons work.
+
+Not tested: explicit restart flow verification (mid-game and Win screen); overlay-click on menu modal; full end-to-end playthrough.
+
+Next step: Phase 8 — End-to-end browser verification and docs update (requires final assets first)
+
+---
+
+## Phase 6 — 2026-05-29
+
+Status: completed
+
+Files changed:
+
+- `script.js` — `openModal('safe')` branch (calls `renderDigits()`, clears `#safe-error`, shows `#modal-safe`); `renderDigits()` (syncs `.digit-display` spans from `gameState.safeDigits`); event delegation on `#safe-digits` for up/down arrows with cyclic wrap; confirm button validates against `[9,1,2,6]`, correct → `showScreen('win')` + `closeModal()`, wrong → show `#safe-error` for 1500 ms with timer restart on repeat; `#hotspot-safe` click handler; `#modal-safe .btn-close` handler; bug fix: `#safe-error` reset to hidden on every open
+- `TASKS.md` — Phase 6 tasks checked off
+- `HANDOVER.md` — updated to reflect Phase 6 complete
+
+Manual check: not performed in live browser.
+
+Not tested: digit cycling edge cases, timer restart UX, safe modal reopen after error — pending user browser verification.
+
+Next step: Phase 7 — Menu modal and full reset
+
+---
+
+## Phase 5 — 2026-05-29
+
+Status: completed
+
+Files changed:
+
+- `script.js` — `HOTSPOTS` array (10 entries, placeholder positions + `.svg` clue paths + bilingual titles), `openModal('item', index)` (populates image+alt+title, shows modal+overlay, guards against double-open), `closeModal()` (hides all `.modal` generically, cancels `safeErrorTimer`, clears overlay+state), `renderHotspots()` (injects 10 `.hotspot` divs with click handlers into `#hotspot-layer`), close button event listener for `#modal-item`
+- `style.css` — `transform: translate(-50%, -50%)` added to `.hotspot`; removed redundant transform from `#hotspot-safe`
+- `TASKS.md` — Phase 5 tasks checked off
+
+Manual check: not performed in live browser this session.
+
+Nicht getestet: Hotspot-Positionen sind Platzhalter; Clue-Bilder sind Platzhalter-SVGs.
+
+Nächster Schritt: Phase 6 — Safe modal and code validation
+
+---
+
+## Phase 4 — 2026-05-29
+
+Status: completed
+
+Files changed:
+
+- `script.js` — `gameState` (6 Felder), `STRINGS` (de/en), `renderText()` (aktualisiert alle `[data-text]`-Elemente, Flag-Icon src+alt, `<html lang>`), `showScreen(name)`, Event-Listener für Start-Button und Sprachbutton, Init-Aufruf `renderText()`
+- `style.css` — `#btn-language` (position absolute, unten rechts), `#flag-icon` (48 px)
+- `TASKS.md` — Phase 4 tasks checked off
+
+Manual check: nicht im Live-Browser getätiget.
+
+Nicht getestet: Sprachumschalter, Start-Button-Navigation.
+
+Nächster Schritt: Phase 5 — Item hotspot and clue modal system
+
+---
+
+## Phase 3 — 2026-05-29
+
+Status: completed
+
+Files changed:
+
+- `style.css` — vollständiges Layout: Screens (`position: fixed; inset: 0`), `.screen-bg` (`z-index: -1`, `object-fit: cover`), `#hotspot-layer` (`position: absolute; inset: 0; z-index: 1`), `.hotspot` (60×60 px, `cursor: pointer`, `::after` Hover-Indikator via `hover-warning.svg`), `#overlay` (`position: fixed; z-index: 100`), `.modal` (zentriert via transform, `z-index: 101`), Modal-Größen für Item/Safe/Menu, `#btn-menu`, `#btn-language`
+- `index.html` — `class="hotspot"` zu `#hotspot-safe` hinzugefügt
+- `TASKS.md` — Phase 3 tasks checked off
+
+Manual check: nicht im Live-Browser getätigt.
+
+Nicht getestet: Hover-Indikator, Modal-Größen in DevTools, Resize-Verhalten.
+
+Nächster Schritt: Phase 4 — State model, screen flow, localization
+
+---
+
 ## Workflow-Optimierung — 2026-05-28
 
 Status: completed

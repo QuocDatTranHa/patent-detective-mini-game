@@ -61,6 +61,24 @@ html, body {
   z-index: 2;
 }
 
+/* ─── Language toggle button ─────────────── */
+/* Positioned bottom-right of the Start screen (spec §4). */
+#btn-language {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+#flag-icon {
+  width: 48px;
+  height: auto;
+  display: block;
+}
+
 /* ─── Hotspot layer ──────────────────────── */
 /* Sits above the game background, below the menu button. */
 #hotspot-layer {
@@ -71,14 +89,15 @@ html, body {
 
 /* ─── Hotspots ───────────────────────────── */
 /* Invisible by default; sized 60×60 px as default hit area.
-   Phase 5 (JS) will inject item hotspots with inline top/left
-   percentages. Phase 6 will finalize safe hotspot position. */
+   transform centers the hit area on the top/left percentage coords.
+   Phase 5 (JS) injects item hotspots with inline top/left percentages. */
 .hotspot {
   position: absolute;
   width: 60px;
   height: 60px;
   cursor: pointer;
   background: transparent;
+  transform: translate(-50%, -50%);
 }
 
 /* Hover warning indicator via pseudo-element.
@@ -153,6 +172,27 @@ html, body {
 /* ─── Modal: Safe (medium-to-large) ─────── */
 #modal-safe {
   width: min(80vw, 520px);
+  max-height: 80vh;
+}
+
+/* Keep layout space reserved so the modal height doesn't
+   change when the error message appears or disappears. */
+#safe-error.hidden {
+  display: block !important;
+  visibility: hidden;
+}
+
+#safe-digits {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.digit-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 /* ─── Modal: Menu (small) ────────────────── */

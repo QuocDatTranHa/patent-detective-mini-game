@@ -72,16 +72,16 @@ Note: `data-text` attributes mark all localizable strings (keys: `start`, `resta
 
 Goal: all screens look correct on a typical laptop browser; hotspots and modals are positioned properly.
 
-- [ ] Style screens to fill the full viewport; only one visible at a time
-- [ ] Background images fill their screen container
-- [ ] Hotspot layer sits on top of the game background image using absolute/percentage positioning
-- [ ] Each hotspot has a `cursor: pointer` and is otherwise invisible
-- [ ] Hover indicator (warning triangle) appears on hotspot hover and disappears on mouse leave
-- [ ] `#modal-item` takes up most of the viewport (large)
-- [ ] `#modal-safe` is medium-to-large and centered
-- [ ] `#modal-menu` is small and centered
-- [ ] Overlay covers the full screen behind the modal
-- [ ] Resize browser to several window sizes and confirm layout does not break
+- [x] Style screens to fill the full viewport; only one visible at a time
+- [x] Background images fill their screen container
+- [x] Hotspot layer sits on top of the game background image using absolute/percentage positioning
+- [x] Each hotspot has a `cursor: pointer` and is otherwise invisible
+- [x] Hover indicator (warning triangle) appears on hotspot hover and disappears on mouse leave
+- [x] `#modal-item` takes up most of the viewport (large)
+- [x] `#modal-safe` is medium-to-large and centered
+- [x] `#modal-menu` is small and centered
+- [x] Overlay covers the full screen behind the modal
+- [x] Resize browser to several window sizes and confirm layout does not break
 
 Manual check: hover over each hotspot area — warning indicator appears/disappears; modals show at correct sizes when forced visible via DevTools.
 
@@ -91,14 +91,14 @@ Manual check: hover over each hotspot area — warning indicator appears/disappe
 
 Goal: the game starts on the Start screen in German and navigates correctly; language toggle works.
 
-- [ ] Define `gameState` object (`screen`, `language`, `openModal`, `safeDigits`, `safeErrorTimer`, `activeItemIndex`)
-- [ ] Define `STRINGS` map for all visible de/en text
-- [ ] Implement `renderText()` to apply `STRINGS[gameState.language]` to all visible text nodes
-- [ ] Implement `showScreen(name)` to switch between `start`, `game`, `win`
-- [ ] Wire Start button → `showScreen('game')`
-- [ ] Wire language toggle → flip `gameState.language`, call `renderText()`, update flag image
-- [ ] Language toggle only visible on Start screen
-- [ ] Call `renderText()` on page load
+- [x] Define `gameState` object (`screen`, `language`, `openModal`, `safeDigits`, `safeErrorTimer`, `activeItemIndex`)
+- [x] Define `STRINGS` map for all visible de/en text
+- [x] Implement `renderText()` to apply `STRINGS[gameState.language]` to all visible text nodes
+- [x] Implement `showScreen(name)` to switch between `start`, `game`, `win`
+- [x] Wire Start button → `showScreen('game')`
+- [x] Wire language toggle → flip `gameState.language`, call `renderText()`, update flag image
+- [x] Language toggle only visible on Start screen
+- [x] Call `renderText()` on page load
 
 Manual check: load game in German, toggle to English (all text changes, flag switches), toggle back, click Start and confirm Game screen appears.
 
@@ -108,13 +108,13 @@ Manual check: load game in German, toggle to English (all text changes, flag swi
 
 Goal: all ten hotspots open correct clue modals; single-modal rule enforced; overlay blocks background.
 
-- [ ] Define `HOTSPOTS` array (10 entries with percentage position, clue image path, localized title)
-- [ ] Render hotspot elements dynamically from `HOTSPOTS`
-- [ ] Implement `openModal('item', index)` — shows `#modal-item`, populates clue image and title, activates overlay
-- [ ] Implement `closeModal()` — hides modal, deactivates overlay, clears `gameState.openModal`
-- [ ] Wire close button inside `#modal-item` to `closeModal()`
-- [ ] Block all hotspot clicks and hover effects while any modal is open
-- [ ] Clicking the overlay does NOT close `#modal-item`
+- [x] Define `HOTSPOTS` array (10 entries with percentage position, clue image path, localized title)
+- [x] Render hotspot elements dynamically from `HOTSPOTS`
+- [x] Implement `openModal('item', index)` — shows `#modal-item`, populates clue image and title, activates overlay
+- [x] Implement `closeModal()` — hides modal, deactivates overlay, clears `gameState.openModal`
+- [x] Wire close button inside `#modal-item` to `closeModal()`
+- [x] Block all hotspot clicks and hover effects while any modal is open
+- [x] Clicking the overlay does NOT close `#modal-item`
 
 Manual check: click each of the ten hotspots; confirm correct clue content, overlay blocks background, close button works, clicking outside does nothing.
 
@@ -124,15 +124,15 @@ Manual check: click each of the ten hotspots; confirm correct clue content, over
 
 Goal: safe modal works with cyclic digits; wrong code shows 1.5 s error without clearing digits; correct code opens Win screen.
 
-- [ ] Wire safe hotspot → `openModal('safe')`
-- [ ] Render 4 digit boxes from `gameState.safeDigits`
-- [ ] Up arrow: increment digit cyclically (9 → 0), update display
-- [ ] Down arrow: decrement digit cyclically (0 → 9), update display
-- [ ] Confirm button: compare digits against `[9,1,2,6]`
-- [ ] Wrong code: show error text, auto-hide after 1500 ms, keep modal open, keep digits
-- [ ] If error already visible when confirm pressed again: restart the 1500 ms timer cleanly
-- [ ] Correct code: call `showScreen('win')`, close modal
-- [ ] Close button: `closeModal()`; overlay click does NOT close safe modal
+- [x] Wire safe hotspot → `openModal('safe')`
+- [x] Render 4 digit boxes from `gameState.safeDigits`
+- [x] Up arrow: increment digit cyclically (9 → 0), update display
+- [x] Down arrow: decrement digit cyclically (0 → 9), update display
+- [x] Confirm button: compare digits against `[9,1,2,6]`
+- [x] Wrong code: show error text, auto-hide after 1500 ms, keep modal open, keep digits
+- [x] If error already visible when confirm pressed again: restart the 1500 ms timer cleanly
+- [x] Correct code: call `showScreen('win')`, close modal
+- [x] Close button: `closeModal()`; overlay click does NOT close safe modal
 
 Manual check: enter wrong code twice in a row; confirm error reappears cleanly. Enter `9 1 2 6` and confirm Win screen appears.
 
@@ -142,12 +142,12 @@ Manual check: enter wrong code twice in a row; confirm error reappears cleanly. 
 
 Goal: menu modal opens/closes correctly; restart from menu and from Win screen both fully reset game state.
 
-- [ ] Wire menu button → `openModal('menu')`
-- [ ] Overlay click closes `#modal-menu` (this is the only modal where overlay-click closes)
-- [ ] Close button inside `#modal-menu` calls `closeModal()`
-- [ ] Implement `reset()`: close modals, clear overlay, reset `safeDigits` to `[0,0,0,0]`, clear `safeErrorTimer`, set `screen` to `'start'`, call `renderText()` — do NOT reset `language`
-- [ ] Wire restart button in `#modal-menu` → `reset()`
-- [ ] Wire restart button in `#screen-win` → `reset()`
+- [x] Wire menu button → `openModal('menu')`
+- [x] Overlay click closes `#modal-menu` (this is the only modal where overlay-click closes)
+- [x] Close button inside `#modal-menu` calls `closeModal()`
+- [x] Implement `reset()`: close modals, clear overlay, reset `safeDigits` to `[0,0,0,0]`, clear `safeErrorTimer`, set `screen` to `'start'`, call `renderText()` — do NOT reset `language`
+- [x] Wire restart button in `#modal-menu` → `reset()`
+- [x] Wire restart button in `#screen-win` → `reset()`
 
 Manual check: restart from menu mid-game; confirm Start screen, German/English preserved, safe reset to 0000. Restart from Win screen; same checks.
 
