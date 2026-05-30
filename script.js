@@ -61,9 +61,7 @@ function renderText() {
     ? 'assets/ui/flag-de.svg'
     : 'assets/ui/flag-en.svg';
   const newAlt = gameState.language === 'de' ? 'Deutsch' : 'English';
-  if (flagIcon.src.endsWith(newSrc)) {
-    flagIcon.src = '';
-  }
+  if (flagIcon.getAttribute('src') === newSrc) return;
   flagIcon.src = newSrc;
   flagIcon.alt = newAlt;
   document.documentElement.lang = gameState.language;

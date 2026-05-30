@@ -1,14 +1,64 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30">
-  <!-- Dark navy background -->
-  <rect width="60" height="30" fill="#020B22"/>
-  <!-- Diagonal crosses: neon cyan (St. Andrew / St. Patrick) -->
-  <path d="M0,0 L60,30 M60,0 L0,30" stroke="#00E5FF" stroke-width="8"/>
-  <!-- Diagonal red offset (St. Patrick) -->
-  <path d="M0,0 L60,30 M60,0 L0,30" stroke="#FF0044" stroke-width="5"/>
-  <!-- Centre cross: neon cyan (St. George white) -->
-  <path d="M30,0 V30 M0,15 H60" stroke="#00E5FF" stroke-width="12"/>
-  <!-- Centre cross: neon red (St. George red) -->
-  <path d="M30,0 V30 M0,15 H60" stroke="#FF0044" stroke-width="7"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 36">
+  <defs>
+    <!-- Upper-left triangle: US flag -->
+    <clipPath id="clip-us">
+      <polygon points="0,0 60,0 0,36"/>
+    </clipPath>
+    <!-- Lower-right triangle: Union Jack -->
+    <clipPath id="clip-uk">
+      <polygon points="60,0 60,36 0,36"/>
+    </clipPath>
+  </defs>
+
+  <!-- ── US FLAG (upper-left) ── -->
+  <g clip-path="url(#clip-us)">
+    <!-- Red stripes background -->
+    <rect width="60" height="36" fill="#FF0033"/>
+    <!-- White stripes (6 of them; stripe height = 36/13 ≈ 2.77) -->
+    <rect y="2.77"  width="60" height="2.77" fill="#EEEEEE"/>
+    <rect y="8.31"  width="60" height="2.77" fill="#EEEEEE"/>
+    <rect y="13.85" width="60" height="2.77" fill="#EEEEEE"/>
+    <rect y="19.38" width="60" height="2.77" fill="#EEEEEE"/>
+    <rect y="24.92" width="60" height="2.77" fill="#EEEEEE"/>
+    <rect y="30.46" width="60" height="2.77" fill="#EEEEEE"/>
+    <!-- Blue canton (40% width × 7 stripes tall) -->
+    <rect width="24" height="19.38" fill="#020B22"/>
+    <!-- Stars: 6 alternating rows of 4 and 3 (neon cyan dots) -->
+    <circle cx="3"  cy="2.5"  r="0.9" fill="#00E5FF"/>
+    <circle cx="9"  cy="2.5"  r="0.9" fill="#00E5FF"/>
+    <circle cx="15" cy="2.5"  r="0.9" fill="#00E5FF"/>
+    <circle cx="21" cy="2.5"  r="0.9" fill="#00E5FF"/>
+    <circle cx="6"  cy="5.5"  r="0.9" fill="#00E5FF"/>
+    <circle cx="12" cy="5.5"  r="0.9" fill="#00E5FF"/>
+    <circle cx="18" cy="5.5"  r="0.9" fill="#00E5FF"/>
+    <circle cx="3"  cy="8.5"  r="0.9" fill="#00E5FF"/>
+    <circle cx="9"  cy="8.5"  r="0.9" fill="#00E5FF"/>
+    <circle cx="15" cy="8.5"  r="0.9" fill="#00E5FF"/>
+    <circle cx="21" cy="8.5"  r="0.9" fill="#00E5FF"/>
+    <circle cx="6"  cy="11.5" r="0.9" fill="#00E5FF"/>
+    <circle cx="12" cy="11.5" r="0.9" fill="#00E5FF"/>
+    <circle cx="18" cy="11.5" r="0.9" fill="#00E5FF"/>
+    <circle cx="3"  cy="14.5" r="0.9" fill="#00E5FF"/>
+    <circle cx="9"  cy="14.5" r="0.9" fill="#00E5FF"/>
+    <circle cx="15" cy="14.5" r="0.9" fill="#00E5FF"/>
+    <circle cx="21" cy="14.5" r="0.9" fill="#00E5FF"/>
+    <circle cx="6"  cy="17.5" r="0.9" fill="#00E5FF"/>
+    <circle cx="12" cy="17.5" r="0.9" fill="#00E5FF"/>
+    <circle cx="18" cy="17.5" r="0.9" fill="#00E5FF"/>
+  </g>
+
+  <!-- ── UNION JACK (lower-right) ── -->
+  <g clip-path="url(#clip-uk)">
+    <!-- Dark navy background -->
+    <rect width="60" height="36" fill="#020B22"/>
+    <!-- Diagonal crosses: neon cyan then neon red (scaled to 60×36) -->
+    <path d="M0,0 L60,36 M60,0 L0,36" stroke="#00E5FF" stroke-width="9.6"/>
+    <path d="M0,0 L60,36 M60,0 L0,36" stroke="#FF0044" stroke-width="6"/>
+    <!-- Centre cross: neon cyan then neon red -->
+    <path d="M30,0 V36 M0,18 H60" stroke="#00E5FF" stroke-width="14.4"/>
+    <path d="M30,0 V36 M0,18 H60" stroke="#FF0044" stroke-width="8.4"/>
+  </g>
+
   <!-- Neon cyan frame -->
-  <rect width="60" height="30" fill="none" stroke="#00F0FF" stroke-width="2"/>
+  <rect width="60" height="36" fill="none" stroke="#00F0FF" stroke-width="2"/>
 </svg>

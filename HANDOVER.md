@@ -4,9 +4,9 @@ This file gives the next coding agent the current project status and recommended
 
 ## Current Status
 
-**Phase 8 — in progress**
+**Phase 9 — not started**
 
-Major UI overhaul completed this session. All three modals are now image-based with neon Tron styling. Safe modal uses a background image with invisible hitboxes over drawn arrows, digit boxes, and ENTER button. Win screen restart button shows localized neon text. Language toggle is now global. Several spec decisions were updated. Final clue artwork and full playthrough remain the last blockers.
+Phase 8 is complete. Full end-to-end playthrough confirmed by user — all game mechanics work as intended. All 10 final clue PNGs are in place. The only remaining work is adding text content for the white areas in the popup windows (item modals and any other modals) in both German and English, followed by UI adjustments to make the layout fit the text cleanly.
 
 ## Completed So Far
 
@@ -59,25 +59,21 @@ Major UI overhaul completed this session. All three modals are now image-based w
 
 ## What Was Not Tested
 
-- Full end-to-end playthrough (start → all 11 hotspots → safe wrong code → correct code → win → restart)
-- Hover indicators on all 11 elements
-- Language persistence after restart
-- Double-click guard (two modals)
-- Browser resize / usability on various laptop sizes
-- DevTools console check for JS errors on load
+- DevTools console check for JS errors on page load (not yet done)
 - Portability (copy to another machine)
-- All 10 final clue images (most are still placeholders)
+- Popup text content (Phase 9 — not yet implemented)
 
 ## Known Issues
 
-- 9 of 10 clue images are still placeholder PNGs — final artwork needed
 - Arrow hitbox left positions (`41.5%, 50.7%, 59.7%, 68.9%`) are slightly offset from digit display positions (`42.4%, 51.0%, 59.4%, 67.9%`) — user chose not to fix; arrows are working
+- White text areas in popup windows have no content yet — Phase 9 work
 
 ## Next Recommended Step
 
-1. Drop in remaining final clue PNGs (9 files — see HOTSPOTS array in `script.js` for filenames)
-2. Run full end-to-end playthrough against the Phase 8 acceptance checklist in `TASKS.md`
-3. Check DevTools console on load for JS errors
+1. Identify each white text area in the popup windows (open each modal in the browser and note what areas need text)
+2. Write German and English copy for each area
+3. Add entries to `STRINGS` in `script.js` and wire to `renderText()`
+4. Adjust modal layout as needed to fit text
 4. Update `HANDOVER.md` and `AGENT_LOG.md` after playthrough
 
 ## Important Constraints
