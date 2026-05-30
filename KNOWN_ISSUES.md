@@ -6,24 +6,21 @@ Keep entries concise.
 
 ## Current Status
 
-Phase 8 in progress. Core implementation is complete and browser-verified for basic flow. The following items remain open.
+Phase 9 not started. Core game mechanics are complete and browser-verified via full end-to-end playthrough. The following items remain open.
 
 ## Open Items
 
-### 1. Clue images are placeholder PNGs
+### 1. White text areas in popup windows have no content
 
-All 10 files in `assets/clues/` are auto-generated dark placeholders.
-Full playthrough cannot be evaluated until final artwork is in place.
-**Next step:** replace each file with final image — filenames must match exactly:
-`game-instructor.png`, `easter-egg.png`, `r-clue-keypad.png`, `r-clue-energy.png`,
-`r-clue-chair.png`, `i-clue-microscope.png`, `r-clue-wheel.png`, `i-clue-3dprinter.png`,
-`i-clue-measure.png`, `i-clue-whiteboard.png`.
+Each item modal (and possibly safe/menu modals) has a white area intended for explanatory text.
+No German or English text has been written or wired up yet.
+**Next step:** write copy for each popup, add to `STRINGS` in `script.js`, wire to `renderText()`.
+UI layout adjustments will likely be needed after text is in place.
 
-### 2. Full playthrough not yet run
+### 2. Full playthrough not yet confirmed with DevTools console open
 
-No end-to-end test has been completed with the final background images.
-Hotspot positions were measured via browser click logger but have not been
-confirmed by clicking all 11 elements and verifying correct modal opens.
+No JS error check has been run. May reveal silent errors not visible in normal play.
+**Next step:** open `index.html` in Chrome, press F12, check Console tab for red errors.
 
 ## Known Risks
 

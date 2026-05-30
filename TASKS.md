@@ -173,7 +173,7 @@ These regressions appeared after the background PNGs were swapped in. Both must 
 - [x] Replace `assets/backgrounds/start-placeholder.svg` with final start screen PNG
 - [x] Replace `assets/backgrounds/game-placeholder.svg` with final game screen PNG
 - [x] Replace `assets/backgrounds/win-placeholder.svg` with final win screen PNG
-- [ ] Replace placeholder clue PNGs in `assets/clues/` with final artwork (10 files — see filenames in HOTSPOTS array)
+- [x] Replace placeholder clue PNGs in `assets/clues/` with final artwork (10 files — see filenames in HOTSPOTS array)
 - [x] Update background `src` paths in `index.html` (3 occurrences) to match actual filenames and extension
 - [x] Update `clue` paths in `HOTSPOTS` array in `script.js` to match actual filenames and extension
 
@@ -203,19 +203,19 @@ Hotspot positions are currently estimated in `script.js` (HOTSPOTS array) and `s
 
 #### Playthrough verification
 
-- [ ] Full manual playthrough: start → game → all 10 hotspots → menu restart → start → game → safe (wrong codes) → correct code → win screen → restart
-- [ ] Verify hover indicators appear on all 11 clickable elements
-- [ ] Verify language persists after restart
-- [ ] Verify double-click does not open two modals
-- [ ] Resize browser; confirm usability on typical laptop window sizes
+- [x] Full manual playthrough: start → game → all 10 hotspots → menu restart → start → game → safe (wrong codes) → correct code → win screen → restart
+- [x] Verify hover indicators appear on all 11 clickable elements
+- [x] Verify language persists after restart
+- [x] Verify double-click does not open two modals
+- [x] Resize browser; confirm usability on typical laptop window sizes
 
 #### Documentation
 
-- [ ] Update `HANDOVER.md` with what was implemented, what was tested, and what remains
-- [ ] Update `AGENT_LOG.md` with completed work
-- [ ] Update `TASKS.md` to mark completed items
+- [x] Update `HANDOVER.md` with what was implemented, what was tested, and what remains
+- [x] Update `AGENT_LOG.md` with completed work
+- [x] Update `TASKS.md` to mark completed items
 - [ ] Update `README.md` — include section on agent workflow showing the prompt sequence: `start-session` → `implement-next-task` → `review-work` → `update-handover`
-- [ ] Update `ARCHITECTURE.md` to reflect `.svg` → `.png` asset change (done this session)
+- [x] Update `ARCHITECTURE.md` to reflect `.svg` → `.png` asset change (done this session)
 
 Manual check: full playthrough in at least one modern browser (Chrome or Firefox) starting from `index.html` with no local server.
 
@@ -225,19 +225,40 @@ Manual check: full playthrough in at least one modern browser (Chrome or Firefox
 
 The implementation is not complete until all of these pass:
 
-- [ ] Game starts on Start Screen in German
-- [ ] Playable by opening `index.html` directly — no installation, internet, or build step
-- [ ] Language toggle on Start Screen works (de ↔ en); flag icon reflects current language
-- [ ] Language toggle not visible on Game or Win screen
-- [ ] Game Screen has exactly 10 clickable item hotspots
-- [ ] Hover indicator appears on hotspot hover; disappears on mouse leave
-- [ ] Hover indicators disabled while any modal is open
-- [ ] Item modals open and close correctly; overlay blocks background; overlay click closes any modal (Decision 11)
-- [ ] Only one modal can be open at a time
-- [ ] Safe modal: digits cycle 0–9 in both directions
-- [ ] Safe modal: wrong code shows error for ~1.5 s, keeps modal open, keeps digits
-- [ ] Safe modal: correct code `9 1 2 6` switches to Win Screen
-- [ ] Menu modal: overlay click closes it; close button closes it; restart button resets game
-- [ ] Win Screen restart button resets game
-- [ ] Restart fully resets state (all modals closed, safe = 0000, error cleared, overlay off, Start screen shown)
-- [ ] Language is preserved across restart
+- [x] Game starts on Start Screen in German
+- [x] Playable by opening `index.html` directly — no installation, internet, or build step
+- [x] Language toggle on Start Screen works (de ↔ en); flag icon reflects current language
+- [x] Language toggle not visible on Game or Win screen
+- [x] Game Screen has exactly 10 clickable item hotspots
+- [x] Hover indicator appears on hotspot hover; disappears on mouse leave
+- [x] Hover indicators disabled while any modal is open
+- [x] Item modals open and close correctly; overlay blocks background; overlay click closes any modal (Decision 11)
+- [x] Only one modal can be open at a time
+- [x] Safe modal: digits cycle 0–9 in both directions
+- [x] Safe modal: wrong code shows error for ~1.5 s, keeps modal open, keeps digits
+- [x] Safe modal: correct code `9 1 2 6` switches to Win Screen
+- [x] Menu modal: overlay click closes it; close button closes it; restart button resets game
+- [x] Win Screen restart button resets game
+- [x] Restart fully resets state (all modals closed, safe = 0000, error cleared, overlay off, Start screen shown)
+- [x] Language is preserved across restart
+
+---
+
+## Phase 9 — Popup text content and UI adjustments
+
+Goal: each popup window (item modals and any other modals with white text areas) displays the correct German and English text; layout is adjusted to fit the text cleanly.
+
+### Text content
+
+- [ ] Identify all white text areas in popup windows (item modals, safe modal, menu modal, etc.) that are missing text
+- [ ] Write German and English copy for each white area and add it to `STRINGS` in `script.js`
+- [ ] Wire each text node to `renderText()` so language toggle updates it
+- [ ] Confirm all text displays correctly in both languages
+
+### UI adjustments (after text is in place)
+
+- [ ] Check text does not overflow or overlap image content in each modal
+- [ ] Adjust font size, padding, or layout as needed
+- [ ] Browser-confirm all modals look correct at typical laptop window sizes
+
+Manual check: open each popup in both languages and confirm text is visible, readable, and correctly translated.
