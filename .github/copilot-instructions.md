@@ -72,6 +72,7 @@ After implementation sessions:
 - Update `TASKS.md`.
 - Update `AGENT_LOG.md`.
 - Update `DECISIONS.md` if an architectural decision was made or changed.
+- Do not add dates, timestamps, or "Last Updated" lines to any file.
 
 ## Game Rules
 

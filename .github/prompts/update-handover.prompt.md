@@ -40,13 +40,11 @@ Replace the current content with:
 - **What Was Not Tested**: be honest about untested behavior
 - **Known Issues**: anything fragile or incomplete
 - **Next Recommended Step**: which phase is next and what the first task is
-- **Last Updated**: today's date
 
 ### `AGENT_LOG.md`
 
 Add a new entry at the top with:
 
-- Date
 - Phase completed
 - Files changed
 - Summary of what was implemented
@@ -62,6 +60,7 @@ Do not add decisions that were already captured during planning.
 ## Rules
 
 - Keep all updates concise.
+- Do not add dates, timestamps, or "Last Updated" lines to any file.
 - Do not duplicate content from `docs/game-spec.md`.
 - Do not fabricate test results — only report what was actually verified.
 

@@ -161,7 +161,7 @@ Status: accepted (Phase 5)
 
 ### 11. Overlay click closes all modals (spec override)
 
-Status: accepted (user decision — 2026-05-29)
+Status: accepted (user decision)
 
 Decision:
 Clicking the overlay closes any open modal, not just the menu modal.
@@ -185,6 +185,99 @@ Consequences:
 
 * all hotspot positions must be defined as the center of the desired hit area
 * `transform` must not be overridden on individual hotspots unless centering is intentionally changed
+
+### 12. Language toggle visible on all screens (spec override)
+
+Status: accepted (user decision)
+
+Decision:
+The language flag button is visible and functional on all three screens, not just the Start screen.
+
+Reason:
+User requested this during implementation. Better UX — player can switch language at any point.
+
+Consequences:
+
+* `#btn-language` is no longer inside `#screen-start`; it lives in a dedicated `#ui-layer` div that matches screen dimensions and is `position: fixed` at `z-index: 102`
+* `docs/game-spec.md` section 4 and 5 updated accordingly
+* future review prompts should not flag this as a spec violation
+
+### 13. 11 clickable elements on the Game Screen (spec override)
+
+Status: accepted (user decision)
+
+Decision:
+The game has 11 clickable elements, not 10. The detective/gamemaster consists of two hitboxes (body + speech bubble) that both open the same modal, counting as one logical element.
+
+The 11 elements are:
+1. Detective / Gamemaster (body + bubble hitbox)
+2. Q-Monitor (Easter Egg)
+3. Security Keypad (relevant clue)
+4. Energy Module (relevant clue)
+5. Chair (relevant clue)
+6. Microscope (irrelevant clue)
+7. Tool Wagon (relevant clue)
+8. 3D Printer (irrelevant clue)
+9. Measuring Device (irrelevant clue)
+10. Whiteboard (irrelevant clue)
+11. Safe (body + bubble hitbox) — opens Tresor-Modal, not item modal
+
+Reason:
+The background image has 11 distinct neon-highlighted interactive objects. The detective and safe each have a speech bubble that acts as an additional click area for the same modal.
+
+Consequences:
+
+* `HOTSPOTS` array has 11 entries; entries with `linkedTo` share a modal with their paired entry
+* `docs/game-spec.md` sections 6 and 7 updated accordingly
+* future review prompts should not flag the 11-entry count as a spec violation
+
+### 14. Modal image fills full window; no title bar or padding
+
+Status: accepted (user decision)
+
+Decision:
+All item modals (`#modal-item`, `#modal-safe`, `#modal-menu`) have no padding. The background image fills the entire rounded window. The item title line is hidden.
+
+Reason:
+User requested image-first presentation. Text title was redundant given the clue images.
+
+Consequences:
+
+* `#modal-item` is `display: block`, `aspect-ratio: 16/9`, `padding: 0`
+* `#modal-safe` is `aspect-ratio: 16/9`, `padding: 0`; digit controls are absolutely positioned
+* `#modal-menu` is `aspect-ratio: 1/1`, `padding: 0`; restart button is an invisible hitbox
+* close button is `position: absolute` top-right on all modals
+
+### 15. Close button is a neon-red Tron-style X; no text label
+
+Status: accepted (user decision)
+
+Decision:
+All `.btn-close` buttons show only `✕`, styled with a dark background, red neon border and glow. No language-dependent text.
+
+Reason:
+Fits the Tron Legacy visual theme. Icon is universally understood.
+
+Consequences:
+
+* `data-text="close"` removed from all `.btn-close` elements
+* `close` key in `STRINGS` remains but is unused in the DOM
+
+### 16. Safe modal uses image background with absolute-positioned hitboxes
+
+Status: accepted (user decision)
+
+Decision:
+The Tresor-Modal shows a background image (`safe-background.png`). Up/down arrows, ENTER button, and digit displays are all invisible/absolute-positioned elements overlaid on the drawn image.
+
+Reason:
+User provided a custom safe artwork with drawn arrows, digit boxes, and an ENTER button. HTML controls are replaced by transparent hitboxes aligned to the image.
+
+Consequences:
+
+* `assets/clues/safe-background.png` is a required asset
+* Arrow and ENTER button positions are percentages relative to the 16:9 modal
+* Digit displays use `font-family: 'Courier New'`, `color: #fff`, blue neon `text-shadow`, `font-size: 7cqh`
 
 ## Update Rule
 

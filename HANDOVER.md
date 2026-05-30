@@ -4,14 +4,171 @@ This file gives the next coding agent the current project status and recommended
 
 ## Current Status
 
-**Phase 7 abgeschlossen + user-confirmed overlay behaviour change — 2026-05-29**
+**Phase 8 — in progress**
 
-- Menu modal, item modals, and safe modal all close when clicking the overlay (user confirmed working)
-- This overrides the original spec; recorded as Decision 11 in `DECISIONS.md`
+Major UI overhaul completed this session. All three modals are now image-based with neon Tron styling. Safe modal uses a background image with invisible hitboxes over drawn arrows, digit boxes, and ENTER button. Win screen restart button shows localized neon text. Language toggle is now global. Several spec decisions were updated. Final clue artwork and full playthrough remain the last blockers.
 
-Bereit für Phase 8 — End-to-end browser verification and docs update.
+## Completed So Far
 
-**Asset reminder:** final background images and clue images must be in place before Phase 8 starts. Hotspot positions in `script.js` and `#hotspot-safe` in `style.css` will also need updating to match the real background.
+- Repository and full Markdown scaffold created
+- Full game spec in `docs/game-spec.md`
+- Implementation plan created and user-confirmed
+- `ARCHITECTURE.md`, `DECISIONS.md`, `TASKS.md` updated with planning decisions
+- **Phase 1:** `index.html`, `style.css`, `script.js` and all placeholder assets created
+- **Phase 2:** Full DOM skeleton, `.hidden` CSS rule
+- **Phase 3:** CSS layout — screens fill viewport, background images, hotspot layer, hover indicator, overlay, modal sizes
+- **Phase 4:** `gameState`, `STRINGS`, `renderText()`, `showScreen()`, start button and language toggle wired
+- **Phase 5:** `HOTSPOTS` array (11 entries), `renderHotspots()`, `openModal()`, `closeModal()`, close button wired
+- **Phase 6:** Safe modal, digit cycling, confirm logic, error timer
+- **Phase 7:** Menu modal, overlay-closes-all (Decision 11), `reset()`, restart buttons
+- **Phase 8 (in progress):**
+  - All hotspot positions measured and tuned
+  - All three modals converted to image-based 16:9 (item, safe) and 1:1 (menu) windows
+  - Neon-red Tron X close button on all modals (absolute top-right, no text)
+  - Item modal: image fills full rounded window, title removed
+  - Safe modal: `safe-background.png` as background; digit displays overlaid as absolute spans (Courier New, neon-blue glow); invisible hitboxes for 4 up arrows, 4 down arrows, ENTER button; error message repositioned to match image
+  - Menu modal: `menu-background.png` as background; invisible hitbox over drawn replay icon
+  - Win screen: neon-cyan futuristic text ("Neu starten" / "Replay") overlaid on drawn button area
+  - Menu button styled with neon-cyan Tron border and glow
+  - Language toggle moved to `#ui-layer` (fixed, matches screen dimensions) — now visible on all 3 screens
+  - `r-clue-energy.png` filename confirmed correct (no change needed)
+  - 11-element decision documented; spec and DECISIONS.md updated
+  - `modal-item-title` removed from HTML and JS (unused)
+  - `ARCHITECTURE.md` updated with correct asset filenames
+  - Decisions 12–16 added to `DECISIONS.md`
+  - `docs/game-spec.md` updated: language toggle global, 11-element table
+
+## Files Changed (this session)
+
+- `style.css` — modal item/safe/menu redesigned; close button; safe digit/arrow/confirm/error positions; win button text style; menu button neon; `#ui-layer`; language button
+- `index.html` — modal-item: title `<p>` removed; modal-safe: rebuilt with bg image + hitboxes; modal-menu: rebuilt with bg image + hitbox; language button moved to `#ui-layer`; win button `data-text` changed to `replay`
+- `script.js` — `replay` key added to STRINGS; `modal-item-title` textContent assignment removed
+- `DECISIONS.md` — decisions 12–16 added
+- `docs/game-spec.md` — language toggle section updated; clickable elements section updated to 11
+- `ARCHITECTURE.md` — asset paths updated; `safe-background.png` and `menu-background.png` documented
+- `TASKS.md` — HOTSPOTS count decision marked complete
+
+## Manual Check Result
+
+- Safe modal digit arrows: user confirmed working
+- Safe ENTER button: user confirmed working
+- Safe error message: repositioned to user-specified coordinates
+- Win screen replay text: user confirmed positioned correctly at `top: 85%`
+- Language toggle on game and win screens: user confirmed working
+- Menu modal replay icon hitbox: confirmed working
+
+## What Was Not Tested
+
+- Full end-to-end playthrough (start → all 11 hotspots → safe wrong code → correct code → win → restart)
+- Hover indicators on all 11 elements
+- Language persistence after restart
+- Double-click guard (two modals)
+- Browser resize / usability on various laptop sizes
+- DevTools console check for JS errors on load
+- Portability (copy to another machine)
+- All 10 final clue images (most are still placeholders)
+
+## Known Issues
+
+- 9 of 10 clue images are still placeholder PNGs — final artwork needed
+- Arrow hitbox left positions (`41.5%, 50.7%, 59.7%, 68.9%`) are slightly offset from digit display positions (`42.4%, 51.0%, 59.4%, 67.9%`) — user chose not to fix; arrows are working
+
+## Next Recommended Step
+
+1. Drop in remaining final clue PNGs (9 files — see HOTSPOTS array in `script.js` for filenames)
+2. Run full end-to-end playthrough against the Phase 8 acceptance checklist in `TASKS.md`
+3. Check DevTools console on load for JS errors
+4. Update `HANDOVER.md` and `AGENT_LOG.md` after playthrough
+
+## Important Constraints
+
+- Open `index.html` directly in browser — no local server, no build step
+- `docs/game-spec.md` is source of truth for game behaviour (with decisions 11–16 as accepted overrides)
+- Exactly 3 screens, 1 overlay, 3 modals — structure is fixed
+- Only one modal may be open at a time
+- Overlay click closes any modal (Decision 11)
+- Correct safe code is `9 1 2 6`
+- Restart must not reset language
+
+All core game logic is implemented and working. Background images are 16:10 (1586×992). All 11 hotspot positions were measured with a browser click logger and updated to exact coordinates. Clue filenames renamed to match element names. Detective and safe speech bubbles act as silent click zones that trigger the indicator on their linked main element. Detective bubble correctly opens the same modal as the detective body (index 0). JS syntax validated clean.
+
+Two items remain before Phase 8 can be closed:
+1. Win screen restart button overlay position needs browser verification
+2. Final clue artwork must replace placeholder PNGs
+
+## Completed So Far
+
+- Repository and full Markdown scaffold created
+- Full game spec in `docs/game-spec.md`
+- Implementation plan created and user-confirmed
+- `ARCHITECTURE.md`, `DECISIONS.md`, `TASKS.md` updated with planning decisions
+- **Phase 1:** `index.html`, `style.css`, `script.js` and all placeholder assets created
+- **Phase 2:** Full DOM skeleton, `.hidden` CSS rule
+- **Phase 3:** CSS layout — screens fill viewport, background images, hotspot layer, hover indicator, overlay, modal sizes
+- **Phase 4:** `gameState`, `STRINGS`, `renderText()`, `showScreen()`, start button and language toggle wired
+- **Phase 5:** `HOTSPOTS` array (10 entries), `renderHotspots()`, `openModal()`, `closeModal()`, close button wired
+- **Phase 6:** Safe modal, digit cycling, confirm logic, error timer
+- **Phase 7:** Menu modal, overlay-closes-all (Decision 11), `reset()`, restart buttons
+- **Phase 8 (substantially complete):**
+  - JS syntax error (stray brace) fixed — was preventing all script from loading
+  - Background images confirmed as 16:10 (1586×992); CSS container locked to 16:10 ratio using `min()` formula; `object-fit: contain` prevents any cropping; body background set to black
+  - All 11 hotspot positions measured via browser click logger and updated in `script.js` and `style.css`
+  - All hotspot sizes converted to percentage-based `w`/`h`
+  - Detective bubble and safe bubble implemented as `noIndicator` hotspots that trigger the indicator on their linked main element
+  - Detective bubble click correctly opens `HOTSPOTS[0]` modal (same as body)
+  - Clue filenames renamed to: `game-instructor.png`, `easter-egg.png`, `r-clue-keypad.png`, `r-clue-energy.png`, `r-clue-chair.png`, `i-clue-microscope.png`, `r-clue-wheel.png`, `i-clue-3dprinter.png`, `i-clue-measure.png`, `i-clue-whiteboard.png`
+  - Placeholder PNGs created with correct names; old `clue-01.svg`–`clue-10.svg` deleted
+  - `KNOWN_ISSUES.md` updated to reflect actual current state
+  - `TASKS.md` Phase 8 checkboxes updated
+
+## Files Changed (previous session)
+
+- `script.js` — stray brace removed; HOTSPOTS rebuilt with browser-measured coords and named clue paths; hotspot sizes percentage-based; `noIndicator`/`linkedTo` bubble system; `renderHotspots()` uses `linkedTo` for modal index and wires bubble hover to force-indicator on main element; safe bubble hover wired via IIFE; debug click logger added then removed
+- `style.css` — screens changed from `inset:0` to `min()` 16:10 aspect ratio formula; `object-fit` changed from `cover` to `contain`; body `background: #000`; `#hotspot-safe` and `#hotspot-safe-bubble` given percentage sizes and exact positions; `.hotspot-no-indicator::after` and `#hotspot-safe-bubble::after` suppressed; `.force-indicator::after { opacity: 1 }` added; hotspot indicator enlarged to 58 px with neon yellow `drop-shadow`; flag icon given neon cyan `drop-shadow`
+- `index.html` — `#hotspot-safe-bubble` div added inside `#hotspot-layer`
+- `assets/clues/` — 10 named placeholder PNGs created; 10 old SVG placeholders deleted
+- `assets/ui/hover-warning.svg` — redesigned to neon Tron style (yellow fill, white stroke, SVG glow filter)
+- `assets/ui/flag-de.svg` — redesigned to Tron neon style (dark bg, neon stripes, cyan frame)
+- `assets/ui/flag-en.svg` — redesigned to Tron neon style (dark bg, neon cyan/red cross, cyan frame)
+- `KNOWN_ISSUES.md` — fully rewritten to reflect current open items
+- `TASKS.md` — Phase 8 checkboxes updated; Phase 5/6 overlay-click items corrected for Decision 11; two new tasks added to bug fix block
+
+## Manual Check Result
+
+- User confirmed: start button navigates to game screen ✓
+- User confirmed: language toggle works (de ↔ en) ✓
+- User confirmed: 16:10 images display without cropping, black bars on side on 16:9 screen ✓
+- Hotspot positions measured from live browser — not yet confirmed by clicking all 11 and verifying correct modal opens
+
+## What Was Not Tested
+
+- Win screen restart button overlay alignment (not yet browser-verified)
+- All 11 hotspot click targets (positions measured but not confirmed by clicking each one)
+- Full end-to-end playthrough
+- Clue modal content (placeholder PNGs only)
+- Restart flow reset verification
+- Portability (copy to another machine)
+
+## Known Issues
+
+- Win screen restart button overlay at `top: 84%, left: 50%, width: 55%` — not confirmed with final win background
+- All clue images are placeholder PNGs — final artwork needed before meaningful playthrough
+
+## Next Recommended Step
+
+1. Open win screen in browser → check if restart button overlay aligns; adjust `style.css` `#btn-restart-win` if needed
+2. Drop in final clue PNGs (10 files, exact filenames listed above)
+3. Run full end-to-end playthrough and check all acceptance criteria in `TASKS.md`
+
+## Important Constraints
+
+- Open `index.html` directly in browser — no local server, no build step
+- `docs/game-spec.md` is source of truth for game behaviour (except Decision 11)
+- Exactly 3 screens, 1 overlay, 3 modals — structure is fixed
+- Only one modal may be open at a time
+- Overlay click closes any modal (Decision 11)
+- Correct safe code is `9 1 2 6`
+- Restart must not reset language
 
 ## Completed So Far
 
@@ -24,36 +181,47 @@ Bereit für Phase 8 — End-to-end browser verification and docs update.
 - **Phase 3:** CSS-Layout — Screens füllen Viewport, Hintergrundbilder, Hotspot-Layer, Hover-Indikator, Overlay, Modal-Größen
 - **Phase 4:** `gameState`, `STRINGS`, `renderText()`, `showScreen()`, Start-Button und Sprachbutton verdrahtet, `<html lang>` wird synchron gehalten
 - **Phase 5:** `HOTSPOTS`-Array (10 Einträge), `renderHotspots()`, `openModal()`, `closeModal()`, Schließen-Button verdrahtet
+- **Phase 6:** Safe modal, digit cycling, confirm logic, error timer
+- **Phase 7:** Menu modal, overlay-closes-all, `reset()`, restart buttons
+- **Phase 8 (in progress):** Final backgrounds swapped in; hotspot positions estimated from real images; hitboxes enlarged for detective and safe; Start/Win button overlays tuned; flag toggle bug fixed
 
-## Files Changed (letzte Session — 2026-05-29)
+## Files Changed (letzte Session)
 
-- `script.js` — overlay click handler now calls `closeModal()` unconditionally (all modals close on overlay click)
-- `DECISIONS.md` — Decision 11 added (overlay closes all modals)
+- `index.html` — background `src` paths updated to `start-screen.png`, `game-screen.png`, `win-screen.png`
+- `script.js` — HOTSPOTS array updated with estimated positions from real game image; optional `w`/`h` fields added for detective hitbox (130×290 px); `renderHotspots()` applies `w`/`h` when present; `renderText()` flag reload fixed (clears src before reassigning to force browser re-render)
+- `style.css` — `#hotspot-safe` enlarged to 150×170 px; `#btn-start` position adjusted (top 78%, left 44%, width 26%) and z-index 2 added; `#btn-language` z-index raised to 10; `#flag-icon` enlarged to 64 px
 
 ## Manual Check Result
 
 User confirmed in browser:
-- All modals (clue, safe, menu) close when clicking the overlay
-- Safe modal arrows, confirm, and close buttons work as intended
-- Wrong code shows error with stable modal height
-- Menu button and menu modal buttons work
+- Start screen shows correct background image
+- Start button overlay cursor is visible (position still being tuned)
+- Language flag button is clickable (fix applied for SVG reload bug)
 
-Not explicitly confirmed:
-- Restart flow (mid-game and from Win screen): Start screen appears, language preserved, safe resets to `0 0 0 0`
+Not yet confirmed:
+- All 10 item hotspot positions on game screen
+- Safe hotspot position
+- Win screen restart button overlay alignment
+- Full end-to-end playthrough
+- Restart flow
 
 ## What Was Not Tested
 
-- Full restart flow (mid-game and from Win screen) not explicitly verified
-- No full end-to-end playthrough performed
-- Hotspot positions are still placeholders — do not match any real background art
-- Clue images are placeholder SVGs
-- File has not been tested after copying to a different machine
+- Item hotspot positions — browser verification with real game background pending
+- Safe hotspot position and enlarged hitbox
+- Win screen overlay button alignment
+- Clue images (still placeholder SVGs)
+- Full restart flow
+- Portability (copying to another machine)
 
 ## Known Issues
 
-- `ARCHITECTURE.md` nennt `.png` für Background- und Clue-Platzhalter; erstellt wurden `.svg`-Dateien. Funktioniert korrekt. In Phase 8 anpassen.
-- All hotspot positions (`HOTSPOTS` array in `script.js`, `#hotspot-safe` in `style.css`) are placeholders and must be updated when final background art is available.
-- Full restart flow not browser-verified yet.
+- Clue images still placeholder SVGs — must be replaced before final playthrough
+- All 10 item hotspot positions are estimated — expect fine-tuning needed per element after browser testing
+- Start button overlay position may still need vertical adjustment (user reported it was off; fix applied, needs re-check)
+- Win screen restart button overlay not yet verified with real win background
+- `ARCHITECTURE.md` still references `.svg` placeholder naming — update at end of Phase 8
+- Full restart flow not browser-verified yet
 
 ## Important Constraints
 
@@ -91,20 +259,16 @@ Vollständige Details in `ARCHITECTURE.md` und `DECISIONS.md`.
 
 ## Next Recommended Step
 
-**Phase 8 — End-to-end browser verification and docs update**
+**Phase 8 — Hotspot position tuning, then full playthrough**
 
-**Before starting Phase 8:** replace all placeholder assets with final images and update hotspot positions.
+1. Open game screen in browser; hover over each neon-pink element and check cursor — report which hotspots need nudging
+2. Adjust `top`/`left` in `HOTSPOTS` array (`script.js`) and `#hotspot-safe` (`style.css`) until all 11 align
+3. Swap in final clue PNG images and update `clue` paths in `HOTSPOTS` array
+4. Verify Start and Win screen button overlay positions
+5. Run full end-to-end playthrough
+6. Update `README.md` and close out Phase 8 documentation
 
-Phase 8 tasks:
-- Full manual playthrough: start → game → hotspots → menu restart → safe (wrong + correct) → win → restart
-- Verify language persists after restart
-- Verify double-click does not open two modals
-- Update `README.md` with agent workflow prompt sequence
-- Update `ARCHITECTURE.md` to reflect `.svg` placeholder naming
 
-## Last Updated
-
-2026-05-29 (Phase 7 complete)
 
 ## Completed So Far
 
@@ -181,6 +345,3 @@ Der Agent soll:
 3. `style.css` erweitern: Screens füllen Viewport, Background-Images füllen Container, Hotspot-Layer über dem Bild, Hover-Indikator, Modal-Größen (groß/mittel/klein), Overlay deckt alles ab
 4. Manuellen Check durchführen: Hover über Hotspot-Bereiche, Modals über DevTools sichtbar machen und Größen prüfen
 
-## Last Updated
-
-2026-05-28 — Phase 2 abgeschlossen; Phase 3 bereit

@@ -15,6 +15,7 @@ const STRINGS = {
   de: {
     start:   'Start',
     restart: 'Spiel neustarten',
+    replay:  'Neu starten',
     close:   'Schließen',
     confirm: 'Bestätigen',
     error:   'Der Code ist nicht korrekt.',
@@ -23,6 +24,7 @@ const STRINGS = {
   en: {
     start:   'Start',
     restart: 'Restart game',
+    replay:  'Replay',
     close:   'Close',
     confirm: 'Confirm',
     error:   'The code is incorrect.',
@@ -35,16 +37,17 @@ const STRINGS = {
    Clue paths and titles are placeholders — update with final
    assets and real background coordinates in Phase 8. */
 const HOTSPOTS = [
-  { top: '20%', left: '10%', clue: 'assets/clues/clue-01.svg', title: { de: 'Hinweis 1',  en: 'Clue 1'  } },
-  { top: '20%', left: '30%', clue: 'assets/clues/clue-02.svg', title: { de: 'Hinweis 2',  en: 'Clue 2'  } },
-  { top: '20%', left: '55%', clue: 'assets/clues/clue-03.svg', title: { de: 'Hinweis 3',  en: 'Clue 3'  } },
-  { top: '20%', left: '78%', clue: 'assets/clues/clue-04.svg', title: { de: 'Hinweis 4',  en: 'Clue 4'  } },
-  { top: '48%', left: '10%', clue: 'assets/clues/clue-05.svg', title: { de: 'Hinweis 5',  en: 'Clue 5'  } },
-  { top: '48%', left: '30%', clue: 'assets/clues/clue-06.svg', title: { de: 'Hinweis 6',  en: 'Clue 6'  } },
-  { top: '48%', left: '55%', clue: 'assets/clues/clue-07.svg', title: { de: 'Hinweis 7',  en: 'Clue 7'  } },
-  { top: '48%', left: '78%', clue: 'assets/clues/clue-08.svg', title: { de: 'Hinweis 8',  en: 'Clue 8'  } },
-  { top: '75%', left: '20%', clue: 'assets/clues/clue-09.svg', title: { de: 'Hinweis 9',  en: 'Clue 9'  } },
-  { top: '75%', left: '70%', clue: 'assets/clues/clue-10.svg', title: { de: 'Hinweis 10', en: 'Clue 10' } },
+  { top: '44.2%', left: '10.4%', w:  '9%', h: '42%',              clue: 'assets/clues/game-instructor.png',  title: { de: 'Spielleiter',    en: 'Game Instructor' } },  // 1a. detective body
+  { top: '26.4%', left: '16.3%', w: '12%', h: '18%', noIndicator: true, linkedTo: 0, clue: 'assets/clues/game-instructor.png', title: { de: 'Spielleiter',    en: 'Game Instructor' } },  // 1b. detective speech bubble
+  { top: '58.8%', left: '27.8%', w: '10%', h: '18%',              clue: 'assets/clues/easter-egg.png',       title: { de: 'Osterei',        en: 'Easter Egg'      } },  // 2.  Q monitor (easter egg)
+  { top: '32.5%', left: '33.5%', w:  '5%', h:  '9%',              clue: 'assets/clues/r-clue-keypad.png',    title: { de: 'Sicherheitspad', en: 'Security Keypad'  } },  // 3.  security keypad
+  { top: '49.6%', left: '41.6%', w:  '7%', h: '13%',              clue: 'assets/clues/r-clue-energy.png',    title: { de: 'Energiemodul',   en: 'Energy Module'   } },  // 4.  energy module
+  { top: '79.4%', left: '49.5%', w:  '8%', h: '18%',              clue: 'assets/clues/r-clue-chair.png',     title: { de: 'Stuhl',          en: 'Chair'           } },  // 5.  height-adjustable chair
+  { top: '41.9%', left: '61.3%', w:  '7%', h: '20%',              clue: 'assets/clues/i-clue-microscope.png', title: { de: 'Mikroskop',     en: 'Microscope'      } },  // 6.  microscope
+  { top: '81.4%', left: '69.6%', w: '11%', h: '16%',              clue: 'assets/clues/r-clue-wheel.png',     title: { de: 'Werkzeugwagen', en: 'Tool Wagon'       } },  // 7.  tool wagon wheel
+  { top: '40.6%', left: '75.5%', w:  '8%', h: '19%',              clue: 'assets/clues/i-clue-3dprinter.png', title: { de: '3D-Drucker',    en: '3D Printer'      } },  // 8.  3D printer
+  { top: '22.4%', left: '77.4%', w:  '9%', h: '13%',              clue: 'assets/clues/i-clue-measure.png',   title: { de: 'Messgerät',     en: 'Measuring Device'} },  // 9.  electric measuring device
+  { top: '26.7%', left: '91.1%', w: '12%', h: '20%',              clue: 'assets/clues/i-clue-whiteboard.png', title: { de: 'Whiteboard',   en: 'Whiteboard'      } },  // 10. whiteboard
 ];
 
 /* ─── Localization ───────────────────────── */
@@ -54,13 +57,15 @@ function renderText() {
     el.textContent = strings[el.dataset.text];
   });
   const flagIcon = document.getElementById('flag-icon');
-  if (gameState.language === 'de') {
-    flagIcon.src = 'assets/ui/flag-de.svg';
-    flagIcon.alt = 'Deutsch';
-  } else {
-    flagIcon.src = 'assets/ui/flag-en.svg';
-    flagIcon.alt = 'English';
+  const newSrc = gameState.language === 'de'
+    ? 'assets/ui/flag-de.svg'
+    : 'assets/ui/flag-en.svg';
+  const newAlt = gameState.language === 'de' ? 'Deutsch' : 'English';
+  if (flagIcon.src.endsWith(newSrc)) {
+    flagIcon.src = '';
   }
+  flagIcon.src = newSrc;
+  flagIcon.alt = newAlt;
   document.documentElement.lang = gameState.language;
 }
 
@@ -76,8 +81,6 @@ function openModal(type, index) {
     const img = document.getElementById('modal-item-image');
     img.src = spot.clue;
     img.alt = spot.title[gameState.language];
-    document.getElementById('modal-item-title').textContent =
-      spot.title[gameState.language];
     gameState.activeItemIndex = index;
     document.getElementById('modal-item').classList.remove('hidden');
   }
@@ -119,13 +122,28 @@ function renderDigits() {
    into #hotspot-layer and wires click → openModal. */
 function renderHotspots() {
   const layer = document.getElementById('hotspot-layer');
+  const divs = [];
   HOTSPOTS.forEach((spot, i) => {
     const div = document.createElement('div');
     div.className = 'hotspot';
+    if (spot.noIndicator) div.classList.add('hotspot-no-indicator');
     div.style.top = spot.top;
     div.style.left = spot.left;
-    div.addEventListener('click', () => openModal('item', i));
+    if (spot.w) div.style.width  = spot.w;
+    if (spot.h) div.style.height = spot.h;
+    const modalIndex = (spot.linkedTo !== undefined) ? spot.linkedTo : i;
+    div.addEventListener('click', () => openModal('item', modalIndex));
     layer.appendChild(div);
+    divs.push(div);
+  });
+  // Bubble hotspots: hovering them shows the indicator on the linked main element
+  HOTSPOTS.forEach((spot, i) => {
+    if (spot.noIndicator && spot.linkedTo !== undefined) {
+      const bubbleDiv = divs[i];
+      const mainDiv   = divs[spot.linkedTo];
+      bubbleDiv.addEventListener('mouseenter', () => mainDiv.classList.add('force-indicator'));
+      bubbleDiv.addEventListener('mouseleave', () => mainDiv.classList.remove('force-indicator'));
+    }
   });
 }
 
@@ -152,8 +170,16 @@ document.getElementById('btn-language').addEventListener('click', () => {
 
 document.querySelector('#modal-item .btn-close').addEventListener('click', closeModal);
 
-/* Safe hotspot */
+/* Safe hotspot — body and speech bubble both open the safe modal */
 document.getElementById('hotspot-safe').addEventListener('click', () => openModal('safe'));
+document.getElementById('hotspot-safe-bubble').addEventListener('click', () => openModal('safe'));
+/* Safe bubble hover → show indicator on safe body */
+(function () {
+  const safeBody   = document.getElementById('hotspot-safe');
+  const safeBubble = document.getElementById('hotspot-safe-bubble');
+  safeBubble.addEventListener('mouseenter', () => safeBody.classList.add('force-indicator'));
+  safeBubble.addEventListener('mouseleave', () => safeBody.classList.remove('force-indicator'));
+}());
 
 /* Safe digit arrows — event delegation on the digit container */
 document.getElementById('safe-digits').addEventListener('click', e => {

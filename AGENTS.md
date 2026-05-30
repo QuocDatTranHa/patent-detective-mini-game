@@ -77,3 +77,5 @@ The handover should include:
 - what was not tested
 - remaining issues
 - next recommended step
+
+Do not add dates, timestamps, or "Last Updated" lines to any file.

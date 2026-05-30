@@ -114,7 +114,7 @@ Goal: all ten hotspots open correct clue modals; single-modal rule enforced; ove
 - [x] Implement `closeModal()` — hides modal, deactivates overlay, clears `gameState.openModal`
 - [x] Wire close button inside `#modal-item` to `closeModal()`
 - [x] Block all hotspot clicks and hover effects while any modal is open
-- [x] Clicking the overlay does NOT close `#modal-item`
+- [x] Clicking the overlay closes `#modal-item` (Decision 11 — overrides original spec)
 
 Manual check: click each of the ten hotspots; confirm correct clue content, overlay blocks background, close button works, clicking outside does nothing.
 
@@ -132,7 +132,7 @@ Goal: safe modal works with cyclic digits; wrong code shows 1.5 s error without 
 - [x] Wrong code: show error text, auto-hide after 1500 ms, keep modal open, keep digits
 - [x] If error already visible when confirm pressed again: restart the 1500 ms timer cleanly
 - [x] Correct code: call `showScreen('win')`, close modal
-- [x] Close button: `closeModal()`; overlay click does NOT close safe modal
+- [x] Close button: `closeModal()`; overlay click also closes safe modal (Decision 11)
 
 Manual check: enter wrong code twice in a row; confirm error reappears cleanly. Enter `9 1 2 6` and confirm Win screen appears.
 
@@ -157,15 +157,65 @@ Manual check: restart from menu mid-game; confirm Start screen, German/English p
 
 Goal: full playthrough passes all acceptance criteria; workflow docs updated.
 
+#### BUG FIXES — do these first as a unit before any other Phase 8 work
+
+These regressions appeared after the background PNGs were swapped in. Both must be fixed and confirmed in browser before continuing.
+
+- [x] Fix: clicking the Start button shows the correct cursor but does not navigate to the game screen
+- [x] Fix: clicking the language flag button does nothing — flag stays on German flag, does not switch to UK flag
+- [x] Browser-confirm fix: Start button click transitions to game screen
+- [x] Browser-confirm fix: flag toggles de → en and en → de on repeated clicks
+- [ ] Check browser DevTools console on page load for JS errors that may block event listener registration
+- [x] Decide on HOTSPOTS count: currently 11 entries (detective split into body + bubble); spec requires 10 item hotspots — either merge into one larger hitbox or document the split as an accepted deviation
+
+#### Asset setup (do this BEFORE running the playthrough)
+
+- [x] Replace `assets/backgrounds/start-placeholder.svg` with final start screen PNG
+- [x] Replace `assets/backgrounds/game-placeholder.svg` with final game screen PNG
+- [x] Replace `assets/backgrounds/win-placeholder.svg` with final win screen PNG
+- [ ] Replace placeholder clue PNGs in `assets/clues/` with final artwork (10 files — see filenames in HOTSPOTS array)
+- [x] Update background `src` paths in `index.html` (3 occurrences) to match actual filenames and extension
+- [x] Update `clue` paths in `HOTSPOTS` array in `script.js` to match actual filenames and extension
+
+#### Hotspot and hitbox tuning (do after assets are in place)
+
+The 11 neon-pink clickable elements in the game image are:
+1. Detective figure + speech bubble (full body — needs wider/taller hitbox than default 60×60)
+2. Computer/desk (monitor with Q — easter egg)
+3. WiFi panel (wall, upper-left area)
+4. Radio device (workbench)
+5. Empty chair (center floor)
+6. Microscope
+7. Tool trolley
+8. 3D printer
+9. Oscilloscope (upper right)
+10. Whiteboard / schematic (far right)
+11. Safe + speech bubble (full box — needs wider/taller hitbox; handled via `#hotspot-safe`)
+
+Hotspot positions are currently estimated in `script.js` (HOTSPOTS array) and `style.css` (#hotspot-safe). Verify each in browser and adjust `top`/`left` percentages. For detective and safe, also set explicit `width`/`height` on the hotspot element.
+
+- [x] Verify all 10 item hotspot positions match neon-pink elements on real background (measured via browser click logger)
+- [x] Verify `#hotspot-safe` position matches the safe element
+- [x] Increase hitbox size for detective figure — percentage-based w/h in HOTSPOTS; bubble as separate no-indicator hotspot with linkedTo
+- [x] Increase hitbox size for safe — percentage-based w/h in CSS; safe bubble as separate hotspot
+- [x] Verify Start button transparent overlay aligns with drawn Start button (adjusted to `top: 78%, left: 44%, width: 26%`)
+- [x] Verify Win screen restart button transparent overlay aligns with drawn restart icon (confirmed via browser click logger; set to `top: 85%, left: 50%, width: 29.4%, height: 8.3%`)
+
+#### Playthrough verification
+
 - [ ] Full manual playthrough: start → game → all 10 hotspots → menu restart → start → game → safe (wrong codes) → correct code → win screen → restart
-- [ ] Verify hover indicators disappear when any modal is open
+- [ ] Verify hover indicators appear on all 11 clickable elements
 - [ ] Verify language persists after restart
 - [ ] Verify double-click does not open two modals
 - [ ] Resize browser; confirm usability on typical laptop window sizes
+
+#### Documentation
+
 - [ ] Update `HANDOVER.md` with what was implemented, what was tested, and what remains
 - [ ] Update `AGENT_LOG.md` with completed work
 - [ ] Update `TASKS.md` to mark completed items
 - [ ] Update `README.md` — include section on agent workflow showing the prompt sequence: `start-session` → `implement-next-task` → `review-work` → `update-handover`
+- [ ] Update `ARCHITECTURE.md` to reflect `.svg` → `.png` asset change (done this session)
 
 Manual check: full playthrough in at least one modern browser (Chrome or Firefox) starting from `index.html` with no local server.
 
@@ -182,7 +232,7 @@ The implementation is not complete until all of these pass:
 - [ ] Game Screen has exactly 10 clickable item hotspots
 - [ ] Hover indicator appears on hotspot hover; disappears on mouse leave
 - [ ] Hover indicators disabled while any modal is open
-- [ ] Item modals open and close correctly; overlay blocks background; overlay click does NOT close item modal
+- [ ] Item modals open and close correctly; overlay blocks background; overlay click closes any modal (Decision 11)
 - [ ] Only one modal can be open at a time
 - [ ] Safe modal: digits cycle 0–9 in both directions
 - [ ] Safe modal: wrong code shows error for ~1.5 s, keeps modal open, keeps digits
