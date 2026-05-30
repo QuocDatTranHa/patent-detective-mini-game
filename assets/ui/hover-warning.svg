@@ -1,4 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-  <polygon points="12,3 22,21 2,21" fill="#FFD700" stroke="#B8860B" stroke-width="1.5" stroke-linejoin="round"/>
-  <text x="12" y="19" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1a1a" font-family="sans-serif">?</text>
+  <defs>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1.4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <polygon points="12,2 23,22 1,22" fill="#FFE600" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round" filter="url(#glow)"/>
+  <text x="12" y="19.5" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1a1a" font-family="monospace">?</text>
 </svg>

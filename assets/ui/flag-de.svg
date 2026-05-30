@@ -1,5 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 3">
-  <rect width="5" height="1" y="0" fill="#000000"/>
-  <rect width="5" height="1" y="1" fill="#DD0000"/>
-  <rect width="5" height="1" y="2" fill="#FFCE00"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 36">
+  <!-- Background -->
+  <rect width="60" height="36" fill="#05050F"/>
+  <!-- Black stripe: Tron dark panel -->
+  <rect y="0"  width="60" height="12" fill="#0D0D1F"/>
+  <!-- Red stripe: neon red -->
+  <rect y="12" width="60" height="12" fill="#FF0033"/>
+  <!-- Gold stripe: neon yellow -->
+  <rect y="24" width="60" height="12" fill="#FFE600"/>
+  <!-- Neon cyan frame -->
+  <rect width="60" height="36" fill="none" stroke="#00F0FF" stroke-width="2"/>
 </svg>

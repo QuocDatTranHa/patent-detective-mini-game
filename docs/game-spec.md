@@ -93,7 +93,9 @@ Der Sprachwechsel betrifft alle sichtbaren UI-Texte des Spiels, zum Beispiel:
 * Neustart-Button
 * Glückwunsch-Nachricht
 
-Der Sprachbutton ist nur auf dem Startscreen sichtbar.
+Der Sprachbutton ist auf allen drei Screens sichtbar (Start, Game, Win).
+
+> **Abweichung von ursprünglicher Spezifikation:** Der Button war ursprünglich nur auf dem Startscreen vorgesehen. Auf Nutzerwunsch wurde er dauerhaft eingeblendet (Decision 12).
 
 ---
 
@@ -105,7 +107,8 @@ Der Startscreen enthält:
 
 * ein Hintergrundbild als Platzhalter
 * einen sichtbaren Start-Button
-* unten rechts einen Button zur Sprachauswahl in Form einer Flagge
+
+Der Sprachbutton ist unten rechts dauerhaft auf allen Screens sichtbar (nicht nur auf dem Startscreen).
 
 ### 5.2 Verhalten
 
@@ -162,11 +165,27 @@ Die klickbaren Bereiche sollen sich passend zur Größe des Hintergrundbilds ver
 
 ---
 
-## 7. Die 10 klickbaren Items
+## 7. Die klickbaren Elemente
 
 ### 7.1 Anzahl
 
-Es gibt genau 10 klickbare Items auf dem Game-Screen.
+Es gibt 11 klickbare Elemente auf dem Game-Screen (Decision 13):
+
+| # | Element | Typ |
+|---|---|---|
+| 1 | Detektiv / Spielleiter (Körper + Sprechblase) | Figur |
+| 2 | Q-Monitor | Easter Egg |
+| 3 | Sicherheitspad | relevanter Clue |
+| 4 | Energiemodul | relevanter Clue |
+| 5 | Stuhl | relevanter Clue |
+| 6 | Mikroskop | irrelevanter Clue |
+| 7 | Werkzeugwagen | relevanter Clue |
+| 8 | 3D-Drucker | irrelevanter Clue |
+| 9 | Messgerät | irrelevanter Clue |
+| 10 | Whiteboard | irrelevanter Clue |
+| 11 | Tresor (Körper + Sprechblase) | öffnet Tresor-Modal |
+
+Detektiv und Tresor haben je zwei Hitboxen (Körper + Sprechblase), die dasselbe Modal öffnen.
 
 ### 7.2 Darstellung
 

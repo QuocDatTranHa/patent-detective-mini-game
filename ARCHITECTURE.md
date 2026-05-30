@@ -41,9 +41,10 @@ index.html          ← single HTML file; all screens and modals live here
 style.css           ← all layout, modal sizing, hotspot layer, hover indicators
 script.js           ← state, screen flow, localization, modal control, reset
 assets/
-  backgrounds/      ← start-placeholder.png, game-placeholder.png, win-placeholder.png
-  clues/            ← clue-01.png … clue-10.png (one per item hotspot)
-  ui/               ← flag-de.svg, flag-en.svg, hover-warning.svg
+  backgrounds/      ← start-screen.png, game-screen.png, win-screen.png
+  clues/            ← one PNG per item hotspot (see HOTSPOTS array in script.js)
+                       safe-background.png (background for Tresor-Modal)
+  ui/               ← flag-de.svg, flag-en.svg, hover-warning.svg, menu-background.png
 ```
 
 No build step required. All paths are relative. Files are portable.
@@ -70,9 +71,11 @@ Three modals, all present in the DOM; only one may be visible at any time.
 
 | ID              | Size              | Overlay-click closes? |
 |-----------------|-------------------|-----------------------|
-| `#modal-item`   | Large             | No                    |
-| `#modal-safe`   | Medium-to-large   | No                    |
+| `#modal-item`   | Large             | Yes                   |
+| `#modal-safe`   | Medium-to-large   | Yes                   |
 | `#modal-menu`   | Small             | Yes                   |
+
+Overlay click calls `closeModal()` unconditionally (Decision 11 — overrides original spec).
 
 A single `openModal(id)` / `closeModal()` pair manages state and overlay visibility.
 

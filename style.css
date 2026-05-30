@@ -16,16 +16,23 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background: #000;
 }
 
 /* ─── Screens ────────────────────────────── */
-/* All three screens are fixed and fill the viewport.
-   Only the active screen is shown; others carry .hidden. */
+/* All three screens maintain a strict 16:10 aspect ratio and are
+   centered in the viewport. This prevents object-fit:cover from
+   cropping when the browser toolbar makes the viewport non-16:10.
+   The game container fills whichever dimension is the bottleneck. */
 #screen-start,
 #screen-game,
 #screen-win {
   position: fixed;
-  inset: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(100vw, calc(100vh * 16 / 10));
+  height: min(100vh, calc(100vw * 10 / 16));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,7 +48,7 @@ html, body {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   z-index: -1;
   pointer-events: none;
   user-select: none;
@@ -53,16 +60,40 @@ html, body {
   top: 1rem;
   right: 1rem;
   font-size: 1.5rem;
-  background: rgba(255, 255, 255, 0.85);
-  border: none;
+  background: rgba(0, 0, 0, 0.75);
+  border: 2px solid #00f0ff;
   padding: 0.4rem 0.7rem;
   border-radius: 4px;
   cursor: pointer;
   z-index: 2;
+  color: #00f0ff;
+  text-shadow: 0 0 6px #00f0ff, 0 0 14px #00b4ff;
+  box-shadow: 0 0 6px #00f0ff, 0 0 16px rgba(0, 240, 255, 0.4),
+              inset 0 0 4px rgba(0, 240, 255, 0.1);
+  transition: box-shadow 0.15s ease, color 0.15s ease;
 }
 
-/* ─── Language toggle button ─────────────── */
-/* Positioned bottom-right of the Start screen (spec §4). */
+#btn-menu:hover {
+  color: #80f8ff;
+  box-shadow: 0 0 10px #00f0ff, 0 0 26px rgba(0, 240, 255, 0.65),
+              inset 0 0 8px rgba(0, 240, 255, 0.2);
+}
+
+/* ─── UI layer ────────────────────────── */
+/* Matches the screen container dimensions exactly so children
+   are positioned relative to the game area, not the viewport. */
+#ui-layer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(100vw, calc(100vh * 16 / 10));
+  height: min(100vh, calc(100vw * 10 / 16));
+  pointer-events: none;
+  z-index: 102;
+}
+
+/* ─── Language toggle button ───────────── */
 #btn-language {
   position: absolute;
   bottom: 1rem;
@@ -71,12 +102,60 @@ html, body {
   border: none;
   cursor: pointer;
   padding: 0;
+  pointer-events: all;
 }
 
 #flag-icon {
-  width: 48px;
+  width: 64px;
   height: auto;
   display: block;
+  filter: drop-shadow(0 0 4px #00F0FF) drop-shadow(0 0 9px rgba(0, 240, 255, 0.55));
+}
+
+/* ─── Start screen: transparent overlay over drawn Start button ── */
+#btn-start {
+  position: absolute;
+  top: 79%;
+  left: 51%;
+  transform: translateX(-50%);
+  width: 29.5%;
+  height: 13%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  z-index: 2;
+}
+
+/* ─── Win screen: hide HTML message (image communicates win state) */
+#win-message {
+  display: none;
+}
+
+/* ─── Win screen: restart button with visible text ── */
+#btn-restart-win {
+  position: absolute;
+  top: 85%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 29.4%;
+  height: 8.3%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding-left: 0;
+  padding-right: 0;
+  text-align: center;
+  color: #ffffff;
+  font-family: 'Trebuchet MS', 'Century Gothic', Arial, sans-serif;
+  font-size: 2.2vh;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 6px #00f0ff,
+    0 0 14px #00b4ff,
+    0 0 28px rgba(0, 180, 255, 0.6);
 }
 
 /* ─── Hotspot layer ──────────────────────── */
@@ -109,22 +188,46 @@ html, body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 48px;
-  height: 48px;
+  width: 58px;
+  height: 58px;
   background: url('assets/ui/hover-warning.svg') center / contain no-repeat;
   opacity: 0;
   transition: opacity 0.15s ease;
   pointer-events: none;
+  filter: drop-shadow(0 0 5px #FFE600) drop-shadow(0 0 10px #FFE600);
 }
 
 .hotspot:hover::after {
   opacity: 1;
 }
 
-/* Safe hotspot placeholder position — finalize in Phase 6. */
+/* Force-show indicator when a linked bubble hotspot is hovered */
+.hotspot.force-indicator::after {
+  opacity: 1;
+}
+
+/* Bubble hotspots: clickable but no hover indicator shown here.
+   The indicator appears on the main element when hovering the bubble
+   is not required — bubble is just a silent click target. */
+.hotspot-no-indicator::after,
+#hotspot-safe-bubble::after {
+  display: none;
+}
+
+/* Safe hotspot — body (bottom right) */
 #hotspot-safe {
-  top: 60%;
-  left: 50%;
+  top: 71.9%;
+  left: 88.9%;
+  width: 10%;
+  height: 20%;
+}
+
+/* Safe hotspot — speech bubble (upper right); no hover indicator */
+#hotspot-safe-bubble {
+  top: 53.3%;
+  left: 93.9%;
+  width: 9%;
+  height: 15%;
 }
 
 /* ─── Overlay ────────────────────────────── */
@@ -157,45 +260,203 @@ html, body {
   overflow-y: auto;
 }
 
+/* ─── Close button — all modals ─────────── */
+/* Positioned absolute in top-right corner; Tron Legacy neon-red style */
+.btn-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  background: rgba(0, 0, 0, 0.80);
+  border: 2px solid #ff2020;
+  border-radius: 3px;
+  color: #ff5050;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 0 0 6px #ff0000, 0 0 14px #ff0000;
+  box-shadow: 0 0 6px #ff2020, 0 0 16px rgba(255, 0, 0, 0.45),
+              inset 0 0 4px rgba(255, 0, 0, 0.15);
+  transition: box-shadow 0.15s ease, color 0.15s ease;
+  z-index: 10;
+}
+
+.btn-close:hover {
+  color: #ff8080;
+  box-shadow: 0 0 10px #ff2020, 0 0 26px rgba(255, 0, 0, 0.65),
+              inset 0 0 8px rgba(255, 0, 0, 0.25);
+}
+
 /* ─── Modal: Item (large) ────────────────── */
+/* No padding — image fills the full modal area. 16:9 aspect ratio. */
 #modal-item {
-  width: min(90vw, 820px);
-  max-height: 88vh;
+  width: min(90vw, calc(90vh * 16 / 9), 1280px);
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+  display: block;
 }
 
 #modal-item img {
-  max-width: 100%;
-  max-height: 60vh;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-/* ─── Modal: Safe (medium-to-large) ─────── */
+#modal-item-title {
+  display: none;
+}
+
+/* ─── Modal: Safe ─────────────────────── */
+/* 16:9; all children absolutely positioned over the background image. */
 #modal-safe {
-  width: min(80vw, 520px);
-  max-height: 80vh;
+  width: min(80vw, calc(80vh * 16 / 9), 920px);
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+  background: #000;
+  container-type: size;  /* enables cqh/cqw units for child font-size */
 }
 
-/* Keep layout space reserved so the modal height doesn't
-   change when the error message appears or disappears. */
-#safe-error.hidden {
-  display: block !important;
-  visibility: hidden;
+#modal-safe-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  z-index: 0;
 }
 
+/* ─── Digit displays (read-only, overlaid on drawn boxes) ─── */
+.digit-display {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 7cqh;        /* scales with modal height */
+  font-weight: 900;
+  color: #ffffff;
+  text-shadow:
+    0 0  6px #00f0ff,
+    0 0 16px #00b4ff,
+    0 0 32px #0066ff;
+  pointer-events: none;
+  user-select: none;
+  line-height: 1;
+  z-index: 2;
+}
+
+/* Positions measured from safe-background.png */
+.digit-display[data-index="0"] { top: 50%; left: 42.4%; }
+.digit-display[data-index="1"] { top: 50%; left: 51.0%; }
+.digit-display[data-index="2"] { top: 50%; left: 59.4%; }
+.digit-display[data-index="3"] { top: 50%; left: 67.9%; }
+
+/* ─── Invisible hitbox container (event delegation target) ─── */
+/* pointer-events:none lets the div itself be transparent to clicks;
+   child buttons with pointer-events:all still fire, and events bubble
+   up through this div to reach the JS listener on #safe-digits. */
 #safe-digits {
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
 }
 
-.digit-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
+/* Arrow hitboxes: invisible, positioned over drawn chevrons */
+.arrow-up,
+.arrow-down {
+  position: absolute;
+  width: 8%;
+  height: 9%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  pointer-events: all;
+  transform: translate(-50%, -50%);
 }
 
-/* ─── Modal: Menu (small) ────────────────── */
+/* Up arrows  — vertical center ~40% (chevrons sit above boxes) */
+.arrow-up[data-index="0"] { top: 40%; left: 41.5%; }
+.arrow-up[data-index="1"] { top: 40%; left: 50.7%; }
+.arrow-up[data-index="2"] { top: 40%; left: 59.7%; }
+.arrow-up[data-index="3"] { top: 40%; left: 68.9%; }
+
+/* Down arrows — vertical center ~60% (chevrons sit below boxes) */
+.arrow-down[data-index="0"] { top: 60%; left: 41.5%; }
+.arrow-down[data-index="1"] { top: 60%; left: 50.7%; }
+.arrow-down[data-index="2"] { top: 60%; left: 59.7%; }
+.arrow-down[data-index="3"] { top: 60%; left: 68.9%; }
+
+/* ─── ENTER button hitbox ────────────────── */
+#btn-confirm {
+  position: absolute;
+  top: 91%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 23%;
+  height: 7%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 3;
+}
+
+/* ─── Error message ───────────────────── */
+#safe-error {
+  position: absolute;
+  top: 65.8%;
+  left: 55.1%;
+  transform: translate(-50%, -50%);
+  width: 33%;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 3.5cqh;
+  font-weight: 900;
+  text-align: center;
+  color: #ff5050;
+  text-shadow: 0 0 6px #ff0000, 0 0 16px #ff0000, 0 0 32px #ff0000;
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* ─── Modal: Menu (small, 1:1) ──────────── */
 #modal-menu {
-  width: min(60vw, 320px);
+  width: min(60vw, 60vh, 420px);
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+#modal-menu-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Invisible hitbox over the drawn restart button */
+#btn-restart-menu {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: 60%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 2;
 }

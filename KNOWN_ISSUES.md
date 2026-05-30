@@ -6,58 +6,44 @@ Keep entries concise.
 
 ## Current Status
 
-No game implementation exists yet.
+Phase 8 in progress. Core implementation is complete and browser-verified for basic flow. The following items remain open.
 
-Therefore, there are no confirmed implementation bugs yet.
+## Open Items
+
+### 1. Clue images are placeholder PNGs
+
+All 10 files in `assets/clues/` are auto-generated dark placeholders.
+Full playthrough cannot be evaluated until final artwork is in place.
+**Next step:** replace each file with final image — filenames must match exactly:
+`game-instructor.png`, `easter-egg.png`, `r-clue-keypad.png`, `r-clue-energy.png`,
+`r-clue-chair.png`, `i-clue-microscope.png`, `r-clue-wheel.png`, `i-clue-3dprinter.png`,
+`i-clue-measure.png`, `i-clue-whiteboard.png`.
+
+### 2. Full playthrough not yet run
+
+No end-to-end test has been completed with the final background images.
+Hotspot positions were measured via browser click logger but have not been
+confirmed by clicking all 11 elements and verifying correct modal opens.
 
 ## Known Risks
 
-### 1. Over-engineering risk
+### Portability
 
-The project must remain a simple local browser game.
+The game must work after copying the folder to another laptop and opening `index.html` directly.
+Avoid anything that requires installation, internet access, a local server, or build files.
+All asset paths must remain relative.
 
-Avoid adding frameworks, dependencies, package managers, build steps, servers, or backend logic unless explicitly approved by the user.
+### Modal interaction
 
-### 2. Portability risk
+Only one modal may be open at a time.
+Background interactions must be blocked while any modal is open.
+Overlay click closes any open modal (Decision 11).
 
-The finished game must work after copying the project folder to another laptop and opening `index.html` directly in a modern browser.
+### Reset logic
 
-Avoid anything that requires installation, internet access, a local server, or generated build files.
-
-### 3. Specification drift risk
-
-Game behavior must follow `docs/game-spec.md`.
-
-Do not duplicate the full specification across multiple files.
-
-If behavior is unclear, ask the user or document the assumption before implementing.
-
-### 4. Modal interaction risk
-
-The game requires strict modal behavior.
-
-Only one modal may be open at a time, and background interactions must be blocked while a modal is open.
-
-### 5. Reset logic risk
-
-Restart must fully reset the game state.
-
-This must be manually checked after implementation.
-
-## Manual Testing Notes
-
-After implementation, manually test at least:
-
-* opening the game through `index.html`
-* start screen to game screen
-* all 10 item hotspots
-* item hover indicators
-* item modals
-* safe modal
-* wrong code behavior
-* correct code `9 1 2 6`
-* win screen
-* restart from menu
+Restart must fully reset all state except language.
+`reset()` covers: `safeDigits`, `safeErrorTimer`, `openModal`, `activeItemIndex`, `screen`.
+Language is intentionally preserved.
 * restart from win screen
 * modal blocking behavior
 
