@@ -4,9 +4,101 @@ This file gives the next coding agent the current project status and recommended
 
 ## Current Status
 
-**Phase 9 — not started**
+**Phase 11 — COMPLETE**
 
-Phase 8 is complete. Full end-to-end playthrough confirmed by user — all game mechanics work as intended. All 10 final clue PNGs are in place. The only remaining work is adding text content for the white areas in the popup windows (item modals and any other modals) in both German and English, followed by UI adjustments to make the layout fit the text cleanly.
+All four Phase 11 tasks implemented and browser-verified via Playwright:
+
+1. **Task 11a** — `#modal-item-digit` color changed to `#0057a8` with subtle shadow: dark navy blue, clearly readable on white panel backgrounds
+2. **Task 11b** — Win screen right panel now shows bilingual closing text via `#win-text` div (positioned `left:61%, top:25%, width:14%, height:51%`), wired via `data-text="winText"` in `STRINGS`
+3. **Task 11c** — Start screen bottom panel: `#start-disclosure` `top: 59%`, `height: 29%`, `font-size: 1.3vh`, `padding: 0.5% 1%`; `#start-title-disclosure` `height: 5%`
+4. **Task 11d** — Detective modal pagination: two-page nav (`<`/`>` arrows) on HOTSPOT indices 0 and 1; page 1 = mission briefing, page 2 = M1–M4 invention disclosure; `paginated` CSS class on `#modal-item-text` reduces font for M1–M4 content to fit without overflow; nav hidden on all other modals; `closeModal()` resets page to 0
+
+## Completed So Far
+
+- Phase 1: HTML/CSS/JS skeleton, placeholder assets
+- Phase 2: DOM markup for all screens and modals
+- Phase 3: Responsive layout, hotspot hover indicator, modal sizing
+- Phase 4: State model, screen navigation, language toggle
+- Phase 5: Item hotspot system, clue modal open/close, overlay
+- Phase 6: Safe modal — digit controls, code validation, win screen
+- Phase 7: Menu modal — pause/restart flow
+- Phase 8: Final asset integration — background images, clue images, Orbitron font
+- Phase 9: Text content — bilingual STRINGS, start screen panels, modal title/body overlays
+- Phase 10: Visual polish — start screen headings, neon code digits, larger modal font, per-hotspot text box alignment
+- Phase 11: Readability fixes — darker digit color, win screen text, start panel spacing, detective pagination
+
+## Files Changed (Phase 11)
+
+- `index.html` — added `<div id="win-text" data-text="winText">` inside `#screen-win`; added `<div id="modal-item-nav">` with `<button id="modal-prev">` and `<button id="modal-next">` inside `#modal-item-text`
+- `style.css` — `#modal-item-digit` color `#0057a8`; `#win-text` absolute positioning over right win panel; `#start-disclosure` height/font/padding; `#modal-item-nav`/`#modal-prev`/`#modal-next` button styles; `#modal-item-text.paginated #modal-item-body` smaller font for paginated content
+- `script.js` — `winText` (de/en) in `STRINGS`; `pages` array on HOTSPOT indices 0 and 1; `gameState.modalPage`; `updateNavArrows()`; prev/next click handlers; `openModal`/`closeModal`/`renderText` all updated for pagination and `paginated` class
+
+## Manual Check Result (Playwright)
+
+- 11a: Keypad modal digit "2" renders in dark navy `#0057a8` on white — screenshot verified ✓
+- 11b: Win screen text fills right panel; all paragraphs visible — screenshot verified ✓
+- 11c: Start screen panels closer together, body font larger — screenshot verified ✓
+- 11d: Detective modal page 1 (prev disabled, next active), page 2 shows M1–M4 fully (prev active, next disabled), non-paginated modals have no nav — JS-verified and screenshot verified ✓
+
+## What Was Not Tested
+
+- Language toggle (EN) while detective pagination is on page 2
+- Win screen text in EN language
+- Start screen layout at 1280×720
+- Full manual playthrough including safe code entry through to win screen
+
+## Known Issues
+
+- Win screen text positioning calibrated for 1366×768 Playwright viewport (container 1228.8×768). May need minor adjustment at other viewport sizes.
+- Start screen disclosure panel (M1–M4 text) still clips at M3/M4 boundary — the `height: 29%` increase in Task 11c partially mitigated this; full M4 visibility would require a smaller font or taller box.
+
+## Next Recommended Step
+
+Phase 12 tasks have been written to `TASKS.md`. Start with **Task 12a** (start screen M4 visibility), then 12b/12c (win screen calibration), then 12d/12e (detective titles and font), then 12f (long dash cleanup). Each task is independently implementable.
+
+---
+
+*Phase 10 file changes and manual check results are recorded in `AGENT_LOG.md`.*
+- Layout at 1280×720
+
+## Known Issues
+
+- Playwright screenshot crops the right portion of the game (game container is 16:10; Playwright viewport is narrower). Does not affect in-browser playability.
+- Start screen title positions (18% / 54%) were calibrated at 1366×768. May need minor adjustment at other viewport sizes.
+
+## Next Recommended Step
+
+Open `index.html` directly in a real browser at full screen and visually confirm:
+1. Both start screen white panels show their headings in dark navy Orbitron
+2. Each clue modal shows the correct neon digit in the bottom-right corner
+3. Modal body text is noticeably larger and fills the panel better
+4. Whiteboard, microscope, and 3D printer text boxes are aligned to the correct white area (not overlapping the neon border)
+
+## What Was Not Tested
+
+- All 10 item modals opened individually in both languages (only 2 modals were tested: Detective and Access Control Module)
+- Portability (copy to another machine)
+- README.md update (still pending from Phase 8 checklist)
+
+## Known Issues
+
+- Arrow hitbox left positions are slightly offset from digit display positions — user chose not to fix; arrows are working
+- README.md agent workflow section not yet added
+
+## Next Recommended Step
+
+1. Open all remaining 8 item modals in both languages and visually confirm title/body text
+2. Add README.md agent workflow section (pending from Phase 8)
+
+## Important Constraints
+
+- Open `index.html` directly in browser — no local server, no build step
+- `docs/game-spec.md` is source of truth for game behaviour
+- Exactly 3 screens, 1 overlay, 3 modals — structure is fixed
+- Only one modal may be open at a time
+- Correct safe code is `9 1 2 6`
+- Restart must not reset language
+
 
 ## Completed So Far
 

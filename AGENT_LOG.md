@@ -4,6 +4,61 @@ This file records completed agent work in chronological order.
 
 Keep entries concise.
 
+## Phase 12 — Planning: text polish and win screen calibration (Tasks 12a–12f)
+
+Status: planned, not implemented
+
+- Tasks written to `TASKS.md`: 12a (start screen M4 visibility), 12b (win screen area marker), 12c (win screen text fill), 12d (detective per-page titles), 12e (detective page 1 double font), 12f (long dash replacement)
+- No code changed this session
+
+---
+
+## Phase 11 — Readability fixes and Win Screen text (Tasks 11a–11d)
+
+Status: complete
+
+- **11a**: `#modal-item-digit` color → `#0057a8`, subtle shadow. Verified screenshot: digit readable on white.
+- **11b**: `winText` added to STRINGS (de/en); `#win-text` div added to `#screen-win`; CSS positions it at `left:61%, top:25%, width:14%, height:51%` over right panel. Verified screenshot: full text visible.
+- **11c**: `#start-disclosure` top 59%, height 29%, font-size 1.3vh, padding 0.5% 1%; `#start-title-disclosure` height 5%. Verified screenshot: panels closer, text larger.
+- **11d**: `pages` array on detective HOTSPOTs (idx 0, 1); `gameState.modalPage`; `updateNavArrows()`; prev/next listeners; `#modal-item-nav` in HTML; CSS for nav buttons + disabled state; `paginated` CSS class on `#modal-item-text` reduces font to `clamp(10px,1.05vw,13px)` for M1–M4 page. `closeModal()` resets page and removes class. Verified: page 1 prev-disabled/next-active; page 2 all M1–M4 visible, prev-active/next-disabled; non-paginated modals nav hidden.
+
+Files changed: `index.html`, `style.css`, `script.js`
+
+---
+
+## Phase 10 — Visual polish: start screen titles, neon digits, font sizes, text box alignment (Tasks 10a–10d)
+
+Status: complete
+
+Changes:
+- STRINGS: added `startTitleIntro` / `startTitleDisclosure` in DE and EN
+- HTML: added `#start-title-intro`, `#start-title-disclosure`, `#modal-item-digit`
+- CSS: styled both title divs (bold Orbitron, 2vh, dark navy, uppercase); repositioned `#start-intro` (top: 22.5%) and `#start-disclosure` (top: 60%, height: 26%, 1.0vh); added `#modal-item-digit` (position:absolute bottom-right, clamp 50-90px, neon blue glow); increased `#modal-item-body` to clamp(12px, 1.5vw, 18px) and `#modal-item-title` to clamp(14px, 1.8vw, 22px)
+- JS: `codeDigit` property on all 11 HOTSPOTs (9/1/2/6 for relevant clues; 0/3/4/5 for irrelevant; null for detective/qthena); `textBox` override on chair/microscope/3dprinter/whiteboard; `openModal` applies textBox + digit; `closeModal` resets both
+- Pixel scan calibration: top panel white starts at 18%, bottom panel at 54% of 16:10 screen height
+- Portability confirmed by user on physical second machine
+
+## Phase 9 — Bilingual text content + Orbitron font (Tasks 9d, 9e, 9f)
+
+Status: complete
+
+Work done:
+
+- **CSS (Task 9d)**: Measured exact pixel boundaries of white panels in `start-screen.png` and clue images via canvas `getImageData`. Start screen top panel: left 72%, top 17%, width 24%, height 30%. Bottom panel: top 53%, height 34%. Item modal text overlay: left 48%, top 11%, width 47%, height 78%. All text styled in Orbitron (font-weight 700 for title, 400 for body), dark navy color, `overflow: hidden`.
+- **JS (Task 9e)**: `openModal('item', index)` now sets `modal-item-title` and `modal-item-body` textContent from HOTSPOT data at the active language. `renderText()` extended to re-populate modal title/body if `gameState.openModal === 'item'`.
+- **Verification (Task 9f)**: Start screen both panels correct DE/EN; "Access Control Module" and "Detective" item modals confirmed visually; language toggle while modal open updates text correctly.
+
+Files changed:
+
+- `style.css` — text overlay rules appended (start screen panels + item modal panel + title/body typography; overrides earlier `display:none` on `#modal-item-title`)
+- `script.js` — `openModal` and `renderText` updated
+- `TASKS.md` — tasks 9d, 9e, 9f marked complete
+- `HANDOVER.md` — updated with Phase 9 status
+
+Not tested: all 10 item modals (only 2 verified); browser resize to 1280×720.
+
+---
+
 ## UI overhaul + spec decisions
 
 Status: complete
