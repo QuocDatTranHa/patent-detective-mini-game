@@ -279,6 +279,22 @@ Consequences:
 * Arrow and ENTER button positions are percentages relative to the 16:9 modal
 * Digit displays use `font-family: 'Courier New'`, `color: #fff`, blue neon `text-shadow`, `font-size: 7cqh`
 
+### 17. Per-hotspot `textBox` inline override for text panel alignment
+
+Status: accepted (Phase 10)
+
+Decision:
+HOTSPOT entries may carry an optional `textBox: { left, top, width, height }` property. When present, `openModal('item')` applies these as inline styles on `#modal-item-text`. `closeModal()` clears all four inline styles to restore CSS defaults.
+
+Reason:
+Different clue images have their white text panel starting at different left positions. A per-entry override avoids needing separate CSS rules per modal and keeps all layout data in the HOTSPOTS array.
+
+Consequences:
+
+* four HOTSPOT entries currently carry a `textBox` value (chair, microscope, 3D printer, whiteboard)
+* entries without `textBox` use the CSS default (`left: 48%` etc.)
+* any new clue image with an off-center white panel should be handled by adding `textBox` to its HOTSPOT entry, not by adding a new CSS rule
+
 ## Update Rule
 
 When a new decision is made, add a short entry with:

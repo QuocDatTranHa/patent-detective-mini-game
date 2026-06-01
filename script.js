@@ -7,7 +7,8 @@ const gameState = {
   openModal: null,        // null | 'item' | 'safe' | 'menu'
   safeDigits: [0,0,0,0],  // current digit values
   safeErrorTimer: null,   // active setTimeout reference or null
-  activeItemIndex: null   // 0–9; which clue modal is shown
+  activeItemIndex: null,  // 0–9; which clue modal is shown
+  modalPage: 0            // current page index for paginated modals
 };
 
 /* ─── Localization strings ───────────────── */
@@ -19,7 +20,12 @@ const STRINGS = {
     close:   'Schließen',
     confirm: 'Bestätigen',
     error:   'Der Code ist nicht korrekt.',
-    win:     'Glückwunsch!'
+    win:     'Glückwunsch!',
+    winText: 'Gratulation! Du hast einen neuheitsschädigenden Stand der Technik identifiziert.\n\nDie vermeintlich neue Idee lässt sich vollständig durch bekannten Stand der Technik erklären. Keine der zentralen Eigenschaften ist tatsächlich neu.\nDieses Beispiel zeigt: KI kann komplexe und überzeugende Beschreibungen erzeugen. Doch echte Innovation entsteht erst durch einen eigenen technischen Lösungsansatz – nicht durch die Neuformulierung bereits bekannter Inhalte.',
+    startTitleIntro: 'DEIN AUFTRAG',
+    startTitleDisclosure: 'DIE ERFINDUNG',
+    startIntro: 'In diesem interaktiven Point-and-Click-Spiel untersuchst du eine scheinbar neue technische Idee.\nDeine Aufgabe ist es, relevante Hinweise im Raum zu finden und herauszufinden, ob die dargestellte Lösung wirklich neu ist – oder ob sich alles bereits an anderer Stelle wiederfindet.',
+    startDisclosure: 'M1  Ein rollendes Mobilitätsfundament mit arretierbaren Präzisionsrollen verlagert den kompletten Arbeitsplatz in Sekunden an jeden Einsatzort.\n\nM2  Eine linear ausfahrbare Komfortsäule transformiert die Arbeitsfläche dynamisch auf eine angenehme Nutzungsposition für sitzende oder stehende Personen.\n\nM3  Ein zugangsgesteuertes Bedienmodul autorisiert die Nutzung der Arbeitsstation und gibt ausgewählte Funktionen über eine direkt sichtbare Freigabeeinheit frei.\n\nM4  Ein integriertes Energiemodul im Unterbau sowie aufnehmbare Stauraumzonen für Rechner und Arbeitsmittel schaffen einen autarken, aufgeräumten Einsatzpunkt.'
   },
   en: {
     start:   'Start',
@@ -28,7 +34,12 @@ const STRINGS = {
     close:   'Close',
     confirm: 'Confirm',
     error:   'The code is incorrect.',
-    win:     'Congratulations!'
+    win:     'Congratulations!',
+    winText: 'Congratulations! You have identified novelty-destroying prior art.\n\nThe seemingly novel idea can be entirely explained by existing prior art. None of the key features are actually new.\nThis example demonstrates that AI can produce complex and convincing descriptions. However, true innovation only arises from a genuine technical solution\u2014not from rephrasing what already exists.',
+    startTitleIntro: 'YOUR MISSION',
+    startTitleDisclosure: 'THE INVENTION',
+    startIntro: 'In this interactive point-and-click game, you investigate a seemingly novel technical idea.\nYour task is to find relevant clues in the room and determine whether the solution is truly new—or already exists elsewhere.',
+    startDisclosure: 'M1  A rolling mobility base with lockable precision casters relocates the complete workstation to any place of use within seconds.\n\nM2  A linearly extendable comfort column dynamically transforms the work surface into an ergonomic usage position for seated or standing users.\n\nM3  An access-controlled operating module authorizes the use of the workstation and enables selected functions via a directly visible release unit.\n\nM4  An integrated energy module in the lower base structure, together with storage zones for computers and work equipment, creates an autonomous and well-organized point of use.'
   }
 };
 
@@ -37,17 +48,99 @@ const STRINGS = {
    Clue paths and titles are placeholders — update with final
    assets and real background coordinates in Phase 8. */
 const HOTSPOTS = [
-  { top: '44.2%', left: '10.4%', w:  '9%', h: '42%',              clue: 'assets/clues/game-instructor.png',  title: { de: 'Spielleiter',    en: 'Game Instructor' } },  // 1a. detective body
-  { top: '26.4%', left: '16.3%', w: '12%', h: '18%', noIndicator: true, linkedTo: 0, clue: 'assets/clues/game-instructor.png', title: { de: 'Spielleiter',    en: 'Game Instructor' } },  // 1b. detective speech bubble
-  { top: '58.8%', left: '27.8%', w: '10%', h: '18%',              clue: 'assets/clues/easter-egg.png',       title: { de: 'Osterei',        en: 'Easter Egg'      } },  // 2.  Q monitor (easter egg)
-  { top: '32.5%', left: '33.5%', w:  '5%', h:  '9%',              clue: 'assets/clues/r-clue-keypad.png',    title: { de: 'Sicherheitspad', en: 'Security Keypad'  } },  // 3.  security keypad
-  { top: '49.6%', left: '41.6%', w:  '7%', h: '13%',              clue: 'assets/clues/r-clue-energy.png',    title: { de: 'Energiemodul',   en: 'Energy Module'   } },  // 4.  energy module
-  { top: '79.4%', left: '49.5%', w:  '8%', h: '18%',              clue: 'assets/clues/r-clue-chair.png',     title: { de: 'Stuhl',          en: 'Chair'           } },  // 5.  height-adjustable chair
-  { top: '41.9%', left: '61.3%', w:  '7%', h: '20%',              clue: 'assets/clues/i-clue-microscope.png', title: { de: 'Mikroskop',     en: 'Microscope'      } },  // 6.  microscope
-  { top: '81.4%', left: '69.6%', w: '11%', h: '16%',              clue: 'assets/clues/r-clue-wheel.png',     title: { de: 'Werkzeugwagen', en: 'Tool Wagon'       } },  // 7.  tool wagon wheel
-  { top: '40.6%', left: '75.5%', w:  '8%', h: '19%',              clue: 'assets/clues/i-clue-3dprinter.png', title: { de: '3D-Drucker',    en: '3D Printer'      } },  // 8.  3D printer
-  { top: '22.4%', left: '77.4%', w:  '9%', h: '13%',              clue: 'assets/clues/i-clue-measure.png',   title: { de: 'Messgerät',     en: 'Measuring Device'} },  // 9.  electric measuring device
-  { top: '26.7%', left: '91.1%', w: '12%', h: '20%',              clue: 'assets/clues/i-clue-whiteboard.png', title: { de: 'Whiteboard',   en: 'Whiteboard'      } },  // 10. whiteboard
+  // 1a. detective body
+  { top: '44.2%', left: '10.4%', w: '9%', h: '42%',
+    codeDigit: null,
+    clue: 'assets/clues/game-instructor.png',
+    title: { de: 'Detective', en: 'Detective' },
+    body:  { de: 'Vor dir liegt eine scheinbar neue technische Idee.\nIm Raum findest du verschiedene Hinweise – deine Aufgabe ist es, herauszufinden, ob diese Lösung wirklich neu ist oder sich bereits an anderer Stelle wiederfindet.',
+             en: 'In front of you is a seemingly novel technical idea.\nAround the room, you will find various clues—your task is to determine whether this solution is truly new or already exists elsewhere.' },
+    pages: [
+      { de: 'Vor dir liegt eine scheinbar neue technische Idee.\nIm Raum findest du verschiedene Hinweise – deine Aufgabe ist es, herauszufinden, ob diese Lösung wirklich neu ist oder sich bereits an anderer Stelle wiederfindet.',
+        en: 'In front of you is a seemingly novel technical idea.\nAround the room, you will find various clues—your task is to determine whether this solution is truly new or already exists elsewhere.' },
+      { de: 'M1  Ein rollendes Mobilitätsfundament mit arretierbaren Präzisionsrollen verlagert den kompletten Arbeitsplatz in Sekunden an jeden Einsatzort.\n\nM2  Eine linear ausfahrbare Komfortsäule transformiert die Arbeitsfläche dynamisch auf eine angenehme Nutzungsposition für sitzende oder stehende Personen.\n\nM3  Ein zugangsgesteuertes Bedienmodul autorisiert die Nutzung der Arbeitsstation und gibt ausgewählte Funktionen über eine direkt sichtbare Freigabeeinheit frei.\n\nM4  Ein integriertes Energiemodul im Unterbau sowie aufnehmbare Stauraumzonen für Rechner und Arbeitsmittel schaffen einen autarken, aufgeräumten Einsatzpunkt.',
+        en: 'M1  A rolling mobility base with lockable precision casters relocates the complete workstation to any place of use within seconds.\n\nM2  A linearly extendable comfort column dynamically transforms the work surface into an ergonomic usage position for seated or standing users.\n\nM3  An access-controlled operating module authorizes the use of the workstation and enables selected functions via a directly visible release unit.\n\nM4  An integrated energy module in the lower base structure, together with storage zones for computers and work equipment, creates an autonomous and well-organized point of use.' }
+    ] },
+  // 1b. detective speech bubble (same modal as 1a)
+  { top: '26.4%', left: '16.3%', w: '12%', h: '18%', noIndicator: true, linkedTo: 0,
+    codeDigit: null,
+    clue: 'assets/clues/game-instructor.png',
+    title: { de: 'Detective', en: 'Detective' },
+    body:  { de: 'Vor dir liegt eine scheinbar neue technische Idee.\nIm Raum findest du verschiedene Hinweise – deine Aufgabe ist es, herauszufinden, ob diese Lösung wirklich neu ist oder sich bereits an anderer Stelle wiederfindet.',
+             en: 'In front of you is a seemingly novel technical idea.\nAround the room, you will find various clues—your task is to determine whether this solution is truly new or already exists elsewhere.' },
+    pages: [
+      { de: 'Vor dir liegt eine scheinbar neue technische Idee.\nIm Raum findest du verschiedene Hinweise – deine Aufgabe ist es, herauszufinden, ob diese Lösung wirklich neu ist oder sich bereits an anderer Stelle wiederfindet.',
+        en: 'In front of you is a seemingly novel technical idea.\nAround the room, you will find various clues—your task is to determine whether this solution is truly new or already exists elsewhere.' },
+      { de: 'M1  Ein rollendes Mobilitätsfundament mit arretierbaren Präzisionsrollen verlagert den kompletten Arbeitsplatz in Sekunden an jeden Einsatzort.\n\nM2  Eine linear ausfahrbare Komfortsäule transformiert die Arbeitsfläche dynamisch auf eine angenehme Nutzungsposition für sitzende oder stehende Personen.\n\nM3  Ein zugangsgesteuertes Bedienmodul autorisiert die Nutzung der Arbeitsstation und gibt ausgewählte Funktionen über eine direkt sichtbare Freigabeeinheit frei.\n\nM4  Ein integriertes Energiemodul im Unterbau sowie aufnehmbare Stauraumzonen für Rechner und Arbeitsmittel schaffen einen autarken, aufgeräumten Einsatzpunkt.',
+        en: 'M1  A rolling mobility base with lockable precision casters relocates the complete workstation to any place of use within seconds.\n\nM2  A linearly extendable comfort column dynamically transforms the work surface into an ergonomic usage position for seated or standing users.\n\nM3  An access-controlled operating module authorizes the use of the workstation and enables selected functions via a directly visible release unit.\n\nM4  An integrated energy module in the lower base structure, together with storage zones for computers and work equipment, creates an autonomous and well-organized point of use.' }
+    ] },
+  // 2. Q monitor (easter egg)
+  { top: '58.8%', left: '27.8%', w: '10%', h: '18%',
+    codeDigit: null,
+    clue: 'assets/clues/easter-egg.png',
+    title: { de: 'Qthena – Digitaler Erfindungs Assistent', en: 'Qthena – Digital Invention Assistant' },
+    body:  { de: 'Qthena ist ein KI-gestützter Assistent, der dabei hilft, Ideen zu verstehen, zu strukturieren und weiterzuentwickeln.\nDas Tool unterstützt dabei, Konzepte klar zu formulieren, relevante Vorveröffentlichungen zu identifizieren und erste Entwürfe zu erstellen.\nDu kannst Qthena direkt am Stand daneben selbst ausprobieren.',
+             en: 'Qthena is an AI-powered assistant that helps to understand, structure, and refine ideas.\nIt supports users in clearly formulating concepts, identifying relevant prior art, and creating initial drafts.\nYou can try Qthena yourself at the booth next to this station.' } },
+  // 3. security keypad
+  { top: '32.5%', left: '33.5%', w: '5%', h: '9%',
+    codeDigit: 2,
+    clue: 'assets/clues/r-clue-keypad.png',
+    title: { de: 'Zugangskontrollmodul', en: 'Access Control Module' },
+    body:  { de: 'Dieses kompakte Bedienfeld ermöglicht den gesteuerten Zugriff auf ausgewählte Funktionen der Arbeitsstation.\nErst nach Freigabe werden bestimmte Komponenten aktiviert und stehen zur Nutzung bereit.',
+             en: 'This compact interface enables controlled access to selected functions of the workstation.\nOnly after authorization are specific components activated and made available for use.' } },
+  // 4. energy module
+  { top: '49.6%', left: '41.6%', w: '7%', h: '13%',
+    codeDigit: 6,
+    clue: 'assets/clues/r-clue-energy.png',
+    title: { de: 'Integriertes Energiemodul', en: 'Integrated Power Module' },
+    body:  { de: 'Dieses Energiemodul ist platzsparend im Unterbau integriert und versorgt die angeschlossenen Komponenten zuverlässig mit Strom.\nDurch die kompakte Bauweise entsteht ein eigenständiger Arbeitsplatz, der ohne direkte externe Versorgung betrieben werden kann.',
+             en: 'This power module is compactly integrated into the base and reliably supplies connected components with energy.\nIts self-contained design enables operation as an independent workstation without continuous external power.' } },
+  // 5. height-adjustable chair
+  { top: '79.4%', left: '49.5%', w: '8%', h: '18%',
+    codeDigit: 1,
+    textBox: { left: '52.5%', top: '11%', width: '40%', height: '79%' },
+    clue: 'assets/clues/r-clue-chair.png',
+    title: { de: 'Höhenverstellbares Sitzmodul', en: 'Height-Adjustable Seating Module' },
+    body:  { de: 'Dieses Sitzmodul lässt sich flexibel an unterschiedliche Arbeitshöhen anpassen und unterstützt sowohl sitzende als auch erhöhte Arbeitspositionen.\nDurch die einfache Verstellmechanik kann die Position schnell an individuelle Anforderungen und wechselnde Einsatzsituationen angepasst werden.',
+             en: 'This seating module can be flexibly adjusted to different working heights, supporting both seated and elevated working positions.\nIts simple adjustment mechanism allows quick adaptation to individual needs and changing work situations.' } },
+  // 6. microscope
+  { top: '41.9%', left: '61.3%', w: '7%', h: '20%',
+    codeDigit: 0,
+    textBox: { left: '52.5%', top: '11%', width: '40%', height: '79%' },
+    clue: 'assets/clues/i-clue-microscope.png',
+    title: { de: 'Labor-Mikroskop', en: 'Laboratory Microscope' },
+    body:  { de: 'Dieses optische Präzisionsgerät dient zur detaillierten Untersuchung kleinster Strukturen und Proben.\nDurch die fein einstellbare Vergrößerung lassen sich auch komplexe Material- oder Oberflächenmerkmale sichtbar machen.',
+             en: 'This optical precision device is used for the detailed examination of very small structures and samples.\nIts finely adjustable magnification allows even complex material or surface features to become visible.' } },
+  // 7. tool wagon / mobile base
+  { top: '81.4%', left: '69.6%', w: '11%', h: '16%',
+    codeDigit: 9,
+    clue: 'assets/clues/r-clue-wheel.png',
+    title: { de: 'Mobiler Unterbau', en: 'Mobile Base Unit' },
+    body:  { de: 'Dieser kompakte Unterbau ist mit leichtgängigen Rollen ausgestattet und lässt sich mühelos an unterschiedliche Einsatzorte bewegen.\nBei Bedarf kann die Position stabil fixiert werden, sodass auch bei wechselnden Arbeitsumgebungen ein sicherer Stand gewährleistet ist.',
+             en: 'This compact base is equipped with smooth-running wheels, allowing it to be easily moved between different work locations.\nWhen needed, its position can be securely locked to ensure stability even in changing environments.' } },
+  // 8. 3D printer
+  { top: '40.6%', left: '75.5%', w: '8%', h: '19%',
+    codeDigit: 4,
+    textBox: { left: '52.5%', top: '11%', width: '40%', height: '79%' },
+    clue: 'assets/clues/i-clue-3dprinter.png',
+    title: { de: '3D-Drucksystem', en: '3D Printing System' },
+    body:  { de: 'Dieses Gerät ermöglicht die schichtweise Fertigung von Prototypen und Bauteilen direkt aus digitalen Modellen.\nEs wird häufig eingesetzt, um Designideen schnell zu visualisieren und funktionale Muster zu erzeugen.',
+             en: 'This device enables the layer-by-layer fabrication of prototypes and components directly from digital models.\nIt is commonly used to quickly visualize design concepts and produce functional samples.' } },
+  // 9. oscilloscope / measuring device
+  { top: '22.4%', left: '77.4%', w: '9%', h: '13%',
+    codeDigit: 5,
+    clue: 'assets/clues/i-clue-measure.png',
+    title: { de: 'Digitales Oszilloskop', en: 'Digital Oscilloscope' },
+    body:  { de: 'Dieses Messgerät dient zur Analyse elektrischer Signale und stellt Spannungsverläufe in Echtzeit grafisch dar.\nEs ermöglicht eine präzise Untersuchung von Frequenzen, Signalformen und zeitlichen Abläufen in elektronischen Systemen.',
+             en: 'This measurement device is used to analyze electrical signals and visualizes voltage patterns in real time.\nIt enables precise examination of frequencies, signal shapes, and timing behavior within electronic systems.' } },
+  // 10. whiteboard / platform concept
+  { top: '26.7%', left: '91.1%', w: '12%', h: '20%',
+    codeDigit: 3,
+    textBox: { left: '54%', top: '12%', width: '39%', height: '77%' },
+    clue: 'assets/clues/i-clue-whiteboard.png',
+    title: { de: 'Plattformkonzept', en: 'Platform Concept' },
+    body:  { de: 'Die dargestellten Skizzen zeigen verschiedene Entwürfe einer fahrbaren Plattform mit gelenkter Radanordnung und möglichen Antriebselementen.\nUntersucht werden dabei vor allem Bewegungsrichtungen und Steuerungsansätze für eine gezielte Navigation im Arbeitsumfeld.',
+             en: 'The sketches illustrate different designs of a mobile platform with a controlled wheel arrangement and potential drive components.\nThe focus lies on movement directions and control approaches for targeted navigation within a workspace.' } },
 ];
 
 /* ─── Localization ───────────────────────── */
@@ -56,6 +149,16 @@ function renderText() {
   document.querySelectorAll('[data-text]').forEach(el => {
     el.textContent = strings[el.dataset.text];
   });
+  // Re-populate open item modal text when language is toggled
+  if (gameState.openModal === 'item' && gameState.activeItemIndex !== null) {
+    const spot = HOTSPOTS[gameState.activeItemIndex];
+    document.getElementById('modal-item-title').textContent = spot.title[gameState.language];
+    if (spot.pages) {
+      document.getElementById('modal-item-body').textContent = spot.pages[gameState.modalPage][gameState.language];
+    } else {
+      document.getElementById('modal-item-body').textContent = spot.body[gameState.language];
+    }
+  }
   const flagIcon = document.getElementById('flag-icon');
   const newSrc = gameState.language === 'de'
     ? 'assets/ui/flag-de.svg'
@@ -79,6 +182,46 @@ function openModal(type, index) {
     const img = document.getElementById('modal-item-image');
     img.src = spot.clue;
     img.alt = spot.title[gameState.language];
+    document.getElementById('modal-item-title').textContent = spot.title[gameState.language];
+
+    // Reset page and populate body text
+    gameState.modalPage = 0;
+    const bodyText = spot.pages ? spot.pages[0][gameState.language] : spot.body[gameState.language];
+    document.getElementById('modal-item-body').textContent = bodyText;
+
+    // Show/hide pagination nav
+    const navEl = document.getElementById('modal-item-nav');
+    const textEl2 = document.getElementById('modal-item-text');
+    if (spot.pages && spot.pages.length > 1) {
+      navEl.classList.remove('hidden');
+      textEl2.classList.add('paginated');
+      updateNavArrows(spot);
+    } else {
+      navEl.classList.add('hidden');
+      textEl2.classList.remove('paginated');
+    }
+
+    // Apply per-hotspot text box position if specified, otherwise clear overrides
+    const textEl = document.getElementById('modal-item-text');
+    if (spot.textBox) {
+      textEl.style.left   = spot.textBox.left;
+      textEl.style.top    = spot.textBox.top;
+      textEl.style.width  = spot.textBox.width;
+      textEl.style.height = spot.textBox.height;
+    } else {
+      textEl.style.left = textEl.style.top = textEl.style.width = textEl.style.height = '';
+    }
+
+    // Show code digit if defined
+    const digitEl = document.getElementById('modal-item-digit');
+    if (spot.codeDigit !== null && spot.codeDigit !== undefined) {
+      digitEl.textContent = spot.codeDigit;
+      digitEl.classList.remove('hidden');
+    } else {
+      digitEl.textContent = '';
+      digitEl.classList.add('hidden');
+    }
+
     gameState.activeItemIndex = index;
     document.getElementById('modal-item').classList.remove('hidden');
   }
@@ -104,6 +247,17 @@ function closeModal() {
   }
   document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden'));
   document.getElementById('overlay').classList.add('hidden');
+  // Reset per-hotspot text box inline overrides
+  const textEl = document.getElementById('modal-item-text');
+  textEl.style.left = textEl.style.top = textEl.style.width = textEl.style.height = '';
+  // Reset digit
+  const digitEl = document.getElementById('modal-item-digit');
+  digitEl.textContent = '';
+  digitEl.classList.add('hidden');
+  // Reset pagination
+  gameState.modalPage = 0;
+  document.getElementById('modal-item-nav').classList.add('hidden');
+  document.getElementById('modal-item-text').classList.remove('paginated');
   gameState.openModal = null;
   gameState.activeItemIndex = null;
 }
@@ -156,6 +310,12 @@ function showScreen(name) {
   gameState.screen = name;
 }
 
+/* ─── Nav arrow helper ──────────────────── */
+function updateNavArrows(spot) {
+  document.getElementById('modal-prev').disabled = gameState.modalPage === 0;
+  document.getElementById('modal-next').disabled = gameState.modalPage === spot.pages.length - 1;
+}
+
 /* ─── Event wiring ───────────────────────── */
 document.getElementById('btn-start').addEventListener('click', () => {
   showScreen('game');
@@ -167,6 +327,25 @@ document.getElementById('btn-language').addEventListener('click', () => {
 });
 
 document.querySelector('#modal-item .btn-close').addEventListener('click', closeModal);
+
+/* Detective modal — pagination prev/next */
+document.getElementById('modal-prev').addEventListener('click', () => {
+  if (gameState.activeItemIndex === null) return;
+  const spot = HOTSPOTS[gameState.activeItemIndex];
+  if (!spot.pages || gameState.modalPage === 0) return;
+  gameState.modalPage--;
+  document.getElementById('modal-item-body').textContent = spot.pages[gameState.modalPage][gameState.language];
+  updateNavArrows(spot);
+});
+
+document.getElementById('modal-next').addEventListener('click', () => {
+  if (gameState.activeItemIndex === null) return;
+  const spot = HOTSPOTS[gameState.activeItemIndex];
+  if (!spot.pages || gameState.modalPage === spot.pages.length - 1) return;
+  gameState.modalPage++;
+  document.getElementById('modal-item-body').textContent = spot.pages[gameState.modalPage][gameState.language];
+  updateNavArrows(spot);
+});
 
 /* Safe hotspot — body and speech bubble both open the safe modal */
 document.getElementById('hotspot-safe').addEventListener('click', () => openModal('safe'));

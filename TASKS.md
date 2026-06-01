@@ -244,21 +244,302 @@ The implementation is not complete until all of these pass:
 
 ---
 
-## Phase 9 — Popup text content and UI adjustments
+## Phase 9 — Popup text content and UI adjustments ✓
 
 Goal: each popup window (item modals and any other modals with white text areas) displays the correct German and English text; layout is adjusted to fit the text cleanly.
 
-### Text content
+### Task 9a — Bundle Orbitron font locally ✓
 
-- [ ] Identify all white text areas in popup windows (item modals, safe modal, menu modal, etc.) that are missing text
-- [ ] Write German and English copy for each white area and add it to `STRINGS` in `script.js`
-- [ ] Wire each text node to `renderText()` so language toggle updates it
-- [ ] Confirm all text displays correctly in both languages
+Orbitron is the canonical Tron Legacy–style font. It must be included as a local file so the game works offline.
 
-### UI adjustments (after text is in place)
+- [x] Download `Orbitron.woff2` from Google Fonts static CDN; saved to `assets/fonts/Orbitron.woff2` (11,800 bytes, variable font covering weight 400–700)
+- [x] Add `@font-face` rule to `style.css` (top of file, before reset) — single file covers both regular and bold via `font-weight: 400 700`
+- [x] Browser-confirmed: Orbitron renders correctly from local file with no internet required
 
-- [ ] Check text does not overflow or overlap image content in each modal
-- [ ] Adjust font size, padding, or layout as needed
-- [ ] Browser-confirm all modals look correct at typical laptop window sizes
+---
+
+### Task 9b — Add popup content to HOTSPOTS and STRINGS in `script.js` ✓
+
+- [x] Added `startIntro` and `startDisclosure` keys to both `de` and `en` in `STRINGS`
+- [x] Added `body: { de, en }` to every HOTSPOT entry (all 11 entries including speech bubble duplicate)
+- [x] Updated `title` on all entries to match final copy (Detective, Qthena, Zugangskontrollmodul, Integriertes Energiemodul, Höhenverstellbares Sitzmodul, Labor-Mikroskop, Mobiler Unterbau, 3D-Drucksystem, Digitales Oszilloskop, Plattformkonzept)
+
+---
+
+### Task 9c — HTML: add text overlay elements ✓
+
+- [x] Added `<div id="start-intro" data-text="startIntro"></div>` and `<div id="start-disclosure" data-text="startDisclosure"></div>` inside `#screen-start`
+- [x] Added `<div id="modal-item-text"><h2 id="modal-item-title"></h2><p id="modal-item-body"></p></div>` inside `#modal-item`
+- [x] `#modal-safe` and `#modal-menu` unchanged — no white text areas
+
+---
+
+### Task 9d — CSS: position and style text overlays
+
+**Orbitron font** (from Task 9a) applied to all new text overlays. Text color dark navy (`#001a33`) on white panels.
+
+**Start screen overlays** (absolute, positioned over the background image):
+- Both boxes occupy the right side: roughly `left: 63%, width: 34%`
+- Top box (`#start-intro`): `top: 8%, height: 42%`; font-size `12px`; padding `12px 14px`; `white-space: pre-line`; `overflow: hidden`
+- Bottom box (`#start-disclosure`): `top: 54%, height: 42%`; font-size `11px`; padding `12px 14px`; `white-space: pre-line`; `overflow: hidden`
+- Both: `position: absolute`, `color: #001a33`, `font-family: 'Orbitron', 'Courier New', monospace`, `line-height: 1.6`
+
+**Item modal text panel** (`#modal-item-text`):
+- `position: absolute; left: 47%; top: 11%; width: 46%; height: 77%`
+- `padding: 5% 4%`; `overflow: hidden`; `box-sizing: border-box`
+- Title (`#modal-item-title`): `font-family: 'Orbitron', ...; font-weight: 700; font-size: 1.1em; color: #001a33; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.6em`; optionally a subtle neon-blue bottom border
+- Body (`#modal-item-body`): `font-family: 'Orbitron', ...; font-weight: 400; font-size: 0.85em; color: #0a1a2e; line-height: 1.65; white-space: pre-line`
+
+- [x] Add all of the above rules to `style.css`
+
+---
+
+### Task 9e — JS: wire text population to `openModal()` and `renderText()`
+
+- [x] In `openModal('item', index)`: after setting `img.src`, also set `document.getElementById('modal-item-title').textContent` and `document.getElementById('modal-item-body').textContent` from the active HOTSPOT's `title[gameState.language]` and `body[gameState.language]`
+- [x] In `renderText()`: if `gameState.openModal === 'item'` and `gameState.activeItemIndex !== null`, re-render the modal title and body text so language toggle works even while a popup is open
+- [x] Verify `renderText()` already handles `data-text="startIntro"` and `data-text="startDisclosure"` via the existing `querySelectorAll('[data-text]')` loop — no additional JS change needed for start screen
+
+---
+
+### Task 9f — Browser verification
+
+- [x] Open start screen in German — confirm both text boxes display correct text, no overflow
+- [x] Toggle to English — confirm both text boxes update correctly
+- [x] Open each of the 10 item popups in German — confirm title and body appear in the white panel
+- [x] Toggle language while a popup is open — confirm title and body update in real time
+- [ ] Resize browser to 1280×720 — confirm no overflow or clipping in any panel
 
 Manual check: open each popup in both languages and confirm text is visible, readable, and correctly translated.
+
+---
+
+## Phase 10 — Polish: start screen titles, clue numbers, font sizing, text box alignment
+
+Portability verified: game works on a second machine by copying the folder and opening `index.html` directly.
+
+Goal: start screen gets headings in both panels; relevant clue modals show a large neon blue code digit; all modal texts grow to better fill the white space; three off-center modals are corrected.
+
+### Task 10a — Start screen: add panel titles
+
+- [x] Add `startTitleIntro` and `startTitleDisclosure` keys to `STRINGS` (de/en)
+- [x] Add `<div id="start-title-intro" data-text="startTitleIntro">` and `<div id="start-title-disclosure" data-text="startTitleDisclosure">` to `index.html` (one above each text panel)
+- [x] Style both title divs: Orbitron bold, ~2vh, dark navy (`#001a33`), uppercase, absolute-positioned at top of their respective panels
+- [x] Shift `#start-disclosure` top from 53% → 60% and reduce height from 34% → 25% to make room for the title; reduce font-size slightly if needed to keep all M items visible
+
+### Task 10b — Clue modals: add large neon code digit
+
+Relevant clues and their safe-code digits:
+- Keypad (index 3) → 2
+- Energy Module (index 4) → 6
+- Chair (index 5) → 1
+- Mobile Base Unit (index 7) → 9
+
+Irrelevant clues (filler numbers, none reused from the above):
+- Microscope (index 6) → 0
+- 3D Printer (index 8) → 4
+- Oscilloscope (index 9) → 5
+- Whiteboard (index 10) → 3
+
+No digit shown for Detective (indices 0–1) or Qthena (index 2).
+
+- [x] Add `codeDigit` property to each HOTSPOT (null for detective/qthena entries)
+- [x] Add `<span id="modal-item-digit" class="hidden">` inside `#modal-item-text`
+- [x] Style `#modal-item-digit`: position absolute, bottom-right of the text panel, font-size `clamp(50px, 7vw, 90px)`, Orbitron bold, neon tron blue glow
+- [x] In `openModal('item', index)`: set digit text and toggle `.hidden` based on `spot.codeDigit`
+- [x] In `closeModal()`: reset digit to hidden
+
+### Task 10c — Modal body font size: increase to fill white space
+
+Determine longest text across all 11 hotspots in both DE and EN; choose a font-size that brings the longest text close to filling the panel height without overflow.
+
+- [x] Increase `#modal-item-body` font-size from `clamp(9px, 1.05vw, 13px)` to `clamp(12px, 1.5vw, 18px)`
+- [x] Optionally increase `#modal-item-title` slightly for visual hierarchy
+
+### Task 10d — Per-modal text box alignment
+
+Canvas pixel scan shows the white text panel starts at different `left` percentages in each clue image. The current default (`left: 48%`) overlaps the neon border for some images.
+
+Images needing adjustment (white panel left edge > 48%):
+- `r-clue-chair.png` (index 5): white starts at ~51%
+- `i-clue-microscope.png` (index 6): white starts at ~51%
+- `i-clue-3dprinter.png` (index 8): white starts at ~51%
+- `i-clue-whiteboard.png` (index 10): white starts at ~52.6%
+
+- [x] Add optional `textBox: { left, top, width, height }` property to the four affected HOTSPOT entries
+- [x] In `openModal('item', index)`: if `spot.textBox` exists, apply as inline styles on `#modal-item-text`; otherwise clear inline styles (CSS default applies)
+- [x] In `closeModal()`: clear inline styles on `#modal-item-text`
+
+---
+
+## Phase 11 — Readability fixes and Win Screen text
+
+### Task 11a — Code digit color: darker blue for readability
+
+The large neon code digits in the bottom-right of the white text boxes are currently styled with a bright neon tron-blue glow. On the white background this reduces contrast.
+
+- [x] Choose a darker blue that matches the game screen palette (e.g. a deeper navy/blue matching the neon panels, such as `#0057a8` or `#003f7f`) while keeping the digit visually distinct
+- [x] Update `#modal-item-digit` color and text-shadow in `style.css` to the chosen darker blue
+- [x] Verify digit is clearly readable against the white panel background in browser
+
+### Task 11b — Win Screen: add text to the right white box
+
+The Win Screen has three white boxes; the rightmost one is currently empty. Add the bilingual closing message.
+
+DE text:
+> Gratulation! Du hast einen neuheitsschädigenden Stand der Technik identifiziert.
+>
+> Die vermeintlich neue Idee lässt sich vollständig durch bekannten Stand der Technik erklären. Keine der zentralen Eigenschaften ist tatsächlich neu.
+> Dieses Beispiel zeigt: KI kann komplexe und überzeugende Beschreibungen erzeugen. Doch echte Innovation entsteht erst durch einen eigenen technischen Lösungsansatz – nicht durch die Neuformulierung bereits bekannter Inhalte.
+
+EN text:
+> Congratulations! You have identified novelty-destroying prior art.
+>
+> The seemingly novel idea can be entirely explained by existing prior art. None of the key features are actually new.
+> This example demonstrates that AI can produce complex and convincing descriptions. However, true innovation only arises from a genuine technical solution—not from rephrasing what already exists.
+
+- [x] Add `winText` key (de/en) to `STRINGS` in `script.js`
+- [x] Add a text overlay element to `#screen-win` in `index.html` positioned over the right white box
+- [x] Style the overlay to match item modal text style (Orbitron, dark navy `#001a33`, matching font-size, `white-space: pre-line`, `overflow: hidden`)
+- [x] Wire the element via `data-text="winText"` so `renderText()` populates it automatically
+- [x] Browser-verify: text visible in both DE and EN on Win Screen; no overflow
+
+### Task 11c — Start screen bottom panel: reduce title gap, increase body font size
+
+The gap between the "The Invention" / "Die Erfindung" title and the body text below it in the bottom start screen panel is too large. The freed space should be used to increase body font size for better readability.
+
+- [x] Inspect current CSS for `#start-title-disclosure` margin/padding and `#start-disclosure` padding-top; reduce the gap between title and body
+- [x] Increase `#start-disclosure` body font-size slightly (current: `clamp(9px, 1.1vw, 14px)` or similar) so the text fills the panel better — verify no overflow at typical viewport sizes
+- [x] Browser-verify: title and body text both visible, no overflow, better readability at 1366×768 and 1280×720
+
+### Task 11d — Detective modal: paginated text with prev/next arrows
+
+The detective's popup (indices 0 and 1 — body and speech bubble) currently shows one page of text (game description / mission briefing). A second page should contain the AI-assisted invention disclosure. The user navigates between pages using left/right arrows similar to the safe digit arrows.
+
+Pages (in order):
+1. **Page 1** — existing game description / objective text (already in HOTSPOT body for index 0)
+2. **Page 2** — AI-assisted invention disclosure text (new, bilingual, to be written and added to STRINGS or directly on the HOTSPOT entry)
+
+Requirements:
+- Page 1 always shown first when the detective modal opens; page state resets on close
+- Left (`<`) and right (`>`) arrow buttons appear in the bottom-right corner of the white text box, styled consistently with the safe digit arrows
+- Left arrow is disabled (visually dimmed, not clickable) on page 1; right arrow is disabled on the last page
+- Each arrow click replaces the body text with the corresponding page's content; title stays the same
+- Font size must keep both pages readable without overflow (adjust if the disclosure text is longer than the mission text)
+- The speech-bubble duplicate hotspot (index 1, `linkedTo: 0`) shares the same modal — no separate handling needed
+- `closeModal()` resets the detective page index to 0
+
+Implementation notes:
+- Add a `pages` array property (array of `{ de, en }` objects) to the detective HOTSPOT entries (index 0 and 1), replacing or extending the single `body` property
+- Track `gameState.modalPage` (integer, default 0); reset in `closeModal()` and `openModal()`
+- Add `<div id="modal-item-nav">` with `<button id="modal-prev">&#60;</button>` and `<button id="modal-next">&#62;</button>` inside `#modal-item-text` (below body paragraph)
+- Show `#modal-item-nav` only when the active hotspot has more than one page; hide it otherwise (so other modals are unaffected)
+- Wire arrow buttons to increment/decrement `gameState.modalPage` and re-render body text and arrow states
+- [x] Add `pages` array to detective HOTSPOT entries (index 0 and 1) in `script.js`; write invention disclosure copy (DE + EN) as page 2
+- [x] Add `gameState.modalPage` to state model; initialize to 0; reset in `openModal()` and `closeModal()`
+- [x] Add `#modal-item-nav` with prev/next buttons to `index.html` inside `#modal-item-text`
+- [x] Style `#modal-item-nav` in `style.css`: absolute bottom-right of text box, buttons match safe arrow style, disabled state visually dimmed
+- [x] In `openModal('item', index)`: show/hide `#modal-item-nav` based on whether the spot has multiple pages; render page 0 body text; set arrow disabled states
+- [x] In arrow click handlers: update `gameState.modalPage`, re-render body, update arrow disabled states
+- [x] In `closeModal()`: hide `#modal-item-nav`, reset `gameState.modalPage` to 0
+- [x] In `renderText()`: if modal is open and active spot has pages, re-render current page body in new language
+- [ ] Browser-verify: page 1 shown on open; right arrow advances to page 2; left arrow returns to page 1; arrows dim correctly; other modals show no nav; language toggle works on both pages
+
+---
+
+## Phase 12 — Text polish and win screen calibration
+
+### Task 12a — Start screen: show M4 in bottom disclosure box
+
+The bottom white box on the start screen currently only shows M1–M3. M4 is clipped by the box height or font size.
+
+- [ ] Measure how much space M4 requires at current font-size `1.3vh`; determine whether reducing font-size or increasing `height` on `#start-disclosure` is the right fix
+- [ ] Apply the change in `style.css`; ensure M4 is fully visible without overflowing the white box
+- [ ] Confirm no overflow at 1366×768 and 1280×720
+
+---
+
+### Task 12b — Win screen: add a visible area marker for the text box
+
+The `#win-text` element is positioned over the right white panel by CSS percentages. Add a faint visible boundary to `#win-text` so the exact text area is easy to see and verify during calibration.
+
+- [ ] Add a subtle border or background tint to `#win-text` in `style.css` (e.g. `border: 1px dashed rgba(0, 87, 168, 0.35)`) so the box boundaries are visible when looking at the win screen
+- [ ] Verify the border sits cleanly inside the right white panel of the win screen background image; adjust `left`, `top`, `width`, `height` if needed
+- [ ] After final positioning is confirmed, decide whether to keep or remove the border (keep as a low-key marker, or remove for a clean final look)
+
+---
+
+### Task 12c — Win screen: adjust text to fill the available space
+
+The current `#win-text` content is relatively short for the panel height. The text should use the available space better.
+
+- [ ] Review the current text content and CSS (`font-size: clamp(7px, 0.75vw, 10px)`, `line-height: 1.6`, `padding: 1% 1%`) and measure visual fill
+- [ ] Increase `font-size` and/or `line-height` so the text occupies more of the white panel without overflowing; aim for the text to reach roughly the bottom third of the panel
+- [ ] Verify both DE and EN text fit without clipping; EN text is slightly shorter than DE — ensure the larger size still works for both
+- [ ] Browser-verify at 1366×768
+
+---
+
+### Task 12d — Detective modal: per-page titles ("Game Master" / "ERFINDUNGSMELDUNG")
+
+Currently both detective HOTSPOT entries (index 0 and 1) have `title: { de: 'Detective', en: 'Detective' }` used for both pages.
+
+Required titles:
+- Page 1: `"Game Master"` (same in DE and EN)
+- Page 2: `"ERFINDUNGSMELDUNG"` (DE) / `"INVENTION DISCLOSURE"` (EN)
+
+Implementation:
+- [ ] Add a `pageTitles` array property to HOTSPOT entries 0 and 1 in `script.js` (parallel to `pages`):
+  ```js
+  pageTitles: [
+    { de: 'Game Master', en: 'Game Master' },
+    { de: 'ERFINDUNGSMELDUNG', en: 'INVENTION DISCLOSURE' }
+  ]
+  ```
+- [ ] In `openModal('item', index)`: if the spot has `pageTitles`, set the title from `pageTitles[0]` instead of `spot.title`
+- [ ] In the prev/next click handlers and `updateNavArrows` (or a new `updateModalPage` helper): update `#modal-item-title` from `pageTitles[gameState.modalPage]` on each page change
+- [ ] In `renderText()`: when the detective modal is open, re-set the title from `pageTitles[gameState.modalPage]` on language toggle
+- [ ] Also update the static `title` property on HOTSPOT entries 0 and 1 to `{ de: 'Game Master', en: 'Game Master' }` as a fallback
+- [ ] Browser-verify: page 1 shows "Game Master"; page 2 shows "ERFINDUNGSMELDUNG" / "INVENTION DISCLOSURE"; language toggle updates the page 2 title correctly
+
+---
+
+### Task 12e — Detective modal page 1: double font size for body text
+
+Only the body text on page 1 of the detective modal (the game description under "Game Master") should be displayed at double the current paginated font size. Page 2 (M1–M4) keeps the smaller font.
+
+Current paginated font: `clamp(10px, 1.05vw, 13px)` (applied via `.paginated #modal-item-body`).
+Target page-1 font: `clamp(20px, 2.1vw, 26px)` (double).
+
+- [ ] Add a `page-1` class (or `data-page` attribute) to `#modal-item-body` when page 0 is shown; remove it when page 1 is shown
+- [ ] Add a CSS rule `.paginated.page1 #modal-item-body` (or equivalent selector) that sets `font-size: clamp(20px, 2.1vw, 26px)` and an appropriate `line-height`
+- [ ] Toggle the class in `openModal` (page 0 = initial state) and in the prev/next handlers
+- [ ] Verify that page 1 body text is visibly larger and still fits within the modal text box without overflowing; adjust clamp values if needed
+- [ ] Verify page 2 font size is unchanged
+
+---
+
+### Task 12f — Remove AI long dashes from all displayed text strings
+
+AI-generated text uses em dashes (—) and en dashes (–) in positions where a comma is more natural. Replace all such dashes with a comma followed by a space, or a plain space, whichever reads better in context.
+
+Identified occurrences in `script.js` (all strings rendered on screen):
+
+| Location | Current | Fix |
+|---|---|---|
+| `STRINGS.de.startIntro` | `"wirklich neu ist – oder ob"` | `"wirklich neu ist, oder ob"` |
+| `STRINGS.en.startIntro` | `"truly new—or already exists"` | `"truly new, or already exists"` |
+| `STRINGS.de.winText` | `"Lösungsansatz – nicht durch"` | `"Lösungsansatz, nicht durch"` |
+| `STRINGS.en.winText` | `"technical solution—not from"` | `"technical solution, not from"` |
+| `HOTSPOTS[0].body.de` | `"Hinweise – deine Aufgabe"` | `"Hinweise, deine Aufgabe"` |
+| `HOTSPOTS[0].body.en` | `"clues—your task"` | `"clues, your task"` |
+| `HOTSPOTS[0].pages[0].de` | `"Hinweise – deine Aufgabe"` | `"Hinweise, deine Aufgabe"` |
+| `HOTSPOTS[0].pages[0].en` | `"clues—your task"` | `"clues, your task"` |
+| `HOTSPOTS[1].body.de` | `"Hinweise – deine Aufgabe"` | `"Hinweise, deine Aufgabe"` |
+| `HOTSPOTS[1].body.en` | `"clues—your task"` | `"clues, your task"` |
+| `HOTSPOTS[1].pages[0].de` | `"Hinweise – deine Aufgabe"` | `"Hinweise, deine Aufgabe"` |
+| `HOTSPOTS[1].pages[0].en` | `"clues—your task"` | `"clues, your task"` |
+
+- [ ] Apply all replacements in `script.js` using a single multi-replace operation
+- [ ] Verify no remaining em dash (—) or en dash (–) exists in any string visible on screen (check with grep)
+- [ ] Browser-verify: start screen intro text, win screen text, and detective page 1 text all read correctly in both languages

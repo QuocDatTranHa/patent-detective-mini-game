@@ -13,6 +13,10 @@
   ════════════════════════════════════════ -->
   <div id="screen-start">
     <img src="assets/backgrounds/start-screen.png" alt="" aria-hidden="true" class="screen-bg">
+    <div id="start-title-intro" data-text="startTitleIntro"></div>
+    <div id="start-intro" data-text="startIntro"></div>
+    <div id="start-title-disclosure" data-text="startTitleDisclosure"></div>
+    <div id="start-disclosure" data-text="startDisclosure"></div>
     <button id="btn-start" data-text="start">Start</button>
   </div>
 
@@ -35,6 +39,7 @@
   <div id="screen-win" class="hidden">
     <img src="assets/backgrounds/win-screen.png" alt="" aria-hidden="true" class="screen-bg">
     <p id="win-message" data-text="win">Glückwunsch!</p>
+    <div id="win-text" data-text="winText"></div>
     <button id="btn-restart-win" data-text="replay">Neu starten</button>
   </div>
 
@@ -57,6 +62,15 @@
   ════════════════════════════════════════ -->
   <div id="modal-item" class="modal hidden">
     <img id="modal-item-image" src="" alt="">
+    <div id="modal-item-text">
+      <h2 id="modal-item-title"></h2>
+      <p id="modal-item-body"></p>
+      <div id="modal-item-nav" class="hidden">
+        <button id="modal-prev">&#60;</button>
+        <button id="modal-next">&#62;</button>
+      </div>
+      <span id="modal-item-digit" class="hidden"></span>
+    </div>
     <button class="btn-close">&#10005;</button>
   </div>
 
