@@ -19,7 +19,7 @@ This project uses a prompt-driven agent workflow. Each session follows this sequ
 | 2 | `implement-next-task` | Implement the next unchecked phase from `TASKS.md`, run the manual check, report results |
 | 3 | `review-work` | Review what was built, validate against the game spec, identify issues |
 | 4 | `update-handover` | Update `HANDOVER.md`, `TASKS.md`, and `AGENT_LOG.md` to reflect completed work |
-
+To add new work to the backlog without implementing it yet, use `create-new-task`. Describe the task in plain text after the slash command and the agent will analyse it, break it into steps, and append it to `TASKS.md`.
 Prompts are stored in `.github/prompts/`. Project state is tracked in the Markdown files at the repository root (`HANDOVER.md`, `TASKS.md`, `DECISIONS.md`, `KNOWN_ISSUES.md`, `AGENT_LOG.md`).
 
 Before any implementation, the agent reads `HANDOVER.md` and `TASKS.md` to find the current phase and next unchecked task. After implementation, the agent updates the workflow files so the next session can pick up exactly where this one left off.

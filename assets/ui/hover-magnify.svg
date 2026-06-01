@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- Outer lens ring -->
+  <circle cx="40" cy="40" r="27" stroke="#00d4ff" stroke-width="5.5" fill="rgba(0,212,255,0.06)"/>
+  <!-- Inner detail ring (Tron accent) -->
+  <circle cx="40" cy="40" r="16" stroke="#00d4ff" stroke-width="1.5" opacity="0.4"/>
+  <!-- Handle -->
+  <line x1="61" y1="61" x2="89" y2="89" stroke="#00d4ff" stroke-width="8" stroke-linecap="round"/>
+</svg>

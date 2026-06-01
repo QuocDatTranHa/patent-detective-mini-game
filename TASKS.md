@@ -214,7 +214,7 @@ Hotspot positions are currently estimated in `script.js` (HOTSPOTS array) and `s
 - [x] Update `HANDOVER.md` with what was implemented, what was tested, and what remains
 - [x] Update `AGENT_LOG.md` with completed work
 - [x] Update `TASKS.md` to mark completed items
-- [ ] Update `README.md` — include section on agent workflow showing the prompt sequence: `start-session` → `implement-next-task` → `review-work` → `update-handover`
+- [x] Update `README.md` — include section on agent workflow showing the prompt sequence: `start-session` → `implement-next-task` → `review-work` → `update-handover`
 - [x] Update `ARCHITECTURE.md` to reflect `.svg` → `.png` asset change (done this session)
 
 Manual check: full playthrough in at least one modern browser (Chrome or Firefox) starting from `index.html` with no local server.
@@ -449,73 +449,13 @@ Implementation notes:
 
 ## Phase 12 — Text polish and win screen calibration
 
-### Task 12a — Start screen: show M4 in bottom disclosure box
-
-The bottom white box on the start screen currently only shows M1–M3. M4 is clipped by the box height or font size.
-
-- [ ] Measure how much space M4 requires at current font-size `1.3vh`; determine whether reducing font-size or increasing `height` on `#start-disclosure` is the right fix
-- [ ] Apply the change in `style.css`; ensure M4 is fully visible without overflowing the white box
-- [ ] Confirm no overflow at 1366×768 and 1280×720
+Tasks are ordered by risk (lowest first) and split into two agent sessions.
 
 ---
 
-### Task 12b — Win screen: add a visible area marker for the text box
+### Session 12-A — Pure text and CSS fixes (no JS logic changes)
 
-The `#win-text` element is positioned over the right white panel by CSS percentages. Add a faint visible boundary to `#win-text` so the exact text area is easy to see and verify during calibration.
-
-- [ ] Add a subtle border or background tint to `#win-text` in `style.css` (e.g. `border: 1px dashed rgba(0, 87, 168, 0.35)`) so the box boundaries are visible when looking at the win screen
-- [ ] Verify the border sits cleanly inside the right white panel of the win screen background image; adjust `left`, `top`, `width`, `height` if needed
-- [ ] After final positioning is confirmed, decide whether to keep or remove the border (keep as a low-key marker, or remove for a clean final look)
-
----
-
-### Task 12c — Win screen: adjust text to fill the available space
-
-The current `#win-text` content is relatively short for the panel height. The text should use the available space better.
-
-- [ ] Review the current text content and CSS (`font-size: clamp(7px, 0.75vw, 10px)`, `line-height: 1.6`, `padding: 1% 1%`) and measure visual fill
-- [ ] Increase `font-size` and/or `line-height` so the text occupies more of the white panel without overflowing; aim for the text to reach roughly the bottom third of the panel
-- [ ] Verify both DE and EN text fit without clipping; EN text is slightly shorter than DE — ensure the larger size still works for both
-- [ ] Browser-verify at 1366×768
-
----
-
-### Task 12d — Detective modal: per-page titles ("Game Master" / "ERFINDUNGSMELDUNG")
-
-Currently both detective HOTSPOT entries (index 0 and 1) have `title: { de: 'Detective', en: 'Detective' }` used for both pages.
-
-Required titles:
-- Page 1: `"Game Master"` (same in DE and EN)
-- Page 2: `"ERFINDUNGSMELDUNG"` (DE) / `"INVENTION DISCLOSURE"` (EN)
-
-Implementation:
-- [ ] Add a `pageTitles` array property to HOTSPOT entries 0 and 1 in `script.js` (parallel to `pages`):
-  ```js
-  pageTitles: [
-    { de: 'Game Master', en: 'Game Master' },
-    { de: 'ERFINDUNGSMELDUNG', en: 'INVENTION DISCLOSURE' }
-  ]
-  ```
-- [ ] In `openModal('item', index)`: if the spot has `pageTitles`, set the title from `pageTitles[0]` instead of `spot.title`
-- [ ] In the prev/next click handlers and `updateNavArrows` (or a new `updateModalPage` helper): update `#modal-item-title` from `pageTitles[gameState.modalPage]` on each page change
-- [ ] In `renderText()`: when the detective modal is open, re-set the title from `pageTitles[gameState.modalPage]` on language toggle
-- [ ] Also update the static `title` property on HOTSPOT entries 0 and 1 to `{ de: 'Game Master', en: 'Game Master' }` as a fallback
-- [ ] Browser-verify: page 1 shows "Game Master"; page 2 shows "ERFINDUNGSMELDUNG" / "INVENTION DISCLOSURE"; language toggle updates the page 2 title correctly
-
----
-
-### Task 12e — Detective modal page 1: double font size for body text
-
-Only the body text on page 1 of the detective modal (the game description under "Game Master") should be displayed at double the current paginated font size. Page 2 (M1–M4) keeps the smaller font.
-
-Current paginated font: `clamp(10px, 1.05vw, 13px)` (applied via `.paginated #modal-item-body`).
-Target page-1 font: `clamp(20px, 2.1vw, 26px)` (double).
-
-- [ ] Add a `page-1` class (or `data-page` attribute) to `#modal-item-body` when page 0 is shown; remove it when page 1 is shown
-- [ ] Add a CSS rule `.paginated.page1 #modal-item-body` (or equivalent selector) that sets `font-size: clamp(20px, 2.1vw, 26px)` and an appropriate `line-height`
-- [ ] Toggle the class in `openModal` (page 0 = initial state) and in the prev/next handlers
-- [ ] Verify that page 1 body text is visibly larger and still fits within the modal text box without overflowing; adjust clamp values if needed
-- [ ] Verify page 2 font size is unchanged
+**Tasks in this session:** 12f → 12a → 12b
 
 ---
 
@@ -540,6 +480,160 @@ Identified occurrences in `script.js` (all strings rendered on screen):
 | `HOTSPOTS[1].pages[0].de` | `"Hinweise – deine Aufgabe"` | `"Hinweise, deine Aufgabe"` |
 | `HOTSPOTS[1].pages[0].en` | `"clues—your task"` | `"clues, your task"` |
 
-- [ ] Apply all replacements in `script.js` using a single multi-replace operation
-- [ ] Verify no remaining em dash (—) or en dash (–) exists in any string visible on screen (check with grep)
-- [ ] Browser-verify: start screen intro text, win screen text, and detective page 1 text all read correctly in both languages
+- [x] Apply all replacements in `script.js` using a single multi-replace operation
+- [x] Verify no remaining em dash (—) or en dash (–) exists in any string visible on screen (check with grep)
+- [x] Browser-verify: start screen intro text, win screen text, and detective page 1 text all read correctly in both languages
+
+---
+
+### Task 12a — Start screen: show M4 in bottom disclosure box
+
+The bottom white box on the start screen currently only shows M1–M3. M4 is clipped by the box height or font size.
+
+- [x] Measure how much space M4 requires at current font-size `1.3vh`; determine whether reducing font-size or increasing `height` on `#start-disclosure` is the right fix
+- [x] Apply the change in `style.css`; ensure M4 is fully visible without overflowing the white box
+- [x] Confirm no overflow at 1366×768 and 1280×720
+
+---
+
+### Task 12b — Win screen: add a visible area marker for the text box
+
+The `#win-text` element is positioned over the right white panel by CSS percentages. Add a faint visible boundary to `#win-text` so the exact text area is easy to see and verify during calibration.
+
+- [x] Add a subtle border or background tint to `#win-text` in `style.css` (e.g. `border: 1px dashed rgba(0, 87, 168, 0.35)`) so the box boundaries are visible when looking at the win screen
+- [x] Verify the border sits cleanly inside the right white panel of the win screen background image; adjust `left`, `top`, `width`, `height` if needed
+- [x] After final positioning is confirmed, decide whether to keep or remove the border (keep as a low-key marker, or remove for a clean final look) — border kept as calibration marker; will decide in 12c
+
+---
+
+### Session 12-B — Win screen fill + detective JS behavior
+
+**Tasks in this session:** 12c → 12d → 12e
+
+---
+
+### Task 12c — Win screen: adjust text to fill the available space
+
+The current `#win-text` content is relatively short for the panel height. The text should use the available space better.
+
+- [x] Review the current text content and CSS (`font-size: clamp(7px, 0.75vw, 10px)`, `line-height: 1.6`, `padding: 1% 1%`) and measure visual fill
+- [x] Increase `font-size` and/or `line-height` so the text occupies more of the white panel without overflowing; aim for the text to reach roughly the bottom third of the panel
+- [x] Verify both DE and EN text fit without clipping; EN text is slightly shorter than DE — ensure the larger size still works for both
+- [x] Browser-verify at 1366×768
+
+---
+
+### Task 12d — Detective modal: per-page titles ("Game Master" / "ERFINDUNGSMELDUNG")
+
+Currently both detective HOTSPOT entries (index 0 and 1) have `title: { de: 'Detective', en: 'Detective' }` used for both pages.
+
+Required titles:
+- Page 1: `"Game Master"` (same in DE and EN)
+- Page 2: `"ERFINDUNGSMELDUNG"` (DE) / `"INVENTION DISCLOSURE"` (EN)
+
+Implementation:
+- [x] Add a `pageTitles` array property to HOTSPOT entries 0 and 1 in `script.js` (parallel to `pages`):
+  ```js
+  pageTitles: [
+    { de: 'Game Master', en: 'Game Master' },
+    { de: 'ERFINDUNGSMELDUNG', en: 'INVENTION DISCLOSURE' }
+  ]
+  ```
+- [x] In `openModal('item', index)`: if the spot has `pageTitles`, set the title from `pageTitles[0]` instead of `spot.title`
+- [x] In the prev/next click handlers and `updateNavArrows` (or a new `updateModalPage` helper): update `#modal-item-title` from `pageTitles[gameState.modalPage]` on each page change
+- [x] In `renderText()`: when the detective modal is open, re-set the title from `pageTitles[gameState.modalPage]` on language toggle
+- [x] Also update the static `title` property on HOTSPOT entries 0 and 1 to `{ de: 'Game Master', en: 'Game Master' }` as a fallback
+- [x] Browser-verify: page 1 shows "Game Master"; page 2 shows "ERFINDUNGSMELDUNG" / "INVENTION DISCLOSURE"; language toggle updates the page 2 title correctly
+
+---
+
+### Task 12e — Detective modal page 1: double font size for body text
+
+Only the body text on page 1 of the detective modal (the game description under "Game Master") should be displayed at double the current paginated font size. Page 2 (M1–M4) keeps the smaller font.
+
+Current paginated font: `clamp(10px, 1.05vw, 13px)` (applied via `.paginated #modal-item-body`).
+Target page-1 font: `clamp(20px, 2.1vw, 26px)` (double).
+
+- [x] Add a `page-1` class (or `data-page` attribute) to `#modal-item-body` when page 0 is shown; remove it when page 1 is shown
+- [x] Add a CSS rule `.paginated.page1 #modal-item-body` (or equivalent selector) that sets `font-size: clamp(20px, 2.1vw, 26px)` and an appropriate `line-height`
+- [x] Toggle the class in `openModal` (page 0 = initial state) and in the prev/next handlers
+- [x] Verify that page 1 body text is visibly larger and still fits within the modal text box without overflowing; adjust clamp values if needed
+- [x] Verify page 2 font size is unchanged
+
+---
+
+## Phase 13 — Start screen disclosure hotspot and detective per-page image swap
+
+Two new interactive features:
+1. The lower white box on the start screen becomes clickable and opens the Invention-Disclosure popup.
+2. The detective modal swaps its background image when the user navigates to page 2 (invention disclosure).
+
+---
+
+### Session 13-A — Asset, HTML, and CSS for start screen hotspot
+
+Goal: create the magnifying glass SVG indicator, add the hotspot element to the start screen, and style it so the indicator appears at the correct position and size on hover.
+
+Files touched: `assets/ui/hover-magnify.svg` (new), `index.html`, `style.css`
+
+- [x] Verify the exact filename and extension of the Invention-Disclosure image in `assets/clues/` (e.g. `Invention-Disclosure.png`) — use the verified name in all subsequent tasks
+- [x] Create `assets/ui/hover-magnify.svg`: a magnifying glass icon in neon Tron style (neon blue glow matching the game palette, e.g. stroke `#00d4ff` with glow filter); the icon is used at 174 px (3× the 58 px warning triangle)
+- [x] Add `<div id="hotspot-start-disclosure" class="hotspot start-hotspot"></div>` inside `#screen-start` in `index.html`, after the `#start-disclosure` element and before `#btn-start`
+- [x] In `style.css`: add `#screen-start` to the `position: relative` rule (or confirm it already has this) so absolute children are positioned correctly
+- [x] In `style.css`: add positioning rule for `#hotspot-start-disclosure` — cover the full lower white box area (`position: absolute; left: 72%; top: 53%; width: 24%; height: 35%; cursor: pointer; background: transparent;`); adjust percentages to match the actual white panel boundaries visible in browser
+- [x] In `style.css`: add `#hotspot-start-disclosure::after` rule — uses `hover-magnify.svg`, `width: 174px; height: 174px`, centered with `translate(-50%, -50%)`, same fade-in transition as the game hotspot indicator, neon blue drop-shadow glow (`filter: drop-shadow(0 0 8px #00d4ff) drop-shadow(0 0 20px #00d4ff)`)
+- [x] In `style.css`: suppress the default `.hotspot::after` indicator from showing on `#hotspot-start-disclosure` — override with the magnifying glass rule above (the `#hotspot-start-disclosure::after` rule takes precedence by specificity)
+- [x] Browser-verify: hover over the lower white box on the start screen — magnifying glass appears and disappears; other hover behavior on the start screen is unaffected; Start button still works
+
+Manual check: load `index.html` in browser; hover over the lower white box — large neon magnifying glass icon appears; move mouse away — icon disappears; no layout shift on hover.
+
+---
+
+### Session 13-B — JS wiring for start screen hotspot
+
+Goal: add the Invention-Disclosure popup content to `HOTSPOTS`, wire the start screen hotspot click to open the modal, and ensure the popup opens and closes correctly from the start screen.
+
+Files touched: `script.js`
+
+- [x] Add a new entry at the end of the `HOTSPOTS` array in `script.js` with `startScreen: true` flag so `renderHotspots()` can skip it:
+  ```js
+  { startScreen: true,
+    codeDigit: null,
+    clue: 'assets/clues/Invention-Disclosure.png',  // use verified filename from 13a
+    title: { de: 'ERFINDUNGSMELDUNG', en: 'INVENTION DISCLOSURE' },
+    body: { de: '...', en: '...' },  // use the same M1–M4 text as HOTSPOTS[0].pages[1]
+    textBox: { left: '48%', top: '11%', width: '46%', height: '77%' }  // calibrate after visual check
+  }
+  ```
+- [x] Update `renderHotspots()` to skip entries that have `startScreen: true` (add `if (spot.startScreen) return;` at the top of the `HOTSPOTS.forEach` callback)
+- [x] Add `renderStartHotspots()` function in `script.js`: iterate `HOTSPOTS`, find entries with `startScreen: true`, wire each to `#hotspot-start-disclosure` click → `openModal('item', i)` where `i` is the entry's index in `HOTSPOTS`
+- [x] Call `renderStartHotspots()` in the init block (alongside `renderHotspots()` and `renderText()`)
+- [x] Verify that `openModal('item', index)` works when called from the start screen: the overlay and `#modal-item` are top-level DOM siblings of the screen divs, so they should show correctly; confirm in browser
+- [x] Verify that clicking the overlay or the close button while on the start screen closes the modal and returns to the start screen (no screen switch)
+- [x] Verify that `reset()` correctly closes any open modal even if triggered from the win screen while the start-screen hotspot was previously used
+
+Browser-verify: click the lower white box on start screen → Invention-Disclosure popup opens with correct image, title "ERFINDUNGSMELDUNG", and M1–M4 text; close button and overlay click both close it; Start button still works after closing; language toggle before opening updates the popup title to "INVENTION DISCLOSURE".
+
+---
+
+### Session 13-C — Detective modal: per-page background image swap
+
+Goal: when the user navigates to page 2 of the detective modal, the popup background image changes from `game-instructor.png` to `Invention-Disclosure.png`; navigating back to page 1 restores the original image.
+
+Files touched: `script.js`
+
+- [x] Add `pageImages` array to HOTSPOT[0] (detective body) in `script.js`, parallel to `pages` and `pageTitles`:
+  ```js
+  pageImages: [
+    'assets/clues/game-instructor.png',
+    'assets/clues/Invention-Disclosure.png'  // use verified filename from 13a
+  ]
+  ```
+- [x] Add the same `pageImages` array to HOTSPOT[1] (detective speech bubble, `linkedTo: 0`) — same values
+- [x] In `openModal('item', index)`: after setting `img.src = spot.clue`, add: if `spot.pageImages` exists, use `spot.pageImages[0]` instead of `spot.clue` for `img.src`
+- [x] In the `modal-next` click handler: after updating `gameState.modalPage`, if `spot.pageImages` exists, set `document.getElementById('modal-item-image').src = spot.pageImages[gameState.modalPage]`
+- [x] In the `modal-prev` click handler: same — if `spot.pageImages` exists, update `img.src` from `pageImages[gameState.modalPage]`
+- [x] In `closeModal()`: no change needed — `img.src` is overwritten fresh each time `openModal` is called
+- [x] Browser-verify: open detective modal (page 1) → `game-instructor.png` is shown; click right arrow → image changes to `Invention-Disclosure.png` and title changes to "ERFINDUNGSMELDUNG"; click left arrow → image and title revert to page 1 values; non-detective modals are unaffected
+
+Manual check: full detective modal flow — page 1 image and title correct; page 2 image and title correct; back to page 1 image restores; language toggle on page 2 updates title only (image is language-independent).

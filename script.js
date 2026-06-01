@@ -21,10 +21,10 @@ const STRINGS = {
     confirm: 'Bestätigen',
     error:   'Der Code ist nicht korrekt.',
     win:     'Glückwunsch!',
-    winText: 'Gratulation! Du hast einen neuheitsschädigenden Stand der Technik identifiziert.\n\nDie vermeintlich neue Idee lässt sich vollständig durch bekannten Stand der Technik erklären. Keine der zentralen Eigenschaften ist tatsächlich neu.\nDieses Beispiel zeigt: KI kann komplexe und überzeugende Beschreibungen erzeugen. Doch echte Innovation entsteht erst durch einen eigenen technischen Lösungsansatz – nicht durch die Neuformulierung bereits bekannter Inhalte.',
+  winText: 'Gratulation! Du hast einen neuheitsschädigenden Stand der Technik identifiziert.\n\nDie vermeintlich neue Idee lässt sich vollständig durch bekannten Stand der Technik erklären. Keine der zentralen Eigenschaften ist tatsächlich neu.\nDieses Beispiel zeigt: KI kann komplexe und überzeugende Beschreibungen erzeugen. Doch echte Innovation entsteht erst durch einen eigenen technischen Lösungsansatz, nicht durch die Neuformulierung bereits bekannter Inhalte.',
     startTitleIntro: 'DEIN AUFTRAG',
     startTitleDisclosure: 'DIE ERFINDUNG',
-    startIntro: 'In diesem interaktiven Point-and-Click-Spiel untersuchst du eine scheinbar neue technische Idee.\nDeine Aufgabe ist es, relevante Hinweise im Raum zu finden und herauszufinden, ob die dargestellte Lösung wirklich neu ist – oder ob sich alles bereits an anderer Stelle wiederfindet.',
+  startIntro: 'In diesem interaktiven Point-and-Click-Spiel untersuchst du eine scheinbar neue technische Idee.\nDeine Aufgabe ist es, relevante Hinweise im Raum zu finden und herauszufinden, ob die dargestellte Lösung wirklich neu ist, oder ob sich alles bereits an anderer Stelle wiederfindet.',
     startDisclosure: 'M1  Ein rollendes Mobilitätsfundament mit arretierbaren Präzisionsrollen verlagert den kompletten Arbeitsplatz in Sekunden an jeden Einsatzort.\n\nM2  Eine linear ausfahrbare Komfortsäule transformiert die Arbeitsfläche dynamisch auf eine angenehme Nutzungsposition für sitzende oder stehende Personen.\n\nM3  Ein zugangsgesteuertes Bedienmodul autorisiert die Nutzung der Arbeitsstation und gibt ausgewählte Funktionen über eine direkt sichtbare Freigabeeinheit frei.\n\nM4  Ein integriertes Energiemodul im Unterbau sowie aufnehmbare Stauraumzonen für Rechner und Arbeitsmittel schaffen einen autarken, aufgeräumten Einsatzpunkt.'
   },
   en: {
@@ -35,10 +35,10 @@ const STRINGS = {
     confirm: 'Confirm',
     error:   'The code is incorrect.',
     win:     'Congratulations!',
-    winText: 'Congratulations! You have identified novelty-destroying prior art.\n\nThe seemingly novel idea can be entirely explained by existing prior art. None of the key features are actually new.\nThis example demonstrates that AI can produce complex and convincing descriptions. However, true innovation only arises from a genuine technical solution\u2014not from rephrasing what already exists.',
+  winText: 'Congratulations! You have identified novelty-destroying prior art.\n\nThe seemingly novel idea can be entirely explained by existing prior art. None of the key features are actually new.\nThis example demonstrates that AI can produce complex and convincing descriptions. However, true innovation only arises from a genuine technical solution, not from rephrasing what already exists.',
     startTitleIntro: 'YOUR MISSION',
     startTitleDisclosure: 'THE INVENTION',
-    startIntro: 'In this interactive point-and-click game, you investigate a seemingly novel technical idea.\nYour task is to find relevant clues in the room and determine whether the solution is truly new—or already exists elsewhere.',
+  startIntro: 'In this interactive point-and-click game, you investigate a seemingly novel technical idea.\nYour task is to find relevant clues in the room and determine whether the solution is truly new, or already exists elsewhere.',
     startDisclosure: 'M1  A rolling mobility base with lockable precision casters relocates the complete workstation to any place of use within seconds.\n\nM2  A linearly extendable comfort column dynamically transforms the work surface into an ergonomic usage position for seated or standing users.\n\nM3  An access-controlled operating module authorizes the use of the workstation and enables selected functions via a directly visible release unit.\n\nM4  An integrated energy module in the lower base structure, together with storage zones for computers and work equipment, creates an autonomous and well-organized point of use.'
   }
 };
@@ -52,12 +52,20 @@ const HOTSPOTS = [
   { top: '44.2%', left: '10.4%', w: '9%', h: '42%',
     codeDigit: null,
     clue: 'assets/clues/game-instructor.png',
-    title: { de: 'Detective', en: 'Detective' },
-    body:  { de: 'Vor dir liegt eine scheinbar neue technische Idee.\nIm Raum findest du verschiedene Hinweise – deine Aufgabe ist es, herauszufinden, ob diese Lösung wirklich neu ist oder sich bereits an anderer Stelle wiederfindet.',
-             en: 'In front of you is a seemingly novel technical idea.\nAround the room, you will find various clues—your task is to determine whether this solution is truly new or already exists elsewhere.' },
+    pageImages: [
+      'assets/clues/game-instructor.png',
+      'assets/clues/invention-disclosure.png'
+    ],
+    title: { de: 'Game Master', en: 'Game Master' },
+    pageTitles: [
+      { de: 'Game Master', en: 'Game Master' },
+      { de: 'ERFINDUNGSMELDUNG', en: 'INVENTION DISCLOSURE' }
+    ],
+    body:  { de: 'Vor dir liegt eine scheinbar neue technische Idee.\nIm Raum findest du verschiedene Hinweise, deine Aufgabe ist es, herauszufinden, ob diese Lösung wirklich neu ist oder sich bereits an anderer Stelle wiederfindet.',
+             en: 'In front of you is a seemingly novel technical idea.\nAround the room, you will find various clues, your task is to determine whether this solution is truly new or already exists elsewhere.' },
     pages: [
-      { de: 'Vor dir liegt eine scheinbar neue technische Idee.\nIm Raum findest du verschiedene Hinweise – deine Aufgabe ist es, herauszufinden, ob diese Lösung wirklich neu ist oder sich bereits an anderer Stelle wiederfindet.',
-        en: 'In front of you is a seemingly novel technical idea.\nAround the room, you will find various clues—your task is to determine whether this solution is truly new or already exists elsewhere.' },
+      { de: 'Vor dir liegt eine scheinbar neue technische Idee.\nIm Raum findest du verschiedene Hinweise, deine Aufgabe ist es, herauszufinden, ob diese Lösung wirklich neu ist oder sich bereits an anderer Stelle wiederfindet.',
+        en: 'In front of you is a seemingly novel technical idea.\nAround the room, you will find various clues, your task is to determine whether this solution is truly new or already exists elsewhere.' },
       { de: 'M1  Ein rollendes Mobilitätsfundament mit arretierbaren Präzisionsrollen verlagert den kompletten Arbeitsplatz in Sekunden an jeden Einsatzort.\n\nM2  Eine linear ausfahrbare Komfortsäule transformiert die Arbeitsfläche dynamisch auf eine angenehme Nutzungsposition für sitzende oder stehende Personen.\n\nM3  Ein zugangsgesteuertes Bedienmodul autorisiert die Nutzung der Arbeitsstation und gibt ausgewählte Funktionen über eine direkt sichtbare Freigabeeinheit frei.\n\nM4  Ein integriertes Energiemodul im Unterbau sowie aufnehmbare Stauraumzonen für Rechner und Arbeitsmittel schaffen einen autarken, aufgeräumten Einsatzpunkt.',
         en: 'M1  A rolling mobility base with lockable precision casters relocates the complete workstation to any place of use within seconds.\n\nM2  A linearly extendable comfort column dynamically transforms the work surface into an ergonomic usage position for seated or standing users.\n\nM3  An access-controlled operating module authorizes the use of the workstation and enables selected functions via a directly visible release unit.\n\nM4  An integrated energy module in the lower base structure, together with storage zones for computers and work equipment, creates an autonomous and well-organized point of use.' }
     ] },
@@ -65,12 +73,20 @@ const HOTSPOTS = [
   { top: '26.4%', left: '16.3%', w: '12%', h: '18%', noIndicator: true, linkedTo: 0,
     codeDigit: null,
     clue: 'assets/clues/game-instructor.png',
-    title: { de: 'Detective', en: 'Detective' },
-    body:  { de: 'Vor dir liegt eine scheinbar neue technische Idee.\nIm Raum findest du verschiedene Hinweise – deine Aufgabe ist es, herauszufinden, ob diese Lösung wirklich neu ist oder sich bereits an anderer Stelle wiederfindet.',
-             en: 'In front of you is a seemingly novel technical idea.\nAround the room, you will find various clues—your task is to determine whether this solution is truly new or already exists elsewhere.' },
+    pageImages: [
+      'assets/clues/game-instructor.png',
+      'assets/clues/invention-disclosure.png'
+    ],
+    title: { de: 'Game Master', en: 'Game Master' },
+    pageTitles: [
+      { de: 'Game Master', en: 'Game Master' },
+      { de: 'ERFINDUNGSMELDUNG', en: 'INVENTION DISCLOSURE' }
+    ],
+    body:  { de: 'Vor dir liegt eine scheinbar neue technische Idee.\nIm Raum findest du verschiedene Hinweise, deine Aufgabe ist es, herauszufinden, ob diese Lösung wirklich neu ist oder sich bereits an anderer Stelle wiederfindet.',
+             en: 'In front of you is a seemingly novel technical idea.\nAround the room, you will find various clues, your task is to determine whether this solution is truly new or already exists elsewhere.' },
     pages: [
-      { de: 'Vor dir liegt eine scheinbar neue technische Idee.\nIm Raum findest du verschiedene Hinweise – deine Aufgabe ist es, herauszufinden, ob diese Lösung wirklich neu ist oder sich bereits an anderer Stelle wiederfindet.',
-        en: 'In front of you is a seemingly novel technical idea.\nAround the room, you will find various clues—your task is to determine whether this solution is truly new or already exists elsewhere.' },
+      { de: 'Vor dir liegt eine scheinbar neue technische Idee.\nIm Raum findest du verschiedene Hinweise, deine Aufgabe ist es, herauszufinden, ob diese Lösung wirklich neu ist oder sich bereits an anderer Stelle wiederfindet.',
+        en: 'In front of you is a seemingly novel technical idea.\nAround the room, you will find various clues, your task is to determine whether this solution is truly new or already exists elsewhere.' },
       { de: 'M1  Ein rollendes Mobilitätsfundament mit arretierbaren Präzisionsrollen verlagert den kompletten Arbeitsplatz in Sekunden an jeden Einsatzort.\n\nM2  Eine linear ausfahrbare Komfortsäule transformiert die Arbeitsfläche dynamisch auf eine angenehme Nutzungsposition für sitzende oder stehende Personen.\n\nM3  Ein zugangsgesteuertes Bedienmodul autorisiert die Nutzung der Arbeitsstation und gibt ausgewählte Funktionen über eine direkt sichtbare Freigabeeinheit frei.\n\nM4  Ein integriertes Energiemodul im Unterbau sowie aufnehmbare Stauraumzonen für Rechner und Arbeitsmittel schaffen einen autarken, aufgeräumten Einsatzpunkt.',
         en: 'M1  A rolling mobility base with lockable precision casters relocates the complete workstation to any place of use within seconds.\n\nM2  A linearly extendable comfort column dynamically transforms the work surface into an ergonomic usage position for seated or standing users.\n\nM3  An access-controlled operating module authorizes the use of the workstation and enables selected functions via a directly visible release unit.\n\nM4  An integrated energy module in the lower base structure, together with storage zones for computers and work equipment, creates an autonomous and well-organized point of use.' }
     ] },
@@ -141,6 +157,14 @@ const HOTSPOTS = [
     title: { de: 'Plattformkonzept', en: 'Platform Concept' },
     body:  { de: 'Die dargestellten Skizzen zeigen verschiedene Entwürfe einer fahrbaren Plattform mit gelenkter Radanordnung und möglichen Antriebselementen.\nUntersucht werden dabei vor allem Bewegungsrichtungen und Steuerungsansätze für eine gezielte Navigation im Arbeitsumfeld.',
              en: 'The sketches illustrate different designs of a mobile platform with a controlled wheel arrangement and potential drive components.\nThe focus lies on movement directions and control approaches for targeted navigation within a workspace.' } },
+  // 11. start screen — invention disclosure hotspot (not rendered in #hotspot-layer)
+  { startScreen: true,
+    codeDigit: null,
+    clue: 'assets/clues/invention-disclosure.png',
+    title: { de: 'ERFINDUNGSMELDUNG', en: 'INVENTION DISCLOSURE' },
+    body:  { de: 'M1  Ein rollendes Mobilitätsfundament mit arretierbaren Präzisionsrollen verlagert den kompletten Arbeitsplatz in Sekunden an jeden Einsatzort.\n\nM2  Eine linear ausfahrbare Komfortsäule transformiert die Arbeitsfläche dynamisch auf eine angenehme Nutzungsposition für sitzende oder stehende Personen.\n\nM3  Ein zugangsgesteuertes Bedienmodul autorisiert die Nutzung der Arbeitsstation und gibt ausgewählte Funktionen über eine direkt sichtbare Freigabeeinheit frei.\n\nM4  Ein integriertes Energiemodul im Unterbau sowie aufnehmbare Stauraumzonen für Rechner und Arbeitsmittel schaffen einen autarken, aufgeräumten Einsatzpunkt.',
+             en: 'M1  A rolling mobility base with lockable precision casters relocates the complete workstation to any place of use within seconds.\n\nM2  A linearly extendable comfort column dynamically transforms the work surface into an ergonomic usage position for seated or standing users.\n\nM3  An access-controlled operating module authorizes the use of the workstation and enables selected functions via a directly visible release unit.\n\nM4  An integrated energy module in the lower base structure, together with storage zones for computers and work equipment, creates an autonomous and well-organized point of use.' },
+    textBox: { left: '48%', top: '11%', width: '46%', height: '77%' } },
 ];
 
 /* ─── Localization ───────────────────────── */
@@ -152,7 +176,8 @@ function renderText() {
   // Re-populate open item modal text when language is toggled
   if (gameState.openModal === 'item' && gameState.activeItemIndex !== null) {
     const spot = HOTSPOTS[gameState.activeItemIndex];
-    document.getElementById('modal-item-title').textContent = spot.title[gameState.language];
+    const titleText = spot.pageTitles ? spot.pageTitles[gameState.modalPage][gameState.language] : spot.title[gameState.language];
+    document.getElementById('modal-item-title').textContent = titleText;
     if (spot.pages) {
       document.getElementById('modal-item-body').textContent = spot.pages[gameState.modalPage][gameState.language];
     } else {
@@ -180,9 +205,10 @@ function openModal(type, index) {
   if (type === 'item') {
     const spot = HOTSPOTS[index];
     const img = document.getElementById('modal-item-image');
-    img.src = spot.clue;
+    img.src = spot.pageImages ? spot.pageImages[0] : spot.clue;
     img.alt = spot.title[gameState.language];
-    document.getElementById('modal-item-title').textContent = spot.title[gameState.language];
+    const openTitle = spot.pageTitles ? spot.pageTitles[0][gameState.language] : spot.title[gameState.language];
+    document.getElementById('modal-item-title').textContent = openTitle;
 
     // Reset page and populate body text
     gameState.modalPage = 0;
@@ -195,10 +221,11 @@ function openModal(type, index) {
     if (spot.pages && spot.pages.length > 1) {
       navEl.classList.remove('hidden');
       textEl2.classList.add('paginated');
+      textEl2.classList.add('page1');
       updateNavArrows(spot);
     } else {
       navEl.classList.add('hidden');
-      textEl2.classList.remove('paginated');
+      textEl2.classList.remove('paginated', 'page1');
     }
 
     // Apply per-hotspot text box position if specified, otherwise clear overrides
@@ -257,7 +284,7 @@ function closeModal() {
   // Reset pagination
   gameState.modalPage = 0;
   document.getElementById('modal-item-nav').classList.add('hidden');
-  document.getElementById('modal-item-text').classList.remove('paginated');
+  document.getElementById('modal-item-text').classList.remove('paginated', 'page1');
   gameState.openModal = null;
   gameState.activeItemIndex = null;
 }
@@ -276,6 +303,7 @@ function renderHotspots() {
   const layer = document.getElementById('hotspot-layer');
   const divs = [];
   HOTSPOTS.forEach((spot, i) => {
+    if (spot.startScreen) return;
     const div = document.createElement('div');
     div.className = 'hotspot';
     if (spot.noIndicator) div.classList.add('hotspot-no-indicator');
@@ -296,6 +324,17 @@ function renderHotspots() {
       bubbleDiv.addEventListener('mouseenter', () => mainDiv.classList.add('force-indicator'));
       bubbleDiv.addEventListener('mouseleave', () => mainDiv.classList.remove('force-indicator'));
     }
+  });
+}
+
+/* ─── Start screen hotspot wiring ──────────── */
+/* Wires each HOTSPOT with startScreen: true to its pre-existing DOM element. */
+function renderStartHotspots() {
+  HOTSPOTS.forEach((spot, i) => {
+    if (!spot.startScreen) return;
+    const el = document.getElementById('hotspot-start-disclosure');
+    if (!el) return;
+    el.addEventListener('click', () => openModal('item', i));
   });
 }
 
@@ -335,6 +374,13 @@ document.getElementById('modal-prev').addEventListener('click', () => {
   if (!spot.pages || gameState.modalPage === 0) return;
   gameState.modalPage--;
   document.getElementById('modal-item-body').textContent = spot.pages[gameState.modalPage][gameState.language];
+  if (spot.pageTitles) {
+    document.getElementById('modal-item-title').textContent = spot.pageTitles[gameState.modalPage][gameState.language];
+  }
+  if (spot.pageImages) {
+    document.getElementById('modal-item-image').src = spot.pageImages[gameState.modalPage];
+  }
+  document.getElementById('modal-item-text').classList.toggle('page1', gameState.modalPage === 0);
   updateNavArrows(spot);
 });
 
@@ -344,6 +390,13 @@ document.getElementById('modal-next').addEventListener('click', () => {
   if (!spot.pages || gameState.modalPage === spot.pages.length - 1) return;
   gameState.modalPage++;
   document.getElementById('modal-item-body').textContent = spot.pages[gameState.modalPage][gameState.language];
+  if (spot.pageTitles) {
+    document.getElementById('modal-item-title').textContent = spot.pageTitles[gameState.modalPage][gameState.language];
+  }
+  if (spot.pageImages) {
+    document.getElementById('modal-item-image').src = spot.pageImages[gameState.modalPage];
+  }
+  document.getElementById('modal-item-text').classList.toggle('page1', gameState.modalPage === 0);
   updateNavArrows(spot);
 });
 
@@ -417,4 +470,5 @@ document.getElementById('btn-restart-win').addEventListener('click', reset);
 
 /* ─── Init ───────────────────────────────── */
 renderHotspots();
+renderStartHotspots();
 renderText();

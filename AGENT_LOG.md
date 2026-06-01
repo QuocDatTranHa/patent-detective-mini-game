@@ -4,6 +4,97 @@ This file records completed agent work in chronological order.
 
 Keep entries concise.
 
+## Phase 13 — Sessions 13-B and 13-C: start screen hotspot JS wiring and detective per-page image swap
+
+Status: complete
+
+**Files changed:** `script.js` only
+
+**Session 13-B — JS wiring for start screen disclosure hotspot:**
+- Added HOTSPOT entry at index 11: `startScreen: true`, `clue: 'assets/clues/invention-disclosure.png'`, title `ERFINDUNGSMELDUNG` / `INVENTION DISCLOSURE`, M1–M4 body text, default `textBox`
+- Added `if (spot.startScreen) return;` guard at top of `renderHotspots()` forEach
+- Added `renderStartHotspots()` function: finds `startScreen: true` entries, wires `#hotspot-start-disclosure` click → `openModal('item', i)`
+- Added `renderStartHotspots()` call to init block
+
+Playwright-verified:
+- `#hotspot-start-disclosure` click → modal opens with `invention-disclosure.png`, title "ERFINDUNGSMELDUNG", M1–M4 body ✓
+- Close button closes modal ✓
+- Overlay click closes modal ✓
+- Language toggle while open: title/body update to EN ✓
+- Start button still works after closing modal ✓
+- `reset()` closes open start-screen modal ✓
+- Game-screen hotspot layer unaffected (no `startScreen` entry injected) ✓
+
+**Session 13-C — Detective modal per-page background image swap:**
+- Added `pageImages: ['assets/clues/game-instructor.png', 'assets/clues/invention-disclosure.png']` to HOTSPOT[0] and HOTSPOT[1]
+- `openModal()`: uses `spot.pageImages[0]` instead of `spot.clue` when `pageImages` present
+- `modal-prev` handler: updates `img.src` from `spot.pageImages[gameState.modalPage]`
+- `modal-next` handler: same
+
+Playwright-verified:
+- Page 1: `game-instructor.png`, title "Game Master" ✓
+- Page 2: `invention-disclosure.png`, title "ERFINDUNGSMELDUNG" ✓
+- Back to page 1: image and title restored ✓
+- Language toggle on page 2: title updates, image unchanged ✓
+- Non-detective modal (Qthena): unaffected ✓
+
+Not tested: physical mouse interaction; HOTSPOT[1] speech-bubble separately; full end-to-end playthrough.
+
+---
+
+## Phase 13 — Session 13-A: start screen hotspot asset, HTML, and CSS
+
+Status: complete
+
+- **`assets/ui/hover-magnify.svg`** — Created. Tron-style neon magnifying glass: outer lens ring (cx=40, cy=40, r=27, stroke `#00d4ff`, stroke-width 5.5), inner detail ring (r=16, opacity 0.4), rounded handle (x1=61,y1=61 to x2=89,y2=89, stroke-width 8, round cap). Fills a 100×100 viewBox.
+- **`index.html`** — Added `<div id="hotspot-start-disclosure" class="hotspot start-hotspot"></div>` inside `#screen-start`, after `#start-disclosure` and before `#btn-start`.
+- **`style.css`** — Added `#hotspot-start-disclosure` positioning block (`transform: none`, `top: 53%`, `left: 72%`, `width: 24%`, `height: 35%`, `z-index: 2`) and `::after` override block (`hover-magnify.svg`, 174×174 px, neon drop-shadow filter).
+
+Playwright-verified:
+- Hotspot covers lower white panel: x 953–1248, y 407–676 ✓
+- `::after` opacity: 0 by default ✓
+- `page.hover()` → magnifying glass visible in panel ✓
+- After hover: `isHovered: false`, `afterOpacity: "0"` ✓
+- Start button navigates to game screen with no interference ✓
+
+Not tested: JS click wiring (Session 13-B), modal from start screen, language toggle on popup.
+
+---
+
+## Phase 13 — Planning: start screen hotspot and detective per-page image swap (Tasks 13a–13c)
+
+Status: planned — Session 13-A now complete; Sessions 13-B and 13-C pending
+
+
+## Phase 12 — Session 12-B: win screen line-height, detective per-page titles, page 1 double font (Tasks 12c, 12d, 12e)
+
+Status: complete
+
+- **12c**: `#win-text` `line-height` reduced `1.6` → `1.45` in `style.css`. Playwright measurement confirmed `scrollH=clientH` at both 1366×768 and 1280×720 — no overflow.
+- **12d**: `pageTitles` array added to HOTSPOT[0] and HOTSPOT[1] in `script.js`. `title` updated to `'Game Master'` on both entries. `openModal`, prev/next handlers, and `renderText()` updated to resolve title from `pageTitles[gameState.modalPage]`. `closeModal` resets `page1` class and `modalPage`. Playwright-verified all title states and language toggle.
+- **12e**: CSS rule `.paginated.page1 #modal-item-body` (`clamp(20px, 2.1vw, 26px)`, `line-height: 1.4`) added to `style.css`. `page1` class toggled on `#modal-item-text` in `openModal` (page 0), prev/next handlers, and removed in `closeModal`. Playwright-verified font sizes on both pages and non-detective modal.
+
+Files changed: `style.css`, `script.js`
+
+**Also this session:** `.github/prompts/create-new-task.prompt.md` created — new slash command prompt for adding one or more tasks to `TASKS.md` without starting implementation.
+
+Not tested: win screen EN text at both viewports; speech-bubble hotspot (index 1) detective modal; full end-to-end playthrough.
+
+---
+
+ dash cleanup, M4 fix, win screen calibration border (Tasks 12f, 12a, 12b)
+
+Status: complete
+
+- **TASKS.md reordered**: Phase 12 tasks reordered (12f → 12a → 12b → 12c → 12d → 12e) and split into Session 12-A and Session 12-B chunks.
+- **12f**: All 12 em/en dash occurrences replaced with commas in `script.js`. Used 8-step multi_replace (7 sequential + 1 follow-up for HOTSPOT[1].pages[0]). Verified via grep: only non-displayed occurrences (comments, product name) remain.
+- **12a**: `#start-disclosure` font-size reduced from `1.3vh` to `1.1vh` in `style.css`. Measurement at 1366×768: scrollH dropped from 306px to 223px (= height), so M4 now fits exactly. Verified screenshot shows all M1–M4 visible.
+- **12b**: `border: 1px dashed rgba(0, 87, 168, 0.35)` added to `#win-text` in `style.css`. Win screen screenshot confirmed calibration border visible inside right white panel.
+
+Files changed: `script.js`, `style.css`
+
+---
+
 ## Phase 12 — Planning: text polish and win screen calibration (Tasks 12a–12f)
 
 Status: planned, not implemented

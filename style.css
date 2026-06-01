@@ -239,6 +239,27 @@ html, body {
   height: 15%;
 }
 
+/* ─── Start screen: disclosure panel hotspot ── */
+/* Covers the full lower white box; overrides the centering
+   transform used by game-screen hotspots. */
+#hotspot-start-disclosure {
+  transform: none;
+  top: 53%;
+  left: 72%;
+  width: 24%;
+  height: 35%;
+  z-index: 2;
+}
+
+/* Magnifying glass indicator — overrides the warning-triangle image
+   from .hotspot::after; opacity/transition are inherited from that rule. */
+#hotspot-start-disclosure::after {
+  background: url('assets/ui/hover-magnify.svg') center / contain no-repeat;
+  width: 174px;
+  height: 174px;
+  filter: drop-shadow(0 0 8px #00d4ff) drop-shadow(0 0 20px #00d4ff);
+}
+
 /* ─── Overlay ────────────────────────────── */
 /* Covers the full viewport behind any open modal.
    Blocks all background interaction when visible. */
@@ -528,7 +549,7 @@ html, body {
 #start-disclosure {
   top: 59%;
   height: 29%;
-  font-size: 1.3vh;
+  font-size: 1.1vh;
 }
 
 /* ─── Win screen: text overlay (right white box) ── */
@@ -544,10 +565,11 @@ html, body {
   font-family: 'Orbitron', 'Courier New', monospace;
   font-weight: 400;
   font-size: clamp(7px, 0.75vw, 10px);
-  line-height: 1.6;
+  line-height: 1.45;
   white-space: pre-line;
   overflow: hidden;
   pointer-events: none;
+  border: 1px dashed rgba(0, 87, 168, 0.35);
 }
 
 /* ─── Item modal: text overlay panel ────── */
@@ -594,6 +616,11 @@ html, body {
 #modal-item-text.paginated #modal-item-body {
   font-size: clamp(10px, 1.05vw, 13px);
   line-height: 1.55;
+}
+
+#modal-item-text.paginated.page1 #modal-item-body {
+  font-size: clamp(20px, 2.1vw, 26px);
+  line-height: 1.4;
 }
 
 #modal-item-digit {

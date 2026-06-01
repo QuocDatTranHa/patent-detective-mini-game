@@ -57,7 +57,24 @@ Consequences:
 * do not copy the full specification into other Markdown files
 * if behavior conflicts appear, `docs/game-spec.md` wins unless the user explicitly changes it
 
-### 4. Single-file implementation (one HTML, one CSS, one JS)
+### 13. Start-screen HOTSPOTS entries use `startScreen: true` flag
+
+Status: accepted
+
+Decision:
+HOTSPOT entries that belong to the start screen (not the game screen) carry a `startScreen: true` property. `renderHotspots()` skips them. A separate `renderStartHotspots()` function handles click wiring for these entries.
+
+Reason:
+The `HOTSPOTS` array is the single source of truth for all item hotspot data (project instruction rule). Start-screen hotspots have the same data shape, so they belong in the same array. The flag keeps the game-screen renderer from injecting them into `#hotspot-layer`.
+
+Consequences:
+- `renderHotspots()` must check `if (spot.startScreen) return;` at the top of its forEach callback
+- `renderStartHotspots()` must be called once on init alongside `renderHotspots()`
+- Start-screen hotspot DOM elements are placed directly inside `#screen-start` in `index.html`, not in `#hotspot-layer`
+
+---
+
+
 
 Status: accepted (planning phase)
 
