@@ -842,10 +842,74 @@ Goal: increase the body font size inside the win result text popup (`#modal-item
 
 Files touched: `style.css`
 
-- [ ] Measure the current text fill visually: the popup is `80vh` tall with `padding: 10% 9%` on the text panel, giving roughly `64vh` of usable text height; the current `font-size: clamp(11px, 1.5vh, 18px)` leaves significant empty space below the text
-- [ ] Increase `font-size` on `#modal-item.win-text-modal #modal-item-body` — raise the `clamp` values to fill the panel up to approximately `85.67%` of the popup height; start with `clamp(13px, 2.0vh, 22px)` and adjust in browser; `line-height` may need a small reduction (e.g. from `1.7` to `1.6`) to avoid premature overflow
-- [ ] Verify the longer German text does not overflow at any typical viewport size (German is longer than English — it must be the binding constraint)
-- [ ] Verify English text also fills the panel well (shorter — should not underflow badly if German is set correctly)
-- [ ] Do not change padding, popup height, or any other property — only `font-size` and `line-height` on `#modal-item-body` inside `.win-text-modal`
+- [x] Measure the current text fill visually: the popup is `80vh` tall with `padding: 10% 9%` on the text panel, giving roughly `64vh` of usable text height; the current `font-size: clamp(11px, 1.5vh, 18px)` leaves significant empty space below the text
+- [x] Increase `font-size` on `#modal-item.win-text-modal #modal-item-body` — raised to `clamp(13px, 2.1vh, 23px)`; `line-height` reduced from `1.7` to `1.6`
+- [x] Verify the longer German text does not overflow — confirmed by user full playthrough
+- [x] Verify English text also fills the panel well — confirmed by user full playthrough
+- [x] Do not change padding, popup height, or any other property — only `font-size` and `line-height` changed
 
-Manual check: open the win result text popup in German — text fills the panel to roughly 80–85% of its height with no overflow or clipping; switch to English — text still fills the panel well; close button works.
+Manual check: win result text popup fills panel in both DE and EN; no overflow; close button works. ✓ (user full playthrough verified)
+
+---
+
+## Phase 17 — Vibe coding workflow retrospective and prompt optimization
+
+A full meta-review of the agent workflow used throughout this project. No code changes. Goal: identify token waste, stale files, unused prompts, and prompt instruction gaps — then produce concrete recommendations for the next project.
+
+Output: documented findings either in a new `WORKFLOW_REVIEW.md` (requires user approval) or as an appendix to `DECISIONS.md`.
+
+---
+
+### Session 17-A — Audit required-reading lists and file usage patterns
+
+Goal: map what every prompt file requires agents to read, then check whether those files were actually useful.
+
+Files to audit (read-only): all `.github/prompts/*.prompt.md`, `KNOWN_ISSUES.md`, `ARCHITECTURE.md`, `DECISIONS.md`, `PLAN.md`, `TASKS.md`
+
+- [ ] Read all 6 prompt files; build a table: which files appear as required reading in which prompts
+- [ ] Flag files in every prompt's required-reading list that rarely changed between sessions — candidates: `ARCHITECTURE.md`, `KNOWN_ISSUES.md`, `DECISIONS.md` — propose conditional reading rules ("read only if task touches X")
+- [ ] Check `KNOWN_ISSUES.md`: compare content against actual project state; flag stale entries never removed (e.g. Phase 9 white-text-area entries resolved by Phase 9 but never cleaned up)
+- [ ] Check `PLAN.md`: was it updated after initial planning approval or did it diverge from `TASKS.md` and become stale? Flag if stale
+- [ ] Check the `## Current Task` section near the top of `TASKS.md`: it reads "Phase 2 abgeschlossen. Nächste Phase: Phase 3" — was this field ever maintained past Phase 3? Flag as dead field if not
+- [ ] Check `ARCHITECTURE.md`: which sections were actually consulted during implementation vs. read-but-never-referenced boilerplate?
+- [ ] Check `DECISIONS.md`: which decisions were actually referenced in implementation sessions vs. read as rote per-session boilerplate?
+- [ ] Identify which prompt files were never explicitly invoked this project — check `AGENT_LOG.md`; `review-work.prompt.md` and `create-implementation-plan.prompt.md` are candidates
+- [ ] Document findings as a table: file × prompt → was it read? was it useful? recommendation (keep / make conditional / remove / archive)
+
+Manual check (self-review): findings table complete; every required-reading entry in every prompt file accounted for; no file left unreviewed.
+
+---
+
+### Session 17-B — Identify token waste patterns and session boundary issues
+
+Goal: find recurring patterns where agents read more than needed, split sessions too finely or too broadly, or duplicated work across sessions.
+
+Files to audit: `AGENT_LOG.md`, `TASKS.md` (all phases), `HANDOVER.md`
+
+- [ ] Review `AGENT_LOG.md` for sessions where context files were re-read multiple times — flag as candidates for a "read once, act" rule in prompts
+- [ ] Review session splits across Phases 12–16: were any too small (e.g. Session 16-D was a single `clamp()` value)? Any at risk of context overload? Flag both; propose minimum 3 / maximum ~10 checklist-item guideline
+- [ ] Review `implement-next-task.prompt.md`: requires reading 5 files before any code; for CSS-only or text-only sessions ARCHITECTURE.md, DECISIONS.md, KNOWN_ISSUES.md were likely irrelevant — propose a scope-detection step
+- [ ] Review `start-session.prompt.md`: reads 5 files to produce a briefing — assess whether ARCHITECTURE.md, DECISIONS.md, KNOWN_ISSUES.md were ever actually needed for a briefing
+- [ ] Review `update-handover.prompt.md`: reads 4 files — assess whether DECISIONS.md was ever changed as a result; if not, remove it from that prompt's required reading
+- [ ] Flag large-file problem: TASKS.md grew to 1000+ lines by Phase 16 — full reads at every session start were expensive; propose a `CURRENT_PHASE.md` single-purpose file or "read tail only" convention for next projects
+- [ ] Flag `AGENT_LOG.md` ordering inconsistency: entries were prepended inconsistently; duplicates appeared; propose strict "newest at top, one entry per session" rule
+- [ ] Flag HANDOVER.md corruption pattern (duplicate sections, stale fragments from partial multi-edit sessions across conversations); propose "full rewrite not append" rule enforced in the prompt
+
+Manual check (self-review): every pattern identified has a concrete proposed fix; no vague "improve efficiency" statements — each is actionable for a prompt engineer.
+
+---
+
+### Session 17-C — Write optimization recommendations
+
+Goal: consolidate findings from 17-A and 17-B into concrete, actionable prompt and workflow changes for the next project.
+
+- [ ] For each stale required-reading file from 17-A: write a revised conditional reading rule
+- [ ] Propose a `CURRENT_PHASE.md`: a small file always kept up to date with current phase name, next unchecked task, and key files affected — replaces full TASKS.md reads at session start
+- [ ] Propose a revised `implement-next-task.prompt.md` with a scope-detection step: agent reads task description first, then loads only files that scope requires (CSS-only → style.css; JS logic → script.js + ARCHITECTURE.md; text/content → script.js only)
+- [ ] Propose a `KNOWN_ISSUES.md` maintenance rule: every `update-handover` call must review each open item and mark resolved or updated; no issue survives more than 2 phases without a status update
+- [ ] Propose archiving `PLAN.md` after Phase 1 planning is approved — divergence from TASKS.md makes it noise; replace with a one-line pointer to TASKS.md
+- [ ] Assess `review-work.prompt.md`: if never explicitly invoked this project, propose either removing it or making it a mandatory quality gate every 3rd phase
+- [ ] Assess whether `HANDOVER.md` and `AGENT_LOG.md` serve overlapping purposes; consider merging or making one a strict summary of the other
+- [ ] Write all recommendations in a new `WORKFLOW_REVIEW.md` (requires user approval to create) or as an appendix to `DECISIONS.md`
+
+Manual check (self-review): every recommendation is specific enough to be adopted in a new project without further clarification; no recommendation contradicts an existing accepted decision in `DECISIONS.md`.

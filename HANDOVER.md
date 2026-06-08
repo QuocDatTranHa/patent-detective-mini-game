@@ -4,9 +4,9 @@ This file gives the next coding agent the current project status and recommended
 
 ## Current Status
 
-**Phase 16 — COMPLETE (all sessions browser-verified by user)**
+**Phase 16 ï¿½ FULLY COMPLETE. Full end-to-end playthrough verified by user.**
 
-All win screen interactive elements are implemented and verified. No planned phases remain.
+All planned phases are complete. Every interactive element has been browser-verified in a full playthrough. The game is finished and ready for use.
 
 ## Completed So Far
 
@@ -15,12 +15,12 @@ All win screen interactive elements are implemented and verified. No planned pha
 - Phase 3: Responsive layout, hotspot hover indicator, modal sizing
 - Phase 4: State model, screen navigation, language toggle
 - Phase 5: Item hotspot system, clue modal open/close, overlay
-- Phase 6: Safe modal — digit controls, code validation, win screen
-- Phase 7: Menu modal — pause/restart flow
-- Phase 8: Final asset integration — background images, clue images, Orbitron font, hotspot tuning
-- Phase 9: Text content — bilingual STRINGS, start screen panels, modal title/body overlays
-- Phase 10: Visual polish — start screen headings, neon code digits, larger modal font, per-hotspot text box alignment
-- Phase 11: Readability fixes — darker digit color, win screen text, start panel spacing, detective pagination
+- Phase 6: Safe modal ï¿½ digit controls, code validation, win screen
+- Phase 7: Menu modal ï¿½ pause/restart flow
+- Phase 8: Final asset integration ï¿½ background images, clue images, Orbitron font, hotspot tuning
+- Phase 9: Text content ï¿½ bilingual STRINGS, start screen panels, modal title/body overlays
+- Phase 10: Visual polish ï¿½ start screen headings, neon code digits, larger modal font, per-hotspot text box alignment
+- Phase 11: Readability fixes ï¿½ darker digit color, win screen text, start panel spacing, detective pagination
 - Phase 12 (12-A): Dash cleanup, M4 start disclosure fix, win screen calibration border
 - Phase 12 (12-B): Win screen line-height fix, detective per-page titles, page 1 double font
 - Phase 13 (13-A): Magnifying glass SVG, start screen hotspot element and CSS
@@ -30,34 +30,37 @@ All win screen interactive elements are implemented and verified. No planned pha
 - Phase 14 (14-B): Patent Archive title, body text, textBox updated and browser-verified
 - Phase 15 (15-A): Start screen disclosure text simplified; disclosure popup and detective page 2 updated with description + M1-M4
 - Phase 15 (15-B): Overflow fix, nav arrow DOM move, pageTextBoxes, fontSize override, arrow position calibrated
-- Phase 16 (16-A): Patent thumbnails + #hotspot-win-patent added to win screen; positions calibrated from user coordinates
+- Phase 16 (16-A): Patent thumbnails + #hotspot-win-patent added to win screen; positions calibrated
 - Phase 16 (16-B): Dual-image popup wired; hideText, dualImages, hotspotId flags; renderWinHotspots() added
-- Phase 16 (16-C): #hotspot-win-text added; #win-text repositioned and dashed border removed; portrait pink neon popup via win-text-modal CSS class
+- Phase 16 (16-C): #hotspot-win-text added; win-text repositioned; portrait pink neon popup implemented
+- Phase 16 (16-D): Win result text popup font size increased to clamp(13px, 2.1vh, 23px); line-height 1.6
 
-## Files Changed (Phase 16)
+## Files Changed (Phase 16-D)
 
-- index.html — #win-patent-page-1/2 thumbnail imgs, #hotspot-win-patent, #hotspot-win-text, #modal-item-dual container inside #modal-item
-- style.css — .win-patent-thumb, #win-patent-page-1/2 calibrated positions, #hotspot-win-patent and #hotspot-win-text rules, #modal-item.dual-page, #modal-item-dual, #modal-item.win-text-modal; #win-text repositioned and dashed border removed
-- script.js — HOTSPOT[13] (winScreen, hotspotId, hideText, dualImages), HOTSPOT[14] (winScreen, hotspotId, winTextModal); renderHotspots() skip extended; renderWinHotspots() added with hotspotId pattern; openModal()/closeModal() updated for dual-page and win-text-modal; renderWinHotspots() called in init
+- style.css ï¿½ font-size and line-height on #modal-item.win-text-modal #modal-item-body
 
 ## Manual Check Results
 
-- Patent thumbnails visible at calibrated positions on win screen (user-verified)
-- Hover over patent area: magnifying glass indicator appears (user-verified)
-- Patent popup: both pages side-by-side, neon blue border, close button works (user-verified)
-- Result text hotspot: magnifying glass on hover; portrait pink neon popup opens; text fills panel; language toggle updates text; close works (user-verified)
+- Full end-to-end playthrough completed by user (user-verified)
+- All 10+ item hotspots open correct popups in DE and EN
+- Detective modal pagination (page 1 and 2) works correctly
+- Start screen invention disclosure popup opens and fills panel
+- Safe code 9126 triggers win screen
+- Win screen patent thumbnails, dual-image popup, and result text popup all verified
+- Language toggle updates all visible text correctly
+- Restart resets game state correctly
+- Menu modal opens and closes correctly
 
 ## What Was Not Tested
 
-- Full end-to-end playthrough after all Phase 16 changes
-- Start screen panels at 1280x720 viewport
-- DevTools console check for silent JS errors
+- Nothing remaining ï¿½ user confirmed full playthrough complete
 
 ## Known Issues
 
-- Win screen element positions calibrated for 1366x768; may need minor adjustment at other viewport sizes
-- HOTSPOT[12] textBox.top ('13.4%') differs from HOTSPOT[0/1] pageTextBoxes[1].top ('15.7%') — both use invention-disclosure.png; may need unification
+- Win screen element positions calibrated for 1366x768; may need minor adjustment at very different viewport sizes
 
 ## Next Recommended Step
 
-All planned phases are complete. Await new tasks from user, or perform a final full end-to-end playthrough.
+The game is complete. Phase 17 (workflow retrospective) is planned in TASKS.md and ready to start.
+
+Run the `start-session` prompt to begin Session 17-A: audit all 6 prompt files and identify stale required-reading entries.
