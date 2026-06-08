@@ -4,25 +4,14 @@ This file gives the next coding agent the current project status and recommended
 
 ## Current Status
 
-**Phase 13 — COMPLETE (Sessions 13-A, 13-B, 13-C)**
+**Phase 14 — Session 14-A COMPLETE (hotspot position user-calibrated)**
 
-All three Phase 13 sessions implemented and browser-verified.
+Patent Archive hotspot added to game screen and calibrated by user in browser.
 
-**Session 13-A** — Asset, HTML, CSS for start screen hotspot:
-- `assets/ui/hover-magnify.svg` created: Tron-style neon magnifying glass (stroke `#00d4ff`)
-- `index.html`: `#hotspot-start-disclosure` div added inside `#screen-start`
-- `style.css`: positioning rule and `::after` magnifying glass indicator for `#hotspot-start-disclosure`
-
-**Session 13-B** — JS wiring for start screen hotspot:
-- `script.js`: new HOTSPOT entry (index 11) with `startScreen: true`, `clue: 'assets/clues/invention-disclosure.png'`, title `ERFINDUNGSMELDUNG` / `INVENTION DISCLOSURE`, M1–M4 body text
-- `renderHotspots()`: skips `startScreen: true` entries
-- `renderStartHotspots()` added; called in init block
-- Click on lower white panel → opens Invention-Disclosure modal correctly
-
-**Session 13-C** — Detective modal per-page background image swap:
-- `script.js`: `pageImages` array added to HOTSPOT[0] and HOTSPOT[1]
-- `openModal()`: uses `spot.pageImages[0]` on open when `pageImages` present
-- `modal-next` and `modal-prev` handlers: update `img.src` from `pageImages[gameState.modalPage]`
+**Session 14-A** — Patent Archive hotspot entry and position calibration:
+- `script.js`: new HOTSPOT entry at index 11: `top: '34.03%', left: '44.88%', w: '8.48%', h: '15.65%'`, `clue: 'assets/clues/research.png'`, title `Patentrecherche` / `Patent Research`, empty body placeholder, `textBox` for white panel
+- Start-screen disclosure entry shifted to index 12; `renderStartHotspots()` unaffected (uses dynamic `forEach`)
+- Position calibrated by user in browser: indicator at `top: 34.03%, left: 44.88%`; hotbox corners provided by user
 
 
 ## Completed So Far
@@ -43,41 +32,35 @@ All three Phase 13 sessions implemented and browser-verified.
 - Phase 13 (13-A): Magnifying glass SVG, start screen hotspot element and CSS
 - Phase 13 (13-B): Start screen hotspot JS wiring, `renderStartHotspots()`, HOTSPOT[11] added
 - Phase 13 (13-C): Detective modal per-page image swap via `pageImages` array
+- Phase 14 (14-A): Patent Archive hotspot added and position calibrated by user
 
-## Files Changed (Sessions 13-B and 13-C)
+## Files Changed (Session 14-A)
 
-- `script.js` — HOTSPOT[11] added (`startScreen: true`); `renderHotspots()` skip guard; `renderStartHotspots()` added; `openModal` uses `pageImages[0]`; nav handlers swap `img.src`; `pageImages` on HOTSPOT[0] and HOTSPOT[1]
+- `script.js` — HOTSPOT[11] added (Patent Archive, index 11); start-screen entry shifted to index 12; no other logic changes
 
-## Manual Check Results (Playwright)
+## Manual Check Results (Session 14-A)
 
-**Session 13-B:**
-- Click `#hotspot-start-disclosure` → `#modal-item` opens with `invention-disclosure.png`, title "ERFINDUNGSMELDUNG", M1–M4 body ✓
-- Close button closes modal and overlay ✓
-- Overlay click closes modal ✓
-- Language toggle while modal open: title → "INVENTION DISCLOSURE", body updates to EN ✓
-- Start button still navigates to game screen after closing modal ✓
-- `reset()` from win screen closes any open start-screen modal ✓
-- `#hotspot-start-disclosure` not injected into `#hotspot-layer`; game-screen hotspot count unaffected ✓
-
-**Session 13-C:**
-- Detective modal page 1: `game-instructor.png`, title "Game Master" ✓
-- Click next: image → `invention-disclosure.png`, title → "ERFINDUNGSMELDUNG" ✓
-- Click prev: image → `game-instructor.png`, title → "Game Master" ✓
-- Language toggle on page 2: title → "INVENTION DISCLOSURE"; image unchanged ✓
-- Qthena modal (non-paginated): `easter-egg.png` loads, nav hidden ✓
+- Hover over Patent Archive monitor area → warning indicator appears at correct position ✓ (user-verified in browser)
+- Position calibrated by user: indicator `top: 34.03%, left: 44.88%`; hotbox `w: 8.48%, h: 15.65%` ✓
+- Click opens `#modal-item` with `research.png` and title "Patentrecherche" — verified working
+- Body text is empty placeholder (Session 14-B pending)
 
 ## What Was Not Tested
 
-- Real mouse hover/click in a physical browser (tested via `dispatchEvent` in Playwright)
-- HOTSPOT[1] speech-bubble separately (resolves to `linkedTo: 0`, same modal)
-- Full end-to-end playthrough after Phase 13 changes
+- Close button / overlay click on Patent Archive modal not explicitly confirmed by user
+- `textBox` calibration for `research.png` white panel not yet verified (body text is empty)
+- Full end-to-end playthrough after Phase 14-A changes
 - Mobile/touch behavior
-- README.md agent workflow section (pending from Phase 8)
 
 ## Known Issues
 
 - Win screen text positioning calibrated for 1366×768 Playwright viewport; may need minor adjustment at other sizes
 - Start screen EN layout at 1280×720 not re-verified after Phase 12-A font-size change
+- Patent Archive body text is empty — Session 14-B pending user-provided DE/EN text
+
+## Next Recommended Step
+
+**Session 14-B** — user provides German and English body text for the Patent Archive popup; agent adds it to `HOTSPOT[11].body`, calibrates font size to fill the white panel in `research.png` without overflow.
 - README.md agent workflow section not yet added (pending from Phase 8)
 
 ## Next Recommended Step

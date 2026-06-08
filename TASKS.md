@@ -637,3 +637,49 @@ Files touched: `script.js`
 - [x] Browser-verify: open detective modal (page 1) → `game-instructor.png` is shown; click right arrow → image changes to `Invention-Disclosure.png` and title changes to "ERFINDUNGSMELDUNG"; click left arrow → image and title revert to page 1 values; non-detective modals are unaffected
 
 Manual check: full detective modal flow — page 1 image and title correct; page 2 image and title correct; back to page 1 image restores; language toggle on page 2 updates title only (image is language-independent).
+
+---
+
+## Phase 14 — Patent Archive hotspot on game screen
+
+A new clickable element on the game screen: the "Patent Archive" monitor in the background (pink neon edge). Clicking it opens a popup using `assets/clues/research.png`. It works identically to the existing item hotspots.
+
+---
+
+### Session 14-A — Add Patent Archive hotspot entry and calibrate position
+
+Goal: add a new HOTSPOT entry for the Patent Archive screen, rendered on the game screen with the existing hotspot system; clicking it opens `research.png` in the item modal.
+
+Files touched: `script.js`
+
+- [x] Add a new entry to the `HOTSPOTS` array (insert before the start-screen entry at the end) with:
+  - `top`, `left`, `w`, `h` — estimated position of the Patent Archive monitor in the game background (initial estimate: `top: '8%', left: '40%', w: '14%', h: '30%'`; refine by comparing with the game-screen.png in browser)
+  - `codeDigit: null` (no safe code digit associated)
+  - `clue: 'assets/clues/research.png'`
+  - `title: { de: 'Patentrecherche', en: 'Patent Research' }` (placeholder — may be adjusted later)
+  - `body: { de: '', en: '' }` (empty placeholder — text will be added in Session 14-B after user provides content)
+  - `textBox: { left: '48%', top: '7%', width: '46%', height: '86%' }` (calibrated to the white panel in `research.png`)
+- [x] Verify the new hotspot does not conflict with index numbers of existing entries (the start-screen entry at index 11 must remain last or the `renderStartHotspots` logic stays correct)
+- [x] Browser-verify: open `index.html`, navigate to game screen, hover over the Patent Archive area — hover indicator appears; click — item modal opens showing `research.png`; close button and overlay click both close it; other hotspots remain unaffected
+- [x] Calibrate `top`/`left`/`w`/`h` percentages in browser so the clickable area aligns precisely with the pink neon-edged Patent Archive monitor visible in the game background image; update values in `script.js`
+
+Manual check: hover shows indicator on the Patent Archive screen; click opens modal with `research.png`; close works; no overlap with adjacent hotspots (keypad, energy module).
+
+---
+
+### Session 14-B — Add bilingual text content and calibrate font size
+
+Goal: populate the Patent Archive popup with German and English text provided by the user; choose a font size that fills the white text panel without overflow.
+
+**Prerequisite:** user must provide the DE and EN text before this session starts.
+
+Files touched: `script.js`, possibly `style.css` (if a per-hotspot `textBox` or font override is needed)
+
+- [ ] Ask the user for the German and English body text for the Patent Archive popup
+- [ ] Add the provided text to the `body: { de, en }` property of the Patent Archive HOTSPOT entry in `script.js`
+- [ ] Analyze the text length (character count, line count) relative to the white panel area in `research.png`
+- [ ] Choose an appropriate font-size for `#modal-item-body` when this hotspot is active — if the text is significantly shorter or longer than the average hotspot, add a per-hotspot font size override (e.g. via a `fontSize` property on the HOTSPOT entry applied as inline style in `openModal`); otherwise use the existing default
+- [ ] Browser-verify: open the Patent Archive popup in both DE and EN — text fills the white panel area well (roughly 70–90% vertical fill), is readable, and does not overflow or clip
+- [ ] If overflow occurs, reduce font-size or adjust `textBox` height; if too much empty space remains, increase font-size
+
+Manual check: Patent Archive popup shows correct text in both languages; text fills the white space proportionally; no overflow or clipping at 1366×768.

@@ -157,7 +157,14 @@ const HOTSPOTS = [
     title: { de: 'Plattformkonzept', en: 'Platform Concept' },
     body:  { de: 'Die dargestellten Skizzen zeigen verschiedene Entwürfe einer fahrbaren Plattform mit gelenkter Radanordnung und möglichen Antriebselementen.\nUntersucht werden dabei vor allem Bewegungsrichtungen und Steuerungsansätze für eine gezielte Navigation im Arbeitsumfeld.',
              en: 'The sketches illustrate different designs of a mobile platform with a controlled wheel arrangement and potential drive components.\nThe focus lies on movement directions and control approaches for targeted navigation within a workspace.' } },
-  // 11. start screen — invention disclosure hotspot (not rendered in #hotspot-layer)
+  // 11. patent archive monitor (background screen with pink neon edge)
+  { top: '34.03%', left: '44.88%', w: '8.48%', h: '15.65%',
+    codeDigit: null,
+    clue: 'assets/clues/research.png',
+    title: { de: 'Patentrecherche', en: 'Patent Research' },
+    body:  { de: '', en: '' },
+    textBox: { left: '48%', top: '7%', width: '46%', height: '86%' } },
+  // 12. start screen — invention disclosure hotspot (not rendered in #hotspot-layer)
   { startScreen: true,
     codeDigit: null,
     clue: 'assets/clues/invention-disclosure.png',

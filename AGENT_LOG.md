@@ -4,6 +4,34 @@ This file records completed agent work in chronological order.
 
 Keep entries concise.
 
+## Phase 14 — Session 14-A: Patent Archive hotspot added and calibrated
+
+Status: complete
+
+**Files changed:** `script.js`
+
+- Added HOTSPOT entry at index 11: `top: '34.03%', left: '44.88%', w: '8.48%', h: '15.65%'`; `clue: 'assets/clues/research.png'`; title `Patentrecherche` / `Patent Research`; empty body placeholder; `textBox` for white panel
+- Start-screen disclosure entry shifted to index 12; `renderStartHotspots()` unaffected (uses dynamic forEach)
+- Position initially estimated, then calibrated by user in browser (indicator and corner coordinates provided by user)
+
+User-verified in browser:
+- Hover indicator appears at correct position over Patent Archive monitor ✓
+- Click opens item modal with `research.png` ✓
+
+Not tested:
+- Close/overlay behavior not explicitly confirmed by user
+- `textBox` calibration deferred to Session 14-B (body text is empty)
+
+## Phase 14 — Planning: Patent Archive hotspot
+
+Status: planned (not yet implemented)
+
+New phase added to `TASKS.md`:
+- Session 14-A: Add HOTSPOT entry for the Patent Archive monitor on the game screen, calibrate position in browser
+- Session 14-B: Add bilingual text content (user-provided), calibrate font size to fill the white panel
+
+No code changes made. Awaiting user approval before implementation.
+
 ## Phase 13 — Sessions 13-B and 13-C: start screen hotspot JS wiring and detective per-page image swap
 
 Status: complete
