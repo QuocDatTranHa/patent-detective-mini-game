@@ -54,3 +54,18 @@ When a bug or fragile behavior is found, add:
 * possible fix or next step
 
 Remove or update issues once they are resolved.
+
+## Phase 13 Risks
+
+### Game screen hotspot count deviation
+
+The original game-spec and acceptance checklist require "exactly 10 clickable item hotspots" on the game screen. Phase 14 adds an 11th item hotspot (Patent Archive monitor). This is a user-approved deviation from the spec.
+
+### Start screen modal interaction
+
+When a modal is opened from the start screen, the overlay blocks the start screen including the Start button. This is correct and intentional behavior. However, `reset()` must still close any open modal regardless of which screen triggered it — verify this in browser after 13-B.
+
+### Invention-Disclosure textBox calibration
+
+The `textBox` property on the start screen HOTSPOTS entry defaults to game-screen defaults (`left: 48%`). The actual white panel position in the Invention-Disclosure image may differ. Pixel-level calibration may be needed after 13-B is implemented.
+**Next step:** Verify in browser after 13-B; adjust `textBox` if text overlaps the neon border.

@@ -239,6 +239,27 @@ html, body {
   height: 15%;
 }
 
+/* ─── Start screen: disclosure panel hotspot ── */
+/* Covers the full lower white box; overrides the centering
+   transform used by game-screen hotspots. */
+#hotspot-start-disclosure {
+  transform: none;
+  top: 53%;
+  left: 72%;
+  width: 24%;
+  height: 35%;
+  z-index: 2;
+}
+
+/* Magnifying glass indicator — overrides the warning-triangle image
+   from .hotspot::after; opacity/transition are inherited from that rule. */
+#hotspot-start-disclosure::after {
+  background: url('assets/ui/hover-magnify.svg') center / contain no-repeat;
+  width: 174px;
+  height: 174px;
+  filter: drop-shadow(0 0 8px #00d4ff) drop-shadow(0 0 20px #00d4ff);
+}
+
 /* ─── Overlay ────────────────────────────── */
 /* Covers the full viewport behind any open modal.
    Blocks all background interaction when visible. */
@@ -528,23 +549,23 @@ html, body {
 #start-disclosure {
   top: 59%;
   height: 29%;
-  font-size: 1.3vh;
+  font-size: 1.8vh;
 }
 
 /* ─── Win screen: text overlay (right white box) ── */
 #win-text {
   position: absolute;
-  left: 61%;
-  top: 25%;
-  width: 14%;
-  height: 51%;
+  left: 60.31%;
+  top: 29.81%;
+  width: 13.2%;
+  height: 40.75%;
   padding: 1% 1%;
   box-sizing: border-box;
   color: #001a33;
   font-family: 'Orbitron', 'Courier New', monospace;
   font-weight: 400;
   font-size: clamp(7px, 0.75vw, 10px);
-  line-height: 1.6;
+  line-height: 1.45;
   white-space: pre-line;
   overflow: hidden;
   pointer-events: none;
@@ -596,6 +617,16 @@ html, body {
   line-height: 1.55;
 }
 
+#modal-item-text.paginated.page1 #modal-item-body {
+  font-size: clamp(20px, 2.1vw, 26px);
+  line-height: 1.4;
+}
+
+/* Detective page 2 (invention disclosure) — smaller font to fit description + M1–M4 */
+#modal-item-text.paginated:not(.page1) #modal-item-body {
+  font-size: clamp(8px, 1.15vw, 12px); 
+}
+
 #modal-item-digit {
   position: absolute;
   bottom: 4%;
@@ -615,8 +646,8 @@ html, body {
 /* ─── Modal: Item — page navigation arrows ── */
 #modal-item-nav {
   position: absolute;
-  bottom: 5%;
-  right: 5%;
+  bottom: 15.35%;
+  right: 8.75%;
   display: flex;
   gap: 0.4em;
   pointer-events: all;
@@ -653,4 +684,133 @@ html, body {
 #modal-prev:not(:disabled):hover,
 #modal-next:not(:disabled):hover {
   box-shadow: 0 0 10px rgba(0, 180, 255, 0.65);
+}
+
+/* ─── Win screen: patent page thumbnails ─── */
+.win-patent-thumb {
+  position: absolute;
+  object-fit: contain;
+  pointer-events: none;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 51%;
+}
+
+#win-patent-page-1 {
+  left: 23.67%;
+  width: 15.85%;
+}
+
+#win-patent-page-2 {
+  left: 40.72%;
+  width: 16.98%;
+}
+
+/* Win screen: hotspot covering both left patent boxes */
+#hotspot-win-patent {
+  transform: none;
+  top: 22%;
+  left: 23.42%;
+  width: 34.2%;
+  height: 51%;
+  z-index: 2;
+}
+
+/* Magnifying glass indicator — same style as start-screen disclosure hotspot */
+#hotspot-win-patent::after {
+  background: url('assets/ui/hover-magnify.svg') center / contain no-repeat;
+  width: 174px;
+  height: 174px;
+  filter: drop-shadow(0 0 8px #00d4ff) drop-shadow(0 0 20px #00d4ff);
+}
+
+/* ─── Modal: Dual-page patent popup ──────── */
+/* Overrides the 16:9 width-constrained sizing to be height-based.
+   Both patent pages are shown side-by-side at full modal height. */
+#modal-item.dual-page {
+  width: auto;
+  max-width: 95vw;
+  height: 92vh;
+  aspect-ratio: unset;
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  overflow: hidden;
+  background: #000;
+  border: 2px solid #00f0ff;
+  box-shadow: 0 0 16px #00f0ff, 0 0 40px rgba(0, 240, 255, 0.4),
+              inset 0 0 8px rgba(0, 240, 255, 0.1);
+}
+
+#modal-item-dual {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: auto;
+}
+
+/* Override the catch-all #modal-item img rule for dual-page images */
+#modal-item-dual img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+}
+
+/* ─── Win screen: result text hotspot ───── */
+/* Transparent overlay on top of #win-text; triggers the result popup. */
+#hotspot-win-text {
+  transform: none;
+  top: 29.81%;
+  left: 60.31%;
+  width: 13.2%;
+  height: 40.75%;
+  z-index: 2;
+}
+
+#hotspot-win-text::after {
+  background: url('assets/ui/hover-magnify.svg') center / contain no-repeat;
+  width: 90px;
+  height: 90px;
+  filter: drop-shadow(0 0 8px #00d4ff) drop-shadow(0 0 20px #00d4ff);
+}
+
+/* ─── Modal: Win result text popup ──────── */
+/* Portrait modal with pink neon border; text fills the white panel. */
+#modal-item.win-text-modal {
+  width: min(52vh, 72vw);
+  height: 80vh;
+  aspect-ratio: unset;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  background: #fff;
+  border: 2px solid #ff00cc;
+  box-shadow: 0 0 18px #ff00cc, 0 0 44px rgba(255, 0, 200, 0.45),
+              inset 0 0 8px rgba(255, 0, 200, 0.12);
+  overflow: hidden;
+}
+
+#modal-item.win-text-modal #modal-item-image {
+  display: none;
+}
+
+#modal-item.win-text-modal #modal-item-text {
+  position: relative;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  padding: 10% 9%;
+  box-sizing: border-box;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+#modal-item.win-text-modal #modal-item-body {
+  font-size: clamp(13px, 4.2vh, 23px);
+  line-height: 1.6;
+  color: #001a33;
+  white-space: pre-line;
 }

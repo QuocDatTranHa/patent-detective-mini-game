@@ -4,6 +4,222 @@ This file records completed agent work in chronological order.
 
 Keep entries concise.
 
+## Planning: Session 14-B content + Phase 15 legacy checks
+
+Status: planned (not yet implemented)
+
+- Session 14-B: user provided DE/EN body text, title change (Recherche / Research), and corner coordinates for textBox recalculation; added as sub-tasks to existing Session 14-B block in TASKS.md
+- Phase 15 (new): two deferred verification items promoted from Phase 8 and Phase 9f — DevTools console check and 1280×720 resize test added as Session 15-A
+
+## Phase 16 — Session 16-D planned: win result text popup font size
+
+Status: planned (not yet implemented)
+
+- Session 16-D added to TASKS.md: increase `font-size` on `#modal-item.win-text-modal #modal-item-body` so text fills panel to ~85.67% of popup height; CSS-only change in `style.css`
+
+Status: complete and fully browser-verified by user
+
+**Files changed:** `script.js`, `style.css`, `index.html`
+
+**Session 15-A — text consolidation:**
+- `STRINGS.de/en.startDisclosure` replaced with single invention description sentence
+- `#start-disclosure` font-size increased from `1.1vh` to `1.8vh`
+- HOTSPOT[12] body: description + M1–M4; textBox left `'46.0%'`; top calibrated by user (`'13.4%'`); `fontSize: 'clamp(8px, 0.85vw, 11px)'` added
+- HOTSPOT[0/1] pages[1]: description prepended before M1–M4
+
+**Session 15-B — overflow fix and nav arrows:**
+- `pageTextBoxes` added to HOTSPOT[0/1] (page 2 = disclosure panel coords `left: '46.0%', top: '15.7%'`)
+- `openModal()` / `closeModal()` / nav handlers updated for `pageTextBoxes` and `fontSize`
+- CSS: `.paginated:not(.page1) #modal-item-body` rule added (`clamp(8px, 0.85vw, 11px)`)
+- `#modal-item-nav` moved to direct child of `#modal-item` (was inside `#modal-item-text`)
+- `#modal-item-nav` CSS position: `bottom: 15.35%; right: 9.01%` (from user corner coordinates)
+
+User-verified:
+- All M1–M4 visible in disclosure popup ✓
+- Nav arrows stable — same position on both detective pages ✓
+
+Not tested:
+- Start screen panel font-size visual fill
+- Full language toggle across all three text locations after latest changes
+- End-to-end playthrough
+
+## Phase 16 — Sessions 16-A, 16-B, 16-C: win screen patent thumbnails and popup, result text popup
+
+Status: complete and fully browser-verified by user
+
+**Files changed:** `script.js`, `style.css`, `index.html`
+
+**Session 16-A — thumbnails and hotspot:**
+- `assets/clues/patent1.png` and `patent2.png` supplied by user
+- `#win-patent-page-1/2` thumbnail `<img>` elements added to `#screen-win`
+- `#hotspot-win-patent` hotspot added; CSS `.win-patent-thumb`, per-image positions calibrated from user coordinates
+- `#hotspot-win-patent::after` magnifying glass indicator (174px, neon blue)
+
+**Session 16-B — dual-image popup:**
+- `#modal-item-dual` container added to `#modal-item` in HTML
+- HOTSPOT[13] added (`winScreen: true, hotspotId: 'hotspot-win-patent', hideText: true, dualImages: [patent1, patent2]`)
+- `renderHotspots()` skip extended to `winScreen`
+- `renderWinHotspots()` added (uses `spot.hotspotId`); called in init
+- `openModal()` / `closeModal()` updated for `hideText` / `dual-page`
+- CSS: `#modal-item.dual-page` (height: 92vh, flex row, neon blue border), `#modal-item-dual`
+
+**Session 16-C — result text hotspot and portrait popup:**
+- `#hotspot-win-text` added to `#screen-win` in HTML
+- `#win-text` dashed border removed; repositioned to calibrated coordinates (top: 29.81%, left: 60.31%, width: 13.2%, height: 40.75%)
+- `#hotspot-win-text` CSS with 90px magnifying glass indicator
+- CSS `#modal-item.win-text-modal`: portrait, white background, pink neon border (`#ff00cc`)
+- HOTSPOT[14] added (`winScreen: true, hotspotId: 'hotspot-win-text', winTextModal: true`)
+- `openModal()` / `closeModal()` updated for `winTextModal`
+
+User-verified:
+- Thumbnails visible at calibrated positions ✓
+- Patent popup: both pages side-by-side, neon blue border ✓
+- Result text hotspot: magnifying glass, portrait pink popup, text fills panel, language toggle ✓
+
+## Phase 15 — Planning: invention disclosure text consolidation
+
+Status: planned (not yet implemented)
+
+- Start screen bottom panel: replace M1–M4 with single invention description sentence; adjust font-size
+- Invention disclosure popup (HOTSPOT[12]): prepend invention description before M1–M4; recalibrate textBox from user-measured corners
+- Detective page 2 (HOTSPOT[0/1].pages[1]): prepend same invention description before M1–M4 to match disclosure popup
+
+## Phase 14 — Session 14-B: Patent Archive body text, title, and textBox
+
+Status: complete
+
+**Files changed:** `script.js`
+
+- HOTSPOT[11] `title` updated: `{ de: 'Recherche', en: 'Research' }`
+- HOTSPOT[11] `body` populated with user-provided DE/EN text (two paragraphs each, `\n`-separated)
+- HOTSPOT[11] `textBox` updated to `{ left: '46%', top: '17.3%', width: '44.8%', height: '66.8%' }` from user corner coordinates
+- Default font size used; no per-hotspot `fontSize` override needed
+
+User-verified in browser:
+- Title "Recherche" / "Research" ✓
+- Body text visible in white panel, no overflow ✓
+- Language toggle updates title and body in real time ✓
+- Close and overlay-click close the modal ✓
+
+## Phase 14 — Session 14-A: Patent Archive hotspot added and calibrated
+
+Status: complete
+
+**Files changed:** `script.js`
+
+- Added HOTSPOT entry at index 11: `top: '34.03%', left: '44.88%', w: '8.48%', h: '15.65%'`; `clue: 'assets/clues/research.png'`; title `Patentrecherche` / `Patent Research`; empty body placeholder; `textBox` for white panel
+- Start-screen disclosure entry shifted to index 12; `renderStartHotspots()` unaffected (uses dynamic forEach)
+- Position initially estimated, then calibrated by user in browser (indicator and corner coordinates provided by user)
+
+User-verified in browser:
+- Hover indicator appears at correct position over Patent Archive monitor ✓
+- Click opens item modal with `research.png` ✓
+
+Not tested:
+- Close/overlay behavior not explicitly confirmed by user
+- `textBox` calibration deferred to Session 14-B (body text is empty)
+
+## Phase 14 — Planning: Patent Archive hotspot
+
+Status: planned (not yet implemented)
+
+New phase added to `TASKS.md`:
+- Session 14-A: Add HOTSPOT entry for the Patent Archive monitor on the game screen, calibrate position in browser
+- Session 14-B: Add bilingual text content (user-provided), calibrate font size to fill the white panel
+
+No code changes made. Awaiting user approval before implementation.
+
+## Phase 13 — Sessions 13-B and 13-C: start screen hotspot JS wiring and detective per-page image swap
+
+Status: complete
+
+**Files changed:** `script.js` only
+
+**Session 13-B — JS wiring for start screen disclosure hotspot:**
+- Added HOTSPOT entry at index 11: `startScreen: true`, `clue: 'assets/clues/invention-disclosure.png'`, title `ERFINDUNGSMELDUNG` / `INVENTION DISCLOSURE`, M1–M4 body text, default `textBox`
+- Added `if (spot.startScreen) return;` guard at top of `renderHotspots()` forEach
+- Added `renderStartHotspots()` function: finds `startScreen: true` entries, wires `#hotspot-start-disclosure` click → `openModal('item', i)`
+- Added `renderStartHotspots()` call to init block
+
+Playwright-verified:
+- `#hotspot-start-disclosure` click → modal opens with `invention-disclosure.png`, title "ERFINDUNGSMELDUNG", M1–M4 body ✓
+- Close button closes modal ✓
+- Overlay click closes modal ✓
+- Language toggle while open: title/body update to EN ✓
+- Start button still works after closing modal ✓
+- `reset()` closes open start-screen modal ✓
+- Game-screen hotspot layer unaffected (no `startScreen` entry injected) ✓
+
+**Session 13-C — Detective modal per-page background image swap:**
+- Added `pageImages: ['assets/clues/game-instructor.png', 'assets/clues/invention-disclosure.png']` to HOTSPOT[0] and HOTSPOT[1]
+- `openModal()`: uses `spot.pageImages[0]` instead of `spot.clue` when `pageImages` present
+- `modal-prev` handler: updates `img.src` from `spot.pageImages[gameState.modalPage]`
+- `modal-next` handler: same
+
+Playwright-verified:
+- Page 1: `game-instructor.png`, title "Game Master" ✓
+- Page 2: `invention-disclosure.png`, title "ERFINDUNGSMELDUNG" ✓
+- Back to page 1: image and title restored ✓
+- Language toggle on page 2: title updates, image unchanged ✓
+- Non-detective modal (Qthena): unaffected ✓
+
+Not tested: physical mouse interaction; HOTSPOT[1] speech-bubble separately; full end-to-end playthrough.
+
+---
+
+## Phase 13 — Session 13-A: start screen hotspot asset, HTML, and CSS
+
+Status: complete
+
+- **`assets/ui/hover-magnify.svg`** — Created. Tron-style neon magnifying glass: outer lens ring (cx=40, cy=40, r=27, stroke `#00d4ff`, stroke-width 5.5), inner detail ring (r=16, opacity 0.4), rounded handle (x1=61,y1=61 to x2=89,y2=89, stroke-width 8, round cap). Fills a 100×100 viewBox.
+- **`index.html`** — Added `<div id="hotspot-start-disclosure" class="hotspot start-hotspot"></div>` inside `#screen-start`, after `#start-disclosure` and before `#btn-start`.
+- **`style.css`** — Added `#hotspot-start-disclosure` positioning block (`transform: none`, `top: 53%`, `left: 72%`, `width: 24%`, `height: 35%`, `z-index: 2`) and `::after` override block (`hover-magnify.svg`, 174×174 px, neon drop-shadow filter).
+
+Playwright-verified:
+- Hotspot covers lower white panel: x 953–1248, y 407–676 ✓
+- `::after` opacity: 0 by default ✓
+- `page.hover()` → magnifying glass visible in panel ✓
+- After hover: `isHovered: false`, `afterOpacity: "0"` ✓
+- Start button navigates to game screen with no interference ✓
+
+Not tested: JS click wiring (Session 13-B), modal from start screen, language toggle on popup.
+
+---
+
+## Phase 13 — Planning: start screen hotspot and detective per-page image swap (Tasks 13a–13c)
+
+Status: planned — Session 13-A now complete; Sessions 13-B and 13-C pending
+
+
+## Phase 12 — Session 12-B: win screen line-height, detective per-page titles, page 1 double font (Tasks 12c, 12d, 12e)
+
+Status: complete
+
+- **12c**: `#win-text` `line-height` reduced `1.6` → `1.45` in `style.css`. Playwright measurement confirmed `scrollH=clientH` at both 1366×768 and 1280×720 — no overflow.
+- **12d**: `pageTitles` array added to HOTSPOT[0] and HOTSPOT[1] in `script.js`. `title` updated to `'Game Master'` on both entries. `openModal`, prev/next handlers, and `renderText()` updated to resolve title from `pageTitles[gameState.modalPage]`. `closeModal` resets `page1` class and `modalPage`. Playwright-verified all title states and language toggle.
+- **12e**: CSS rule `.paginated.page1 #modal-item-body` (`clamp(20px, 2.1vw, 26px)`, `line-height: 1.4`) added to `style.css`. `page1` class toggled on `#modal-item-text` in `openModal` (page 0), prev/next handlers, and removed in `closeModal`. Playwright-verified font sizes on both pages and non-detective modal.
+
+Files changed: `style.css`, `script.js`
+
+**Also this session:** `.github/prompts/create-new-task.prompt.md` created — new slash command prompt for adding one or more tasks to `TASKS.md` without starting implementation.
+
+Not tested: win screen EN text at both viewports; speech-bubble hotspot (index 1) detective modal; full end-to-end playthrough.
+
+---
+
+ dash cleanup, M4 fix, win screen calibration border (Tasks 12f, 12a, 12b)
+
+Status: complete
+
+- **TASKS.md reordered**: Phase 12 tasks reordered (12f → 12a → 12b → 12c → 12d → 12e) and split into Session 12-A and Session 12-B chunks.
+- **12f**: All 12 em/en dash occurrences replaced with commas in `script.js`. Used 8-step multi_replace (7 sequential + 1 follow-up for HOTSPOT[1].pages[0]). Verified via grep: only non-displayed occurrences (comments, product name) remain.
+- **12a**: `#start-disclosure` font-size reduced from `1.3vh` to `1.1vh` in `style.css`. Measurement at 1366×768: scrollH dropped from 306px to 223px (= height), so M4 now fits exactly. Verified screenshot shows all M1–M4 visible.
+- **12b**: `border: 1px dashed rgba(0, 87, 168, 0.35)` added to `#win-text` in `style.css`. Win screen screenshot confirmed calibration border visible inside right white panel.
+
+Files changed: `script.js`, `style.css`
+
+---
+
 ## Phase 12 — Planning: text polish and win screen calibration (Tasks 12a–12f)
 
 Status: planned, not implemented
