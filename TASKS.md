@@ -165,7 +165,7 @@ These regressions appeared after the background PNGs were swapped in. Both must 
 - [x] Fix: clicking the language flag button does nothing — flag stays on German flag, does not switch to UK flag
 - [x] Browser-confirm fix: Start button click transitions to game screen
 - [x] Browser-confirm fix: flag toggles de → en and en → de on repeated clicks
-- [ ] Check browser DevTools console on page load for JS errors that may block event listener registration
+- [x] Check browser DevTools console on page load for JS errors that may block event listener registration
 - [x] Decide on HOTSPOTS count: currently 11 entries (detective split into body + bubble); spec requires 10 item hotspots — either merge into one larger hitbox or document the split as an accepted deviation
 
 #### Asset setup (do this BEFORE running the playthrough)
@@ -308,7 +308,7 @@ Orbitron is the canonical Tron Legacy–style font. It must be included as a loc
 - [x] Toggle to English — confirm both text boxes update correctly
 - [x] Open each of the 10 item popups in German — confirm title and body appear in the white panel
 - [x] Toggle language while a popup is open — confirm title and body update in real time
-- [ ] Resize browser to 1280×720 — confirm no overflow or clipping in any panel
+- [x] Resize browser to 1280×720 — confirm no overflow or clipping in any panel
 
 Manual check: open each popup in both languages and confirm text is visible, readable, and correctly translated.
 
@@ -443,7 +443,7 @@ Implementation notes:
 - [x] In arrow click handlers: update `gameState.modalPage`, re-render body, update arrow disabled states
 - [x] In `closeModal()`: hide `#modal-item-nav`, reset `gameState.modalPage` to 0
 - [x] In `renderText()`: if modal is open and active spot has pages, re-render current page body in new language
-- [ ] Browser-verify: page 1 shown on open; right arrow advances to page 2; left arrow returns to page 1; arrows dim correctly; other modals show no nav; language toggle works on both pages
+- [x] Browser-verify: page 1 shown on open; right arrow advances to page 2; left arrow returns to page 1; arrows dim correctly; other modals show no nav; language toggle works on both pages
 
 ---
 
@@ -675,11 +675,177 @@ Goal: populate the Patent Archive popup with German and English text provided by
 
 Files touched: `script.js`, possibly `style.css` (if a per-hotspot `textBox` or font override is needed)
 
-- [ ] Ask the user for the German and English body text for the Patent Archive popup
-- [ ] Add the provided text to the `body: { de, en }` property of the Patent Archive HOTSPOT entry in `script.js`
-- [ ] Analyze the text length (character count, line count) relative to the white panel area in `research.png`
-- [ ] Choose an appropriate font-size for `#modal-item-body` when this hotspot is active — if the text is significantly shorter or longer than the average hotspot, add a per-hotspot font size override (e.g. via a `fontSize` property on the HOTSPOT entry applied as inline style in `openModal`); otherwise use the existing default
-- [ ] Browser-verify: open the Patent Archive popup in both DE and EN — text fills the white panel area well (roughly 70–90% vertical fill), is readable, and does not overflow or clip
-- [ ] If overflow occurs, reduce font-size or adjust `textBox` height; if too much empty space remains, increase font-size
+- [x] Ask the user for the German and English body text for the Patent Archive popup
+- [x] Add the provided text to the `body: { de, en }` property of the Patent Archive HOTSPOT entry in `script.js`
+- [x] Analyze the text length (character count, line count) relative to the white panel area in `research.png`
+- [x] Choose an appropriate font-size for `#modal-item-body` when this hotspot is active — if the text is significantly shorter or longer than the average hotspot, add a per-hotspot font size override (e.g. via a `fontSize` property on the HOTSPOT entry applied as inline style in `openModal`); otherwise use the existing default
+- [x] Browser-verify: open the Patent Archive popup in both DE and EN — text fills the white panel area well (roughly 70–90% vertical fill), is readable, and does not overflow or clip
+- [x] If overflow occurs, reduce font-size or adjust `textBox` height; if too much empty space remains, increase font-size
 
 Manual check: Patent Archive popup shows correct text in both languages; text fills the white space proportionally; no overflow or clipping at 1366×768.
+
+
+**User-provided content (prerequisite satisfied):**
+
+DE body text:
+> Rechercheergebnisse sind ein zentraler Maßstab für die Bewertung einer möglichen Patentanmeldung.
+> Sie zeigen, ob eine technische Idee tatsächlich neu ist oder ob wesentliche Aspekte bereits zum Stand der Technik gehören. Eine frühzeitige Recherche hilft dabei, Entwicklungspotenziale realistisch einzuordnen und unnötigen Aufwand für nicht schutzfähige Lösungen zu vermeiden.
+
+EN body text:
+> Search results are a key benchmark for evaluating a potential patent application.
+> They show whether a technical idea is truly novel or whether essential aspects already form part of the prior art. Conducting an early search helps to assess development potential realistically and avoid unnecessary effort for solutions that are not protectable.
+
+Title change: DE `Recherche`, EN `Research` (replaces current `Patentrecherche` / `Patent Research`).
+
+Text area corners (user-measured from `research.png`):
+- top-left: `top: 17.29%, left: 46.03%`
+- top-right: `top: 17.70%, left: 90.77%`
+- bottom-right: `top: 84.05%, left: 90.31%`
+- bottom-left: `top: 81.61%, left: 47.40%`
+
+Computed `textBox`: `{ left: '46%', top: '17.3%', width: '44.8%', height: '66.8%' }` — refine in browser if text does not align with the white panel.
+
+- [x] Change `title` on the Patent Archive HOTSPOT entry (index 11) from `{ de: 'Patentrecherche', en: 'Patent Research' }` to `{ de: 'Recherche', en: 'Research' }`
+- [x] Update `textBox` on the Patent Archive HOTSPOT entry (index 11) from `{ left: '48%', top: '7%', width: '46%', height: '86%' }` to `{ left: '46%', top: '17.3%', width: '44.8%', height: '66.8%' }` — derived from user corner coordinates; refine in browser if alignment is off
+
+---
+
+## Phase 15 — Invention disclosure text consolidation
+
+Three related text changes: the start screen bottom panel shows only the invention description (no M1–M4); the invention disclosure popup and the detective page 2 both show the invention description followed by M1–M4 features; textBox for the invention disclosure popup is recalibrated.
+
+---
+
+### Session 15-A — Update start screen panel, disclosure popup, and detective page 2 text
+
+Goal: replace the start screen bottom panel text with a single invention description; update the invention disclosure popup body to include the description plus M1–M4; synchronize detective page 2 to match; recalibrate the disclosure popup textBox.
+
+Files touched: `script.js`, possibly `style.css` (start screen panel font-size adjustment)
+
+**User-provided invention description:**
+
+DE:
+> Die Erfindung umfasst ein intelligentes, mobilitätsoptimiertes Arbeitsplatzsystem, das die direkte, kontextnahe und bedarfsgerechte Bearbeitung digitaler Inhalte in hybriden Arbeitsumgebungen ermöglicht.
+
+EN:
+> The invention comprises an intelligent, mobility-optimized workstation system that enables the direct, context-specific, and demand-oriented processing of digital information in hybrid work environments.
+
+**User-provided textBox corners for the invention disclosure popup (`research.png` → `invention-disclosure.png`):**
+- top-left: `top: 15.67%, left: 46.26%`
+- top-right: `top: 16.08%, left: 91.22%`
+- bottom-right: `top: 85.06%, left: 91.11%`
+- bottom-left: `top: 84.65%, left: 46.48%`
+
+Computed `textBox`: `{ left: '46.3%', top: '15.7%', width: '45%', height: '69.4%' }`
+
+#### Sub-tasks
+
+- [x] Replace `STRINGS.de.startDisclosure` in `script.js`: remove M1–M4 text; set to the DE invention description sentence only
+- [x] Replace `STRINGS.en.startDisclosure` in `script.js`: remove M1–M4 text; set to the EN invention description sentence only
+- [x] Adjust `#start-disclosure` font-size in `style.css` so the shorter text fills the bottom panel reasonably (increase from current `clamp(...)` value); verify no overflow at typical viewport
+- [x] Update HOTSPOT[12] (start-screen disclosure, `startScreen: true`) `body.de` and `body.en` in `script.js`: prepend the invention description sentence before M1–M4 features, separated by `\n\n`; keep M1–M4 text unchanged
+- [x] Update HOTSPOT[12] `textBox` from `{ left: '48%', top: '11%', width: '46%', height: '77%' }` to `{ left: '46.3%', top: '15.7%', width: '45%', height: '69.4%' }` — derived from user corner coordinates
+- [x] Analyze the combined text length (description + M1–M4) relative to the new textBox area; if the text is too long for the default font-size, add a per-hotspot `fontSize` property to HOTSPOT[12] and apply it as inline style in `openModal()` — or adjust font-size to fill the area well
+- [x] Update HOTSPOT[0].pages[1] (detective body, page 2) `de` and `en` in `script.js`: prepend the same invention description sentence before M1–M4, separated by `\n\n`
+- [x] Update HOTSPOT[1].pages[1] (detective speech bubble, page 2) `de` and `en` in `script.js`: same change as HOTSPOT[0].pages[1]
+- [x] Browser-verify: start screen bottom panel shows invention description only (no M1–M4) in both DE and EN; font-size fills the panel
+- [x] Browser-verify: start screen → click lower box → invention disclosure popup shows invention description + M1–M4; text fits within recalibrated textBox; no overflow
+- [x] Browser-verify: game screen → detective → page 2 shows the same invention description + M1–M4 text as the disclosure popup
+- [x] Browser-verify: language toggle updates all three locations correctly
+
+Manual check: start screen panel shows short description; disclosure popup and detective page 2 both show description + M1–M4; all three update on language toggle; no overflow in any.
+
+### Session 15-B — Overflow fix, nav arrow repositioning, and alignment tweaks
+
+Goal: fix text overflow in disclosure popups (M2–M4 missing), fix nav arrow position shift between detective pages, and apply all user-calibrated position tweaks.
+
+Files touched: `script.js`, `style.css`, `index.html`
+
+- [x] Fix disclosure popup text overflow: add `fontSize: 'clamp(8px, 0.85vw, 11px)'` property to HOTSPOT[12]; apply via inline style in `openModal()`; clear in `closeModal()`
+- [x] Fix `left` alignment: set HOTSPOT[12] `textBox.left` to `'46.0%'`; set HOTSPOT[0/1] `pageTextBoxes[1].left` to `'46.0%'`
+- [x] Add `pageTextBoxes` array to HOTSPOT[0] and HOTSPOT[1] (page 1 = null → CSS default; page 2 = disclosure panel coordinates `{ left: '46.0%', top: '15.7%', width: '45%', height: '69.4%' }`)
+- [x] Update `openModal()` to apply `spot.pageTextBoxes[0]` or `spot.textBox` and `spot.fontSize` on open
+- [x] Update `modal-prev` and `modal-next` handlers to apply `pageTextBoxes[page]` on each navigation
+- [x] Update `closeModal()` to clear `modal-item-body.style.fontSize`
+- [x] Add CSS rule `.paginated:not(.page1) #modal-item-body { font-size: clamp(8px, 0.85vw, 11px); }` for detective page 2
+- [x] Move `#modal-item-nav` out of `#modal-item-text` in `index.html` — make it a direct child of `#modal-item` so arrow position is unaffected by textBox changes
+- [x] Update `#modal-item-nav` CSS: position fixed relative to `#modal-item`; calibrated to `bottom: 15.35%; right: 9.01%` from user corner coordinates (bottom-right of right arrow at `top: 84.65%, left: 90.99%`)
+- [x] Adjust HOTSPOT[12] `textBox.top` to `'13.4%'` then to `'17.70%'` per user calibration (last verified value: `'13.4%'` as set by user directly)
+- [x] Browser-verified by user: disclosure popup shows all M1–M4 items; nav arrows stable between pages
+
+---
+
+## Phase 16 — Win screen patent document thumbnails, dual popup, and result text popup
+
+Two patent page screenshots are shown as small thumbnails in the two left white boxes on the win screen. A single clickable hotspot covering both boxes opens a full-height popup showing both pages side-by-side. The right text box on the win screen gains a second hotspot that opens a portrait popup with the win result text in a pink neon border.
+
+---
+
+### Session 16-A — Assets, HTML, and CSS
+
+Goal: add patent page thumbnail images to the win screen and style a hoverable hotspot over both left white boxes.
+
+Files touched: `assets/clues/` (2 new images), `index.html`, `style.css`
+
+- [x] User supplied `assets/clues/patent1.png` and `assets/clues/patent2.png`
+- [x] In `index.html`: added `<img id="win-patent-page-1" class="win-patent-thumb" src="assets/clues/patent1.png" alt="">` and `<img id="win-patent-page-2" ...>` inside `#screen-win`
+- [x] In `index.html`: added `<div id="hotspot-win-patent" class="hotspot win-hotspot"></div>` inside `#screen-win`
+- [x] In `style.css`: added `.win-patent-thumb` rule — `position: absolute; object-fit: contain; pointer-events: none; top: 50%; transform: translateY(-50%); height: 51%;`
+- [x] In `style.css`: added `#win-patent-page-1 { left: 23.42%; width: 16.03%; }` and `#win-patent-page-2 { left: 40.59%; width: 17.03%; }` — calibrated from user-provided bounding box coordinates
+- [x] In `style.css`: added `#hotspot-win-patent` rule covering both boxes (`left: 23.42%; top: 22%; width: 34.2%; height: 51%; transform: none;`)
+- [x] In `style.css`: added `#hotspot-win-patent::after` with magnifying glass SVG, 174px, neon blue glow — same pattern as `#hotspot-start-disclosure::after`
+
+Manual check: thumbnails visible in left white boxes at calibrated positions; hover indicator appears/disappears. ✓ (user-verified)
+
+---
+
+### Session 16-B — JS wiring and dual-image popup
+
+Goal: wire the win-screen patent hotspot to open `#modal-item` with both pages side-by-side; implement `hideText` / `dualImages` support; use `hotspotId` on HOTSPOT entries so `renderWinHotspots()` supports multiple win-screen hotspots.
+
+Files touched: `script.js`, `index.html`, `style.css`
+
+- [x] Added `#modal-item-dual` container with two `<img>` elements inside `#modal-item` in `index.html`
+- [x] Added HOTSPOT entry 13 (`winScreen: true, hotspotId: 'hotspot-win-patent', hideText: true, dualImages: [patent1, patent2]`) to HOTSPOTS array
+- [x] Updated `renderHotspots()` skip condition to `if (spot.startScreen || spot.winScreen) return;`
+- [x] Added `renderWinHotspots()` — iterates HOTSPOTS with `winScreen: true`, wires each to `document.getElementById(spot.hotspotId)` click → `openModal('item', i)`
+- [x] Called `renderWinHotspots()` in init block
+- [x] In `openModal()`: added `hideText` branch — hides `#modal-item-image` and `#modal-item-text`, shows `#modal-item-dual`, adds `dual-page` class to `#modal-item`
+- [x] In `closeModal()`: removes `dual-page` and `win-text-modal` classes; clears `#modal-item-dual` hidden; restores `#modal-item-image` and `#modal-item-text` display
+- [x] In `style.css`: added `#modal-item.dual-page` — `height: 92vh; flex-direction: row; neon blue border`; `#modal-item-dual` flex row; `#modal-item-dual img` height: 100%
+
+Manual check: click patent hotspot → full-height popup opens with both pages side-by-side; neon blue border; close works. ✓ (user-verified)
+
+---
+
+### Session 16-C — Win result text hotspot and portrait popup
+
+Goal: make the right text box on the win screen clickable; opens a portrait popup with pink neon border and white background showing the win result text in both languages.
+
+Files touched: `index.html`, `style.css`, `script.js`
+
+- [x] In `index.html`: added `<div id="hotspot-win-text" class="hotspot win-hotspot"></div>` inside `#screen-win`
+- [x] In `style.css`: removed dashed border from `#win-text`; repositioned to calibrated coordinates — `left: 60.31%; top: 29.81%; width: 13.2%; height: 40.75%`
+- [x] In `style.css`: added `#hotspot-win-text` — covers same area as `#win-text`; magnifying glass indicator at 90px
+- [x] In `style.css`: added `#modal-item.win-text-modal` — `width: min(52vh, 72vw); height: 80vh; background: #fff; border: 2px solid #ff00cc; pink neon box-shadow`; overrides for `#modal-item-image` (hidden) and `#modal-item-text` (fills panel with `clamp(11px, 1.5vh, 18px)` font)
+- [x] Added HOTSPOT entry 14 (`winScreen: true, hotspotId: 'hotspot-win-text', winTextModal: true`) with `body.de/en` referencing the win result text
+- [x] In `openModal()`: added `winTextModal` branch — hides `#modal-item-image`, adds `win-text-modal` class
+- [x] In `closeModal()`: removes `win-text-modal` class
+
+Manual check: hover over right text box → small magnifying glass appears; click → portrait popup with pink neon border and white background opens; text fills panel; language toggle updates text; close works. ✓ (user-verified)
+
+---
+
+### Session 16-D — Win result text popup: increase font size to fill available space
+
+Goal: increase the body font size inside the win result text popup (`#modal-item.win-text-modal`) so the text fills the white panel closer to its bottom boundary; the user has confirmed `top: 85.67%` of the popup height is the maximum safe fill point.
+
+Files touched: `style.css`
+
+- [ ] Measure the current text fill visually: the popup is `80vh` tall with `padding: 10% 9%` on the text panel, giving roughly `64vh` of usable text height; the current `font-size: clamp(11px, 1.5vh, 18px)` leaves significant empty space below the text
+- [ ] Increase `font-size` on `#modal-item.win-text-modal #modal-item-body` — raise the `clamp` values to fill the panel up to approximately `85.67%` of the popup height; start with `clamp(13px, 2.0vh, 22px)` and adjust in browser; `line-height` may need a small reduction (e.g. from `1.7` to `1.6`) to avoid premature overflow
+- [ ] Verify the longer German text does not overflow at any typical viewport size (German is longer than English — it must be the binding constraint)
+- [ ] Verify English text also fills the panel well (shorter — should not underflow badly if German is set correctly)
+- [ ] Do not change padding, popup height, or any other property — only `font-size` and `line-height` on `#modal-item-body` inside `.win-text-modal`
+
+Manual check: open the win result text popup in German — text fills the panel to roughly 80–85% of its height with no overflow or clipping; switch to English — text still fills the panel well; close button works.

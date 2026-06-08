@@ -4,15 +4,9 @@ This file gives the next coding agent the current project status and recommended
 
 ## Current Status
 
-**Phase 14 — Session 14-A COMPLETE (hotspot position user-calibrated)**
+**Phase 16 � COMPLETE (all sessions browser-verified by user)**
 
-Patent Archive hotspot added to game screen and calibrated by user in browser.
-
-**Session 14-A** — Patent Archive hotspot entry and position calibration:
-- `script.js`: new HOTSPOT entry at index 11: `top: '34.03%', left: '44.88%', w: '8.48%', h: '15.65%'`, `clue: 'assets/clues/research.png'`, title `Patentrecherche` / `Patent Research`, empty body placeholder, `textBox` for white panel
-- Start-screen disclosure entry shifted to index 12; `renderStartHotspots()` unaffected (uses dynamic `forEach`)
-- Position calibrated by user in browser: indicator at `top: 34.03%, left: 44.88%`; hotbox corners provided by user
-
+All win screen interactive elements are implemented and verified. No planned phases remain.
 
 ## Completed So Far
 
@@ -21,52 +15,49 @@ Patent Archive hotspot added to game screen and calibrated by user in browser.
 - Phase 3: Responsive layout, hotspot hover indicator, modal sizing
 - Phase 4: State model, screen navigation, language toggle
 - Phase 5: Item hotspot system, clue modal open/close, overlay
-- Phase 6: Safe modal — digit controls, code validation, win screen
-- Phase 7: Menu modal — pause/restart flow
-- Phase 8: Final asset integration — background images, clue images, Orbitron font, hotspot tuning
-- Phase 9: Text content — bilingual STRINGS, start screen panels, modal title/body overlays
-- Phase 10: Visual polish — start screen headings, neon code digits, larger modal font, per-hotspot text box alignment
-- Phase 11: Readability fixes — darker digit color, win screen text, start panel spacing, detective pagination
+- Phase 6: Safe modal � digit controls, code validation, win screen
+- Phase 7: Menu modal � pause/restart flow
+- Phase 8: Final asset integration � background images, clue images, Orbitron font, hotspot tuning
+- Phase 9: Text content � bilingual STRINGS, start screen panels, modal title/body overlays
+- Phase 10: Visual polish � start screen headings, neon code digits, larger modal font, per-hotspot text box alignment
+- Phase 11: Readability fixes � darker digit color, win screen text, start panel spacing, detective pagination
 - Phase 12 (12-A): Dash cleanup, M4 start disclosure fix, win screen calibration border
 - Phase 12 (12-B): Win screen line-height fix, detective per-page titles, page 1 double font
 - Phase 13 (13-A): Magnifying glass SVG, start screen hotspot element and CSS
-- Phase 13 (13-B): Start screen hotspot JS wiring, `renderStartHotspots()`, HOTSPOT[11] added
-- Phase 13 (13-C): Detective modal per-page image swap via `pageImages` array
-- Phase 14 (14-A): Patent Archive hotspot added and position calibrated by user
+- Phase 13 (13-B): Start screen hotspot JS wiring, renderStartHotspots(), HOTSPOT[11] added
+- Phase 13 (13-C): Detective modal per-page image swap via pageImages array
+- Phase 14 (14-A): Patent Archive hotspot added and position calibrated
+- Phase 14 (14-B): Patent Archive title, body text, textBox updated and browser-verified
+- Phase 15 (15-A): Start screen disclosure text simplified; disclosure popup and detective page 2 updated with description + M1-M4
+- Phase 15 (15-B): Overflow fix, nav arrow DOM move, pageTextBoxes, fontSize override, arrow position calibrated
+- Phase 16 (16-A): Patent thumbnails + #hotspot-win-patent added to win screen; positions calibrated from user coordinates
+- Phase 16 (16-B): Dual-image popup wired; hideText, dualImages, hotspotId flags; renderWinHotspots() added
+- Phase 16 (16-C): #hotspot-win-text added; #win-text repositioned and dashed border removed; portrait pink neon popup via win-text-modal CSS class
 
-## Files Changed (Session 14-A)
+## Files Changed (Phase 16)
 
-- `script.js` — HOTSPOT[11] added (Patent Archive, index 11); start-screen entry shifted to index 12; no other logic changes
+- index.html � #win-patent-page-1/2 thumbnail imgs, #hotspot-win-patent, #hotspot-win-text, #modal-item-dual container inside #modal-item
+- style.css � .win-patent-thumb, #win-patent-page-1/2 calibrated positions, #hotspot-win-patent and #hotspot-win-text rules, #modal-item.dual-page, #modal-item-dual, #modal-item.win-text-modal; #win-text repositioned and dashed border removed
+- script.js � HOTSPOT[13] (winScreen, hotspotId, hideText, dualImages), HOTSPOT[14] (winScreen, hotspotId, winTextModal); renderHotspots() skip extended; renderWinHotspots() added with hotspotId pattern; openModal()/closeModal() updated for dual-page and win-text-modal; renderWinHotspots() called in init
 
-## Manual Check Results (Session 14-A)
+## Manual Check Results
 
-- Hover over Patent Archive monitor area → warning indicator appears at correct position ✓ (user-verified in browser)
-- Position calibrated by user: indicator `top: 34.03%, left: 44.88%`; hotbox `w: 8.48%, h: 15.65%` ✓
-- Click opens `#modal-item` with `research.png` and title "Patentrecherche" — verified working
-- Body text is empty placeholder (Session 14-B pending)
+- Patent thumbnails visible at calibrated positions on win screen (user-verified)
+- Hover over patent area: magnifying glass indicator appears (user-verified)
+- Patent popup: both pages side-by-side, neon blue border, close button works (user-verified)
+- Result text hotspot: magnifying glass on hover; portrait pink neon popup opens; text fills panel; language toggle updates text; close works (user-verified)
 
 ## What Was Not Tested
 
-- Close button / overlay click on Patent Archive modal not explicitly confirmed by user
-- `textBox` calibration for `research.png` white panel not yet verified (body text is empty)
-- Full end-to-end playthrough after Phase 14-A changes
-- Mobile/touch behavior
+- Full end-to-end playthrough after all Phase 16 changes
+- Start screen panels at 1280x720 viewport
+- DevTools console check for silent JS errors
 
 ## Known Issues
 
-- Win screen text positioning calibrated for 1366×768 Playwright viewport; may need minor adjustment at other sizes
-- Start screen EN layout at 1280×720 not re-verified after Phase 12-A font-size change
-- Patent Archive body text is empty — Session 14-B pending user-provided DE/EN text
+- Win screen element positions calibrated for 1366x768; may need minor adjustment at other viewport sizes
+- HOTSPOT[12] textBox.top ('13.4%') differs from HOTSPOT[0/1] pageTextBoxes[1].top ('15.7%') � both use invention-disclosure.png; may need unification
 
 ## Next Recommended Step
 
-**Session 14-B** — user provides German and English body text for the Patent Archive popup; agent adds it to `HOTSPOT[11].body`, calibrates font size to fill the white panel in `research.png` without overflow.
-- README.md agent workflow section not yet added (pending from Phase 8)
-
-## Next Recommended Step
-
-All planned phases are complete. Recommended final checks:
-1. Full manual playthrough in a real browser: start → game → all 10 hotspots → detective modal (both pages, image swap) → start screen disclosure hotspot → safe (wrong + correct code) → win screen → restart
-2. Repeat core flow in English
-3. Add README.md agent workflow section (last unchecked item from Phase 8)
-
+All planned phases are complete. Await new tasks from user, or perform a final full end-to-end playthrough.

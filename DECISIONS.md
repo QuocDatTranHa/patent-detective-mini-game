@@ -68,9 +68,38 @@ Reason:
 The `HOTSPOTS` array is the single source of truth for all item hotspot data (project instruction rule). Start-screen hotspots have the same data shape, so they belong in the same array. The flag keeps the game-screen renderer from injecting them into `#hotspot-layer`.
 
 Consequences:
-- `renderHotspots()` must check `if (spot.startScreen) return;` at the top of its forEach callback
+- `renderHotspots()` must check `if (spot.startScreen || spot.winScreen) return;` at the top of its forEach callback
 - `renderStartHotspots()` must be called once on init alongside `renderHotspots()`
 - Start-screen hotspot DOM elements are placed directly inside `#screen-start` in `index.html`, not in `#hotspot-layer`
+
+### 14. Win-screen HOTSPOTS entries use `winScreen: true` flag
+
+Status: accepted
+
+Decision:
+HOTSPOT entries that belong to the win screen carry a `winScreen: true` property. `renderHotspots()` skips them. A separate `renderWinHotspots()` function handles click wiring, mirroring the `renderStartHotspots()` pattern.
+
+Reason:
+Same rationale as Decision 13: the HOTSPOTS array is the single source of truth; the flag prevents game-screen injection without duplicating the data structure.
+
+Consequences:
+- `renderHotspots()` skip condition extended to `if (spot.startScreen || spot.winScreen) return;`
+- `renderWinHotspots()` must be called once on init
+- Win-screen hotspot DOM elements are placed directly inside `#screen-win` in `index.html`, not in `#hotspot-layer`
+
+### 15. `hideText: true` flag suppresses the text panel in `#modal-item`
+
+Status: accepted
+
+Decision:
+HOTSPOT entries that should open a full-width image modal (no text panel) carry `hideText: true`. `openModal()` hides `#modal-item-text` and expands `#modal-item-image` to fill the modal; `closeModal()` clears those inline styles.
+
+Reason:
+The patent document popup needs a full-width layout without a text panel. Adding a fourth modal container is prohibited by the project instructions (exactly three modal containers). The `hideText` flag reuses the existing `#modal-item` with minimal new logic.
+
+Consequences:
+- `openModal('item', index)` must check `spot.hideText` and apply inline styles
+- `closeModal()` must clear those inline styles unconditionally
 
 ---
 
