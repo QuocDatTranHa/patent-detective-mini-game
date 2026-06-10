@@ -4,7 +4,30 @@ This file records completed agent work in chronological order.
 
 Keep entries concise.
 
-## Planning: Session 14-B content + Phase 15 legacy checks
+## Phase 17 — Workflow review task added to TASKS.md
+
+Status: planned (not yet implemented)
+
+**Files changed:** `TASKS.md`, `AGENT_LOG.md`, `HANDOVER.md`
+
+- Phase 17 added to TASKS.md with three sessions: 17-A (audit required-reading lists), 17-B (token waste patterns), 17-C (write recommendations)
+- HANDOVER.md next recommended step updated to reference Phase 17
+- No code changes
+
+## Phase 16-D — Win result text popup font size + full playthrough verified
+
+Status: complete; full end-to-end playthrough verified by user
+
+**Files changed:** `style.css`
+
+- `#modal-item.win-text-modal #modal-item-body`: `font-size` raised from `clamp(11px, 1.5vh, 18px)` to `clamp(13px, 2.1vh, 23px)`; `line-height` reduced from `1.7` to `1.6`
+- Added calibration comments in `style.css` and `script.js` pointing to font-size lines for the three invention disclosure popups
+
+Manual check: user completed full end-to-end playthrough — all hotspots, all popups, language toggle, safe code, win screen, patent thumbnails, result text popup, restart. Everything verified.
+
+Not tested: nothing remaining.
+
+
 
 Status: planned (not yet implemented)
 
