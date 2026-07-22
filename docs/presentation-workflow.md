@@ -1,6 +1,84 @@
 # Presentation: Vibe Coding Workflow
 
-## Slide 1 — The Big Picture: 3 Layers
+## Slide 1 — Game Specification: Concept
+
+- Browser-based patent escape-room game
+- Player role: **Patent Detective**
+- Intellectual Property and prior-art context
+- Futuristic office, laboratory and workshop setting
+- Hidden-object and puzzle-based gameplay
+- Technical clues and invention features
+- Final objective: derive and enter the safe code **9126**
+
+**Talking point:** "The player is a Patent Detective in a futuristic lab, hunting technical clues to crack the safe code 9126."
+
+---
+
+## Slide 2 — Game Specification: Functionality
+
+- Three main screens: **Start, Game and Win**
+- Interactive objects and clickable hotspots
+- Pop-up windows for clues and information
+- Navigation between different clue contents
+- Safe code input and validation
+- German and English language selection
+- Replay and game-reset functionality
+
+**Note:** Image assets and game texts were created before the Vibe Coding phase and are not included in the measured coding effort.
+
+---
+
+## Slide 3 — Preparation for GitHub Copilot
+
+(Layout: two columns. LEFT column = "What I prepare" as a short list, each item tagged with who creates it — either "I create" or "agent creates". RIGHT column = the project folder structure with a short comment next to each file/group explaining what it does. Docs can be aggregated into groups, e.g. context & memory, on the right side.)
+
+**LEFT — What I prepare**
+
+- Game Spec (central reference) — *I create*
+- Copilot instructions (rules & constraints) — *I create*
+- Structured docs = context & memory — *agent creates*
+- 6 prompts (one goal each) — *I create*
+
+**RIGHT — Project structure**
+
+```
+patent-detective-mini-game/
+├── .github/
+│   ├── copilot-instructions.md   ← global rules the agent always follows
+│   ├── instructions/
+│   │   └── project.instructions.md ← coding rules (scoped to .html/.css/.js)
+│   └── prompts/                  ← the 6 reusable session prompts
+├── docs/
+│   └── game-spec.md              ← source of truth for game behavior
+│
+├── PLAN.md                       ← overall strategy           ┐
+├── TASKS.md                      ← task checklist / progress  │
+├── HANDOVER.md                   ← current status + next step │
+├── ARCHITECTURE.md               ← technical structure        │ CONTEXT & MEMORY
+├── DECISIONS.md                  ← why choices were made      │ (agent-maintained)
+├── KNOWN_ISSUES.md               ← risks & fragile areas      │
+└── AGENT_LOG.md                  ← work history               ┘
+```
+
+**Talking point:** "I bring the game spec, the rules, and the prompts. The agent maintains the context and memory files. Left side is the ingredients, right side is where they live."
+
+---
+
+## Slide 4 — Six Structured Copilot Prompts
+
+- Six prompts derived from the Game Specification
+- Separation of the project into manageable implementation steps
+- One clearly defined objective per prompt
+- Defined components and affected files
+- Functional and technical requirements
+- Acceptance criteria for each implementation step
+- Step-by-step execution instead of one large prompt
+
+**Key message:** "One giant prompt fails. Six focused prompts — each with a single goal and clear acceptance criteria — succeed."
+
+---
+
+## Slide 5 — The Big Picture: 3 Layers
 
 Show the project as **3 concentric layers**:
 
@@ -24,7 +102,7 @@ Show the project as **3 concentric layers**:
 
 ---
 
-## Slide 2 — The 6 Prompts as a Cycle
+## Slide 6 — The 6 Prompts as a Cycle
 
 Visual: a **circular workflow diagram** with numbered steps and arrows. Color-code by type (blue = planning, green = implementation, orange = verification, grey = bookkeeping).
 
@@ -72,7 +150,7 @@ Visual: a **circular workflow diagram** with numbered steps and arrows. Color-co
 
 ---
 
-## Slide 3 — The Approval Gates (Human in the Loop)
+## Slide 7 — The Approval Gates (Human in the Loop)
 
 Visual: same cycle but with **red stop signs** at 3 points:
 
@@ -86,7 +164,7 @@ Visual: same cycle but with **red stop signs** at 3 points:
 
 ---
 
-## Slide 4 — The Persistent Memory (Why Sessions Are Independent)
+## Slide 8 — The Persistent Memory (Why Sessions Are Independent)
 
 Visual: show **2 separate chat sessions** (Session A, Session B) both pointing at the same 7 markdown files:
 
@@ -111,7 +189,7 @@ Visual: show **2 separate chat sessions** (Session A, Session B) both pointing a
 
 ---
 
-## Slide 5 — One Typical Session (What You'll See in the Live Demo)
+## Slide 9 — One Typical Session (What You'll See in the Live Demo)
 
 A simple **timeline strip**:
 
