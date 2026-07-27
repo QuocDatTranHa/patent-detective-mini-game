@@ -877,7 +877,7 @@ Output: documented findings either in a new `WORKFLOW_REVIEW.md` (requires user 
 
 ---
 
-### Session 17-A — Audit required-reading lists and file usage patterns
+### Session 18-A — Audit required-reading lists and file usage patterns
 
 Goal: map what every prompt file requires agents to read, then check whether those files were actually useful.
 
@@ -897,7 +897,7 @@ Manual check (self-review): findings table complete; every required-reading entr
 
 ---
 
-### Session 17-B — Identify token waste patterns and session boundary issues
+### Session 18-B — Identify token waste patterns and session boundary issues
 
 Goal: find recurring patterns where agents read more than needed, split sessions too finely or too broadly, or duplicated work across sessions.
 
@@ -916,11 +916,11 @@ Manual check (self-review): every pattern identified has a concrete proposed fix
 
 ---
 
-### Session 17-C — Write optimization recommendations
+### Session 18-C — Write optimization recommendations
 
-Goal: consolidate findings from 17-A and 17-B into concrete, actionable prompt and workflow changes for the next project.
+Goal: consolidate findings from 18-A and 18-B into concrete, actionable prompt and workflow changes for the next project.
 
-- [ ] For each stale required-reading file from 17-A: write a revised conditional reading rule
+- [ ] For each stale required-reading file from 18-A: write a revised conditional reading rule
 - [ ] Propose a `CURRENT_PHASE.md`: a small file always kept up to date with current phase name, next unchecked task, and key files affected — replaces full TASKS.md reads at session start
 - [ ] Propose a revised `implement-next-task.prompt.md` with a scope-detection step: agent reads task description first, then loads only files that scope requires (CSS-only → style.css; JS logic → script.js + ARCHITECTURE.md; text/content → script.js only)
 - [ ] Propose a `KNOWN_ISSUES.md` maintenance rule: every `update-handover` call must review each open item and mark resolved or updated; no issue survives more than 2 phases without a status update
