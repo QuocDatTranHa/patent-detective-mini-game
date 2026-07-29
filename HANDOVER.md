@@ -6,7 +6,7 @@ This file gives the next coding agent the current project status and recommended
 
 **Phase 16 � FULLY COMPLETE. Full end-to-end playthrough verified by user.**
 
-All planned phases are complete. Every interactive element has been browser-verified in a full playthrough. The game is finished and ready for use.
+Every interactive element has been browser-verified in a full playthrough. The core game is finished and ready for use. Two new phases have since been added to `TASKS.md`: Phase 17 (Escape key closes any open modal) and Phase 18 (vibe coding workflow retrospective, formerly numbered Phase 17).
 
 ## Completed So Far
 
@@ -61,6 +61,8 @@ All planned phases are complete. Every interactive element has been browser-veri
 
 ## Next Recommended Step
 
-The game is complete. Phase 17 (workflow retrospective) is planned in TASKS.md and ready to start.
+Phase 17 (Escape key closes any open modal) is planned in TASKS.md and ready to start — small, `script.js`-only change.
 
-Run the `start-session` prompt to begin Session 17-A: audit all 6 prompt files and identify stale required-reading entries.
+Run the `start-session` prompt to begin Phase 17: add a `keydown` listener on `document` that calls `closeModal()` on `Escape` when a modal is open, then browser-verify all 3 modal types.
+
+Phase 18 (workflow retrospective, Session 18-A: audit all 6 prompt files and identify stale required-reading entries) follows once Phase 17 is complete.

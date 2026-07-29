@@ -852,7 +852,24 @@ Manual check: win result text popup fills panel in both DE and EN; no overflow; 
 
 ---
 
-## Phase 17 — Vibe coding workflow retrospective and prompt optimization
+## Phase 17 — Keyboard shortcut: Escape closes any open modal
+
+Goal: allow the player to press `Escape` to close whichever modal is currently open. Mirrors existing close-button behavior.
+
+Files affected: `script.js` only (no HTML or CSS changes needed).
+
+- [ ] Add a `keydown` event listener on `document` that calls `closeModal()` when `event.key === 'Escape'` and `gameState.openModal !== null`
+- [ ] Verify pressing Escape closes the item modal
+- [ ] Verify pressing Escape closes the safe modal
+- [ ] Verify pressing Escape closes the menu modal
+- [ ] Verify pressing Escape does nothing when no modal is open
+- [ ] Verify the existing close buttons and overlay-click behavior still work unchanged
+
+Manual check: open each of the 3 modals in the browser, press Escape — modal closes and overlay disappears. Press Escape with no modal open — nothing happens.
+
+---
+
+## Phase 18 — Vibe coding workflow retrospective and prompt optimization
 
 A full meta-review of the agent workflow used throughout this project. No code changes. Goal: identify token waste, stale files, unused prompts, and prompt instruction gaps — then produce concrete recommendations for the next project.
 
@@ -860,7 +877,7 @@ Output: documented findings either in a new `WORKFLOW_REVIEW.md` (requires user 
 
 ---
 
-### Session 17-A — Audit required-reading lists and file usage patterns
+### Session 18-A — Audit required-reading lists and file usage patterns
 
 Goal: map what every prompt file requires agents to read, then check whether those files were actually useful.
 
@@ -880,7 +897,7 @@ Manual check (self-review): findings table complete; every required-reading entr
 
 ---
 
-### Session 17-B — Identify token waste patterns and session boundary issues
+### Session 18-B — Identify token waste patterns and session boundary issues
 
 Goal: find recurring patterns where agents read more than needed, split sessions too finely or too broadly, or duplicated work across sessions.
 
@@ -899,11 +916,11 @@ Manual check (self-review): every pattern identified has a concrete proposed fix
 
 ---
 
-### Session 17-C — Write optimization recommendations
+### Session 18-C — Write optimization recommendations
 
-Goal: consolidate findings from 17-A and 17-B into concrete, actionable prompt and workflow changes for the next project.
+Goal: consolidate findings from 18-A and 18-B into concrete, actionable prompt and workflow changes for the next project.
 
-- [ ] For each stale required-reading file from 17-A: write a revised conditional reading rule
+- [ ] For each stale required-reading file from 18-A: write a revised conditional reading rule
 - [ ] Propose a `CURRENT_PHASE.md`: a small file always kept up to date with current phase name, next unchecked task, and key files affected — replaces full TASKS.md reads at session start
 - [ ] Propose a revised `implement-next-task.prompt.md` with a scope-detection step: agent reads task description first, then loads only files that scope requires (CSS-only → style.css; JS logic → script.js + ARCHITECTURE.md; text/content → script.js only)
 - [ ] Propose a `KNOWN_ISSUES.md` maintenance rule: every `update-handover` call must review each open item and mark resolved or updated; no issue survives more than 2 phases without a status update
