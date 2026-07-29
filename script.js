@@ -544,6 +544,13 @@ document.getElementById('overlay').addEventListener('click', () => {
   closeModal();
 });
 
+/* Escape key — closes any open modal */
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && gameState.openModal !== null) {
+    closeModal();
+  }
+});
+
 /* Menu modal close button */
 document.querySelector('#modal-menu .btn-close').addEventListener('click', closeModal);
 
