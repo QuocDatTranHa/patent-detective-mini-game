@@ -4,9 +4,9 @@ This file gives the next coding agent the current project status and recommended
 
 ## Current Status
 
-**Phase 16 � FULLY COMPLETE. Full end-to-end playthrough verified by user.**
+**Phase 17 — COMPLETE. Escape key closes any open modal. Browser-verified.**
 
-Every interactive element has been browser-verified in a full playthrough. The core game is finished and ready for use. Two new phases have since been added to `TASKS.md`: Phase 17 (Escape key closes any open modal) and Phase 18 (vibe coding workflow retrospective, formerly numbered Phase 17).
+A single `keydown` listener was added to `script.js`. Pressing Escape calls `closeModal()` when `gameState.openModal !== null`. No HTML or CSS changes were needed. All existing close behavior (close button, overlay click) remains unchanged.
 
 ## Completed So Far
 
@@ -34,26 +34,23 @@ Every interactive element has been browser-verified in a full playthrough. The c
 - Phase 16 (16-B): Dual-image popup wired; hideText, dualImages, hotspotId flags; renderWinHotspots() added
 - Phase 16 (16-C): #hotspot-win-text added; win-text repositioned; portrait pink neon popup implemented
 - Phase 16 (16-D): Win result text popup font size increased to clamp(13px, 2.1vh, 23px); line-height 1.6
+- Phase 17: Escape key closes any open modal — keydown listener added to script.js
 
-## Files Changed (Phase 16-D)
+## Files Changed (Phase 17)
 
-- style.css � font-size and line-height on #modal-item.win-text-modal #modal-item-body
+- `script.js` — added `keydown` listener on `document` (after overlay-click handler)
 
 ## Manual Check Results
 
-- Full end-to-end playthrough completed by user (user-verified)
-- All 10+ item hotspots open correct popups in DE and EN
-- Detective modal pagination (page 1 and 2) works correctly
-- Start screen invention disclosure popup opens and fills panel
-- Safe code 9126 triggers win screen
-- Win screen patent thumbnails, dual-image popup, and result text popup all verified
-- Language toggle updates all visible text correctly
-- Restart resets game state correctly
-- Menu modal opens and closes correctly
+- Escape closes item modal (verified)
+- Escape closes safe modal (verified)
+- Escape closes menu modal (verified)
+- Escape does nothing when no modal is open (verified)
+- Existing close buttons and overlay-click behavior unaffected (verified)
 
 ## What Was Not Tested
 
-- Nothing remaining � user confirmed full playthrough complete
+- Nothing remaining for Phase 17
 
 ## Known Issues
 
@@ -61,8 +58,4 @@ Every interactive element has been browser-verified in a full playthrough. The c
 
 ## Next Recommended Step
 
-Phase 17 (Escape key closes any open modal) is planned in TASKS.md and ready to start — small, `script.js`-only change.
-
-Run the `start-session` prompt to begin Phase 17: add a `keydown` listener on `document` that calls `closeModal()` on `Escape` when a modal is open, then browser-verify all 3 modal types.
-
-Phase 18 (workflow retrospective, Session 18-A: audit all 6 prompt files and identify stale required-reading entries) follows once Phase 17 is complete.
+Phase 18 (vibe coding workflow retrospective) is the next planned phase. It is a read-only audit — no code changes. Start with Session 18-A: read all 6 `.github/prompts/*.prompt.md` files and `TASKS.md`, build a required-reading coverage table, and flag stale or redundant entries.
