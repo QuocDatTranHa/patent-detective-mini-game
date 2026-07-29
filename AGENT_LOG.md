@@ -4,6 +4,22 @@ This file records completed agent work in chronological order.
 
 Keep entries concise.
 
+## Phase 17 — Keyboard shortcut: Escape closes any open modal
+
+Status: complete; browser-verified
+
+**Files changed:** `script.js`
+
+- Added `keydown` event listener on `document` that calls `closeModal()` when `e.key === 'Escape'` and `gameState.openModal !== null`
+- Listener placed after the overlay-click handler; no HTML or CSS changes needed
+- All existing close behavior (close button, overlay click) confirmed unaffected
+
+Manual check: all three modal types closed by Escape; Escape with no modal open does nothing; close buttons and overlay click still work.
+
+Not tested: nothing remaining for Phase 17.
+
+---
+
 ## Phase 17 — Workflow review task added to TASKS.md
 
 Status: planned (not yet implemented)

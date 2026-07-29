@@ -852,18 +852,18 @@ Manual check: win result text popup fills panel in both DE and EN; no overflow; 
 
 ---
 
-## Phase 17 — Keyboard shortcut: Escape closes any open modal
+## Phase 17 — Keyboard shortcut: Escape closes any open modal ✓
 
 Goal: allow the player to press `Escape` to close whichever modal is currently open. Mirrors existing close-button behavior.
 
 Files affected: `script.js` only (no HTML or CSS changes needed).
 
-- [ ] Add a `keydown` event listener on `document` that calls `closeModal()` when `event.key === 'Escape'` and `gameState.openModal !== null`
-- [ ] Verify pressing Escape closes the item modal
-- [ ] Verify pressing Escape closes the safe modal
-- [ ] Verify pressing Escape closes the menu modal
-- [ ] Verify pressing Escape does nothing when no modal is open
-- [ ] Verify the existing close buttons and overlay-click behavior still work unchanged
+- [x] Add a `keydown` event listener on `document` that calls `closeModal()` when `event.key === 'Escape'` and `gameState.openModal !== null`
+- [x] Verify pressing Escape closes the item modal
+- [x] Verify pressing Escape closes the safe modal
+- [x] Verify pressing Escape closes the menu modal
+- [x] Verify pressing Escape does nothing when no modal is open
+- [x] Verify the existing close buttons and overlay-click behavior still work unchanged
 
 Manual check: open each of the 3 modals in the browser, press Escape — modal closes and overlay disappears. Press Escape with no modal open — nothing happens.
 
