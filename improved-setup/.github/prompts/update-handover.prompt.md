@@ -24,11 +24,24 @@ Conditional:
 
 4. `DECISIONS.md` — read **only** if an architectural choice was made during this session that deviates from or extends an existing decision. Otherwise skip it entirely.
 
+## Step 0 — Scope Reconciliation (do this before updating any file)
+
+Compare what was actually implemented this session against the planned task checklist.
+
+For every file that was changed this session:
+- Is it covered by a task in the current phase checklist? If yes, check it off normally.
+- If **not** covered by any task — it is an out-of-scope change. For each one:
+  - Add a new `- [x]` entry to `TASKS.md` under the current phase describing what was done
+  - Include it in the "Files Changed" section of `HANDOVER.md`
+  - If the change was an architectural deviation or introduced a new design pattern, also add an entry to the **Implementation Decisions** section of `DECISIONS.md`
+
+Do not silently omit out-of-scope changes. The task list must reflect what actually happened, not only what was planned.
+
 ## What to Update
 
 ### 1. `TASKS.md`
 
-- Check off all completed tasks in the finished phase
+- Check off all completed tasks in the finished phase (including any out-of-scope entries added in Step 0)
 - If the entire phase is done, mark the phase heading as complete (add ✓)
 - Do not check off items that were not actually implemented or tested
 
