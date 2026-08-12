@@ -4,6 +4,39 @@ This file records completed agent work in chronological order.
 
 Keep entries concise.
 
+## Phase 19 — Improved setup template created
+
+Status: complete
+
+**Files changed:** `improved-setup/` (19 new files), `WORKFLOW_REVIEW.md` (new), `TASKS.md`
+
+- Created `improved-setup/` with 19 files implementing all recommendations from `WORKFLOW_REVIEW.md`
+- Key new files: `CURRENT_PHASE.md` (live status, replaces full TASKS.md reads), revised 6 prompt files, two-section `ARCHITECTURE.md` and `DECISIONS.md`, updated `AGENTS.md`, `update-handover` with CURRENT_PHASE.md update step and mandatory KNOWN_ISSUES.md review
+- All WORKFLOW_REVIEW.md findings applied: scope-based reading, session sizing rules, AGENT_LOG.md strict rules, PLAN.md archiving lifecycle, review gate cadence
+- Phase 18 tasks (18-A, 18-B, 18-C) checked off in TASKS.md; Phase 19 block added and checked off
+
+Manual check: all 19 files verified present; every WORKFLOW_REVIEW.md recommendation implemented in at least one template file.
+
+Not tested: improved-setup/ files have not been used to bootstrap an actual new project; prompt files not yet run through Copilot.
+
+---
+
+## Phase 18 — Sessions 18-A, 18-B, 18-C — Workflow retrospective and WORKFLOW_REVIEW.md
+
+Status: complete (read-only audit; no game code changed)
+
+**Files changed:** `WORKFLOW_REVIEW.md` (new)
+
+- Session 18-A: read all 6 prompt files; built required-reading coverage table; flagged ARCHITECTURE.md, DECISIONS.md, KNOWN_ISSUES.md as over-required; identified review-work.prompt.md as never explicitly invoked; flagged KNOWN_ISSUES.md stale entries, PLAN.md staleness, TASKS.md dead Current Task field
+- Session 18-B: audited AGENT_LOG.md for planning-note pollution and naming inconsistency; flagged Session 16-D as too small (1 item); identified scope-reading waste in implement-next-task; flagged TASKS.md 1000-line token cost; proposed CURRENT_PHASE.md; proposed HANDOVER.md/AGENT_LOG.md distinction rule
+- Session 18-C: consolidated all findings into WORKFLOW_REVIEW.md (Parts 1–4: required-reading audit, token waste patterns, revised prompt specs, CURRENT_PHASE.md template, priority table)
+
+Manual check: self-review — every finding grounded in specific file observations; every recommendation actionable without further clarification.
+
+Not tested: nothing (read-only audit).
+
+---
+
 ## Phase 17 — Keyboard shortcut: Escape closes any open modal
 
 Status: complete; browser-verified
