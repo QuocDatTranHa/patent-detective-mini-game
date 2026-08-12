@@ -4,9 +4,9 @@ This file gives the next coding agent the current project status and recommended
 
 ## Current Status
 
-**Phase 17 — COMPLETE. Escape key closes any open modal. Browser-verified.**
+**Phases 18 and 19 — COMPLETE.**
 
-A single `keydown` listener was added to `script.js`. Pressing Escape calls `closeModal()` when `gameState.openModal !== null`. No HTML or CSS changes were needed. All existing close behavior (close button, overlay click) remains unchanged.
+Phase 18 (workflow retrospective) ran Sessions 18-A, 18-B, and 18-C as read-only audits of the agent workflow. Findings and recommendations were consolidated into `WORKFLOW_REVIEW.md`. Phase 19 applied every recommendation from `WORKFLOW_REVIEW.md` by building a complete reusable project setup template in `improved-setup/` (19 files).
 
 ## Completed So Far
 
@@ -15,12 +15,12 @@ A single `keydown` listener was added to `script.js`. Pressing Escape calls `clo
 - Phase 3: Responsive layout, hotspot hover indicator, modal sizing
 - Phase 4: State model, screen navigation, language toggle
 - Phase 5: Item hotspot system, clue modal open/close, overlay
-- Phase 6: Safe modal � digit controls, code validation, win screen
-- Phase 7: Menu modal � pause/restart flow
-- Phase 8: Final asset integration � background images, clue images, Orbitron font, hotspot tuning
-- Phase 9: Text content � bilingual STRINGS, start screen panels, modal title/body overlays
-- Phase 10: Visual polish � start screen headings, neon code digits, larger modal font, per-hotspot text box alignment
-- Phase 11: Readability fixes � darker digit color, win screen text, start panel spacing, detective pagination
+- Phase 6: Safe modal — digit controls, code validation, win screen
+- Phase 7: Menu modal — pause/restart flow
+- Phase 8: Final asset integration — background images, clue images, Orbitron font, hotspot tuning
+- Phase 9: Text content — bilingual STRINGS, start screen panels, modal title/body overlays
+- Phase 10: Visual polish — start screen headings, neon code digits, larger modal font, per-hotspot text box alignment
+- Phase 11: Readability fixes — darker digit color, win screen text, start panel spacing, detective pagination
 - Phase 12 (12-A): Dash cleanup, M4 start disclosure fix, win screen calibration border
 - Phase 12 (12-B): Win screen line-height fix, detective per-page titles, page 1 double font
 - Phase 13 (13-A): Magnifying glass SVG, start screen hotspot element and CSS
@@ -35,27 +35,33 @@ A single `keydown` listener was added to `script.js`. Pressing Escape calls `clo
 - Phase 16 (16-C): #hotspot-win-text added; win-text repositioned; portrait pink neon popup implemented
 - Phase 16 (16-D): Win result text popup font size increased to clamp(13px, 2.1vh, 23px); line-height 1.6
 - Phase 17: Escape key closes any open modal — keydown listener added to script.js
+- Phase 18 (18-A): Required-reading audit — coverage table, stale-file flags, unused prompt identified
+- Phase 18 (18-B): Token waste audit — session sizing issues, scope-reading gaps, AGENT_LOG rules
+- Phase 18 (18-C): WORKFLOW_REVIEW.md created with all recommendations
+- Phase 19: improved-setup/ template created — 19 files implementing all WORKFLOW_REVIEW.md recommendations
 
-## Files Changed (Phase 17)
+## Files Changed (Last Session)
 
-- `script.js` — added `keydown` listener on `document` (after overlay-click handler)
+- `improved-setup/` (new folder) — 19 new files; complete reusable project setup template
+- `WORKFLOW_REVIEW.md` (new file) — consolidated findings and recommendations from Phase 18
+- `TASKS.md` — Phase 18 tasks checked off; Phase 19 block added and checked off
 
 ## Manual Check Results
 
-- Escape closes item modal (verified)
-- Escape closes safe modal (verified)
-- Escape closes menu modal (verified)
-- Escape does nothing when no modal is open (verified)
-- Existing close buttons and overlay-click behavior unaffected (verified)
+- All 19 `improved-setup/` files created and verified present via directory listing
+- Every `WORKFLOW_REVIEW.md` recommendation implemented in at least one template file
+- Phase 18 session tasks (18-A, 18-B, 18-C) self-reviewed; findings grounded in specific file observations
+- No code changes to the game itself
 
 ## What Was Not Tested
 
-- Nothing remaining for Phase 17
+- `improved-setup/` files have not been used to bootstrap an actual new project
+- Prompt files in `improved-setup/` have not been run through Copilot to verify agent behavior
 
 ## Known Issues
 
-- Win screen element positions calibrated for 1366x768; may need minor adjustment at very different viewport sizes
+- Win screen element positions calibrated for 1366x768; may need minor adjustment at very different viewport sizes (unchanged from Phase 17)
 
 ## Next Recommended Step
 
-Phase 18 (vibe coding workflow retrospective) is the next planned phase. It is a read-only audit — no code changes. Start with Session 18-A: read all 6 `.github/prompts/*.prompt.md` files and `TASKS.md`, build a required-reading coverage table, and flag stale or redundant entries.
+The game (Phases 1–17) is complete and browser-verified. The workflow retrospective (Phases 18–19) is complete. No further planned work. If a new project is started, copy `improved-setup/` to the new repository root and fill in the `[PLACEHOLDER]` sections per the instructions in `improved-setup/README.md`.
